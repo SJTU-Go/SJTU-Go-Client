@@ -41,6 +41,10 @@
             <mp-cell value="日程查看" footer="日程查看" bindtap="scheduleNavigate"></mp-cell>
             <mp-cell value="历史记录" footer="历史记录" bindtap="historyNavigate"></mp-cell>
   </mp-cells>
+
+	<mp-cells ext-class="my-cells" title="权限设置">
+            <mp-cell value="地理位置" footer="地理位置" bindtap="accessLocationNavigate"></mp-cell>
+  </mp-cells>
 </view>
 
 

@@ -1,52 +1,30 @@
-
 {
-  "pages": [    
-    "pages/LoginPage/LoginPage",   
-    "pages/setPreferencePage/setPreferencePage", 
+  "pages": [
+    "pages/LoginPage/LoginPage",
+    "pages/setPreferencePage/setPreferencePage",
     "pages/preferencePage/preferencePage",
-    "pages/index/index",    
-
-    "pages/searchindex/searchindex",  
-
-     
-
-
+    "pages/index/index",
+    "pages/searchindex/searchindex",
     "pages/extendsearch/arrive/arrive",
-    "pages/comment/comment",   
-
-
-      "pages/trafficPage/trafficPage",
-
-  
-  
-      "pages/addcomment/addcomment", 
-
-      "pages/walk/walk",
-      "pages/commentmap/commentmap",
-      "pages/feedback/feedback",
-      "pages/bike/bike",
-      "pages/car/car",
+    "pages/comment/comment",
+    "pages/trafficPage/trafficPage",
+    "pages/addcomment/addcomment",
+    "pages/walk/walk",
+    "pages/commentmap/commentmap",
+    "pages/feedback/feedback",
+    "pages/bike/bike",
+    "pages/car/car",
     "pages/searcha/searcha",
-
     "pages/extendsearch/depart/depart",
-
-
     "pages/extendsearch/pass/pass",
-
     "index/index",
-
-
     "pages/search/search",
-
-
     "pages/schedulePage/schedulePage",
     "pages/HistoryPage/HistoryPage",
-
-    "pages/userInfoPage/userInfoPage"
-
+    "pages/userInfoPage/userInfoPage",
+    "pages/accessLocationPage/accessLocationPage"
 
   ],
-
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
@@ -54,41 +32,40 @@
     "navigationBarTitleText": "SJTU-Go",
     "navigationBarTextStyle": "black"
   },
-  "tabBar": {  
-    "color": "#a9b7b7",  
-    "selectedColor": "#11cd6e",  
-     "borderStyle": "black" ,
-     "list": [{  
-       "pagePath": "pages/index/index",  
-        "text": "车辆"  ,
+  "tabBar": {
+    "color": "#a9b7b7",
+    "selectedColor": "#11cd6e",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "车辆",
         "selectedIconPath": "images/bicycle2.png",
         "iconPath": "images/bicycle1.png"
       },
-      {  
-        "pagePath": "pages/trafficPage/trafficPage",  
-         "text": "交通"  ,
-         "selectedIconPath": "images/traffic02.png",
-         "iconPath": "images/traffic01.png"
-       },
-       {   
-        "pagePath": "pages/comment/comment",  
-         "text":"评论" ,
-         "selectedIconPath": "images/comment2.png",
-         "iconPath": "images/comment1.png"
-       },
-       {   
-        "pagePath": "pages/userInfoPage/userInfoPage",  
-         "text":"用户" ,
-         "selectedIconPath": "images/user2.png",
-         "iconPath": "images/user1.png"
-       }
-
-]
-    },
-
-"sitemapLocation": "sitemap.json",
-"style": "v2",
-"useExtendedLib": {
-  "weui": true
-}
+      {
+        "pagePath": "pages/trafficPage/trafficPage",
+        "text": "交通",
+        "selectedIconPath": "images/traffic02.png",
+        "iconPath": "images/traffic01.png"
+      },
+      {
+        "pagePath": "pages/comment/comment",
+        "text": "评论",
+        "selectedIconPath": "images/comment2.png",
+        "iconPath": "images/comment1.png"
+      },
+      {
+        "pagePath": "pages/userInfoPage/userInfoPage",
+        "text": "用户",
+        "selectedIconPath": "images/user2.png",
+        "iconPath": "images/user1.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "useExtendedLib": {
+    "weui": true
+  }
 }
