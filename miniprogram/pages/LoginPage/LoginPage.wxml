@@ -7,7 +7,11 @@
     <view>微信账号登录</view>
 
   </button>
+  <button class='btn1' bindtap='testLoc'>
+    <image class='btnImg' src='../../images/wechat.png'></image>
+    <view>testLoc</view>
 
+  </button>
 </view>
 <!--
 <view class="containerbutton">

@@ -1,5 +1,6 @@
 {
   "pages": [
+    
     "pages/LoginPage/LoginPage",
     "pages/index/index",
     "pages/extendsearch/arrive/arrive",

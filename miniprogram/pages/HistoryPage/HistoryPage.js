@@ -3,14 +3,15 @@ const app = getApp()
 Page({
   data:{
     orderList:[],
-    routeList:[],
-    planList:[]
+    routeList:[]
   },
 
   onLoad:function(options){
     var that=this
    //var list=new Array()
     // 页面初始化 options为页面跳转所带来的参数
+
+    // 从localStorage初始化本页面的orderList
     wx.getStorage({
       key: 'historygained',
       success:function(res){
@@ -18,9 +19,12 @@ Page({
         that.setData({orderList:res.data})
       }
     })
+
+    // 从localStorage初始化用于线路展示的routeList
     wx.getStorage({
       key: 'historygained',
       success:function(res){
+        /*
         var k = []
         for(i in res.data)
         {k[i]=res.data[i].tripID
@@ -46,53 +50,47 @@ Page({
         historyword.type = res.data[i].strategy.type
           i = i+1
           wordlist.push(historyword)
-      }
-      wx.setStorage({
-        data: wordlist,
-        key: 'history',
-      })
-      var q= 0 
-      var linelist = new Array(0)
-      while (q<res.data.length){
-    var d = res.data[q].strategy.routeplan
-    var polyline=new Array(0)
-    for(var j=0;j<d.length;j++){
-      var line = {};
-      var points = [];
-      var item = d[j];
-      for(var i of item.routePath.coordinates){
-        var cor = {};
-        cor['longitude']=i[0];
-        cor['latitude']=i[1];
-        points.push(cor);
-      }
-      if(item.type=="HELLOBIKE"){
-        line['color']='#0099FF';
-      }
-      if(item.type=="FIND"){
-        line['color']='#FFCC33';
-      }
-      else{line['color']='#00CC33'}
-      line['points']=points;
-      //line['color']='#808080';
-      line['width']=4;
-      //line['dottedLine']=true;
-      //console.log(line);
-      polyline.push(line);
-    }
-    console.log(polyline)
-    q = q+1
-    console.log("routing")
-console.log(linelist)
-    linelist.push(polyline)
-
-}
-
-wx.setStorage({
-  data:linelist,
-  key: 'historyroute',
-})
-
+        }
+        wx.setStorage({
+          data: wordlist,
+          key: 'history',
+        }) */
+        var q= 0 
+        var linelist = new Array(0)
+        while (q<res.data.length){
+          var d = res.data[q].strategy.routeplan
+          var polyline=new Array(0)
+          for(var j=0;j<d.length;j++){
+            var line = {};
+            var points = [];
+            var item = d[j];
+            for(var i of item.routePath.coordinates){
+              var cor = {};
+              cor['longitude']=i[0];
+              cor['latitude']=i[1];
+              points.push(cor);
+            }
+            if(item.type=="HELLOBIKE"){
+              line['color']='#0099FF';
+            }
+            if(item.type=="FIND"){
+              line['color']='#FFCC33';
+            }
+            else{line['color']='#00CC33'}
+            line['points']=points;
+            //line['color']='#808080';
+            line['width']=4;
+            //line['dottedLine']=true;
+            //console.log(line);
+            polyline.push(line);
+          }
+          // console.log(polyline)
+          q = q+1
+          // console.log("routing")
+          // console.log(linelist)
+          linelist.push(polyline)
+        }
+        that.setData({routeList:linelist})
       }
     })
     /*
@@ -127,21 +125,6 @@ wx.setStorage({
 */
 
 
-
-    wx.getStorage({
-      key: 'historyroute',
-      success:function(res){
-        console.log(res.data)
-        that.setData({routeList:res.data})
-      }
-    })
-    wx.getStorage({
-      key: 'plan',
-      success:function(res){
-        console.log(res.data)
-        that.setData({planList:res.data})
-      }
-    })
     //console.log(that.data.orderList)
 
     //this.setData({
