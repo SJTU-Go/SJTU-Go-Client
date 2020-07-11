@@ -144,6 +144,9 @@ this.setData({input:text})
   },
 
   starttirp:function(e){
+    wx.startLocationUpdateBackground({
+      complete: (res) => {console.log(res)},
+    })
     var that=this
     var record={};
     record['depart']=that.data.depart
@@ -221,6 +224,13 @@ this.setData({input:text})
         
         }
       })
+
+
+      wx.onLocationChange((result) => {
+        console.log(result)
+      })
+
+
   },
   
   onReady: function () {

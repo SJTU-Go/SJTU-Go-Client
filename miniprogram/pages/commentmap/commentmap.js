@@ -5,21 +5,12 @@ Page({
   },
 
   onLoad: function (options) {
-    var that = this
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
     var index =options.index
-    wx.getStorage({
-      key: 'history',
-      success(res){var q =new Array(0)
-        q.push(res.data[index])
-        that.setData({
-        routeplan:q
-      })}
-    })
-    wx.getStorage({
-      key: 'historyroute',
-      success(res){    that.setData({
-        polyline:res.data[index]
-      })}
+    this.setData({
+      routeplan: prevPage.data.orderList[index],
+      polyline: prevPage.data.routeList[index]
     })
   },
 

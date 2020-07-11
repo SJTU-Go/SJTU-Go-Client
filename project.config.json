@@ -26,7 +26,7 @@
 	},
 	"appid": "wxde82431f805562ef",
 	"projectname": "SJTU-Go",
-	"libVersion": "2.8.1",
+	"libVersion": "2.12.0",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {

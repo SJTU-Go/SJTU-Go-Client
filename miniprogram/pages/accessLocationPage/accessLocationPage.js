@@ -20,7 +20,18 @@ Page({
   },
 
   radioChange: function(e){
-      console.log(e.detail.value)
+      var radioItems = this.data.radioItems;
+      for (var i = 0, len = radioItems.length; i < len; ++i) {
+          radioItems[i].checked = radioItems[i].value == e.detail.value;
+      }
+
+      this.setData({
+        radioItems: radioItems,
+        [`formData.radio`]: e.detail.value
+      }
+      )
+
+      console.log(wx.getSetting())
     },
 
 

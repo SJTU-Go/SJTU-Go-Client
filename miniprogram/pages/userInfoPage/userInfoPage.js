@@ -9,7 +9,7 @@ Page({
   historyNavigate:function()
   {wx.navigateTo({url: '../HistoryPage/HistoryPage', })},
   accessLocationNavigate:function()
-  {wx.navigateTo({
-    url: '../accessLocationPage/accessLocationPage',
+  {wx.openSetting({
+    complete: (res) => {},
   })}
 })

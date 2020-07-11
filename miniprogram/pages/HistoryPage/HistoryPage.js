@@ -192,16 +192,8 @@ indexback:function()
     // 页面关闭
   },
   showRoute:function(e){
-    console.log(e)
     var index=e.currentTarget.dataset.index
-    //console.log(this.data.routeList)
-    var route = this.data.routeList[index]
-    var plan = this.data.planList[index]
-    //var route = 'routeList['+index+']'
-    console.log(route)
-    console.log(plan)
-  /* wx.navigateTo({ url: '../commentmap/commentmap?RT='+JSON.stringify(route)+'&plan='+JSON.stringify(plan),})*/
-  wx.navigateTo({ url: '../commentmap/commentmap?index='+index})
+    wx.navigateTo({ url: '../commentmap/commentmap?index='+index})
   },
 
 
