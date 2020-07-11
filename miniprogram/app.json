@@ -1,10 +1,7 @@
 {
   "pages": [
     "pages/LoginPage/LoginPage",
-    "pages/setPreferencePage/setPreferencePage",
-    "pages/preferencePage/preferencePage",
     "pages/index/index",
-    "pages/searchindex/searchindex",
     "pages/extendsearch/arrive/arrive",
     "pages/comment/comment",
     "pages/trafficPage/trafficPage",
@@ -14,16 +11,15 @@
     "pages/feedback/feedback",
     "pages/bike/bike",
     "pages/car/car",
-    "pages/searcha/searcha",
     "pages/extendsearch/depart/depart",
     "pages/extendsearch/pass/pass",
     "index/index",
-    "pages/search/search",
     "pages/schedulePage/schedulePage",
     "pages/HistoryPage/HistoryPage",
     "pages/userInfoPage/userInfoPage",
-    "pages/accessLocationPage/accessLocationPage"
-
+    "pages/search/search",
+    "pages/searcha/searcha",
+    "pages/searchindex/searchindex"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -67,5 +63,11 @@
   "style": "v2",
   "useExtendedLib": {
     "weui": true
-  }
+  },
+  "permission":{
+    "scope.userLocation":{
+      "desc": "你的位置信息将会用于系统交通状况的更新"
+    }
+  },
+  "requiredBackgroundModes": ["location"]
 }

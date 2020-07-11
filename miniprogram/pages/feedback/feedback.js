@@ -29,22 +29,12 @@ Page({
     this.setData({road:e.detail.value})
   },
   onLoad: function (options) {
-    var that =this
-    var id = options.RT
-    console.log(id)
-    wx.getStorage({
-      key: 'tripID',
-      success(res){that.setData({tripid:res.data[id]})
-    
-      console.log(res.data[id])
-    }
-    })
-    wx.getStorage({
-      key: 'userID',
-      success(res){that.setData({userID:res.data})
-    
-      console.log(res.data)
-    }
+    let pages = getCurrentPages();
+    let prevPage = pages[pages.length - 2];
+    var index =options.RT
+    this.setData({
+      tripid: prevPage.data.orderList[index].tripID,
+      userID: prevPage.data.orderList[index].userID
     })
   },
 

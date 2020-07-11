@@ -172,7 +172,8 @@ wx.setStorage({
 
 
 },
-indexback:function()
+
+  indexback:function()
 {
   wx.switchTab(
     {
