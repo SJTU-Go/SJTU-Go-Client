@@ -2,6 +2,7 @@
 
 Page({
   data: {
+    haveid:0,
     appr:true,
     userID:0,
     subshow: false,
@@ -20,6 +21,19 @@ Page({
   },
   onLoad: function(options){
     var d = JSON.parse(options.RT)
+    wx.getSetting({
+      success (res){
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          that.setData({"haveid":1})
+          
+        }
+        else{
+          var dataset = {}
+   
+        }
+      }
+    })
   var that = this
   wx.getStorage({
     key: 'userID',

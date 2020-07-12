@@ -68,6 +68,7 @@
         <view class = "bottomblock">
 
        
-            <input class="input" text-align="center" name="userName" placeholder="回复评论" bindinput="commentInput"/>        
-            <button class = 'navigatebutton' bindtap="updataInput">提交</button>
+            <input class="input" text-align="center" name="userName" placeholder="回复评论" bindinput="commentInput"/>
+             <button  wx:if="{{haveid <1}}" open-type="getUserInfo" class='navigatebutton' bindgetuserinfo="updataInput">提交</button>       
+            <button wx:if="{{haveid >0}}" class = 'navigatebutton' bindtap="updataInput">提交</button>
     </view>

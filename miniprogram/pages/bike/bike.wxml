@@ -37,15 +37,15 @@
 </view>  
   <view class = 'emptyblock'></view>
 </view>
-<view style = "margin-left:20%">
+<view  style = "margin-left:20%">
 <input type="text"  class="search-bar__input" placeholder="输入评论" maxlength='40' value="{{inputVal}}" focus="{{inputShowed}}"   bindinput="inputTyping" />
 </view>
 <view style="display:flex">
 <view style="width:5%" />
 <view class = 'toolblock'>
   <view class = 'downblock'>
-
-      <button class='btn1' bindtap='updateComment'>
+<button  wx:if="{{haveid <1}}" open-type="getUserInfo" class='btn1' bindgetuserinfo="updateComment">提交评论</button>
+      <button wx:if="{{haveid >0}}" class='btn1' bindtap='updateComment'>
         <view>提交评论</view>
         </button>
   </view>
@@ -53,8 +53,8 @@
 
 <view class = 'toolblock'>
   <view class = 'downblock'>
-
-      <button class='btn2' bindtap='starttirp'>
+<button  wx:if="{{haveid <1}}" open-type="getUserInfo" class='btn2' bindgetuserinfo="starttirp">开始行程</button>
+      <button class='btn2' wx:if="{{haveid >0}}" bindtap='starttirp'>
         <view>开始行程</view>
         </button>
   </view>

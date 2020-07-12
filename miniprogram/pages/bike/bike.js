@@ -2,6 +2,7 @@
 
 Page({
   data: {
+    haveid:0,
     input:'',
     routeplan:[],
     polyline:[],
@@ -17,6 +18,9 @@ Page({
     lat:0,
   },
 updateComment(){
+  if (this.data.haveid <1){
+
+  }
 var text = this.data.input
 wx.getStorage({
   key: 'bike',
@@ -58,6 +62,20 @@ var text = e.detail.value
 this.setData({input:text})
 },
   onLoad: function(options){
+    var that=this
+    wx.getSetting({
+      success (res){
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+          that.setData({"haveid":1})
+          
+        }
+        else{
+          var dataset = {}
+   
+        }
+      }
+    })
     var d = JSON.parse(options.RT)
    var T= Math.ceil(options.travelTime/60)
     this.setData({

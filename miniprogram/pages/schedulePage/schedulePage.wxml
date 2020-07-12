@@ -6,15 +6,30 @@
   </view>
     </view>
 <view wx:else>
-    <view class="massge" wx:for="{{showlist}}"  wx:for-item="list" >
+    <view class="massge" wx:for="{{showlist}}" wx:for-index="idx" wx:for-item="list" >
       <view class="massge-hd"><image class="massge-img" src="../../images/calendar.png"></image><view>{{list.schedulename}}</view></view>
       <view class="massge-bd font-color-666">
         <text>日程时间：<text class="font-color-c24e4e font-size-15">{{list.timehour}}</text>:<text class="font-color-c24e4e font-size-15">{{list.timeminute}}</text></text>
         <text style="margin-top:22rpx;"><text>日程地点：<text class="font-color-c24e4e font-size-15">{{list.place}}</text></text></text>
-        <view class='textdiv'>
-          <text style="font-size-20" bindtap="searchPage">查询路线></text>
-        </view>
-       </view>
+        
+        <view class = 'downblock'>
+<view class ='blocklleft'>
+  <button class='btn2' data-index="{{idx}}" bindtap='searchPage'>
+    <view>查询路线</view>
+    </button></view>
+<view class ='blockright'>
+
+  <button wx:if="{{list.disnotice}}" class='btn2' data-index="{{idx}}" bindtap='notice' disabled="{{list.disnotice}}">
+    <text>即将推送</text>
+    </button>
+ 
+  <button wx:else class='btn2' data-index="{{idx}}" bindtap='notice' disabled="{{list.disnotice}}">
+    <text>请求推送</text>
+    </button>
+    </view>
+    </view>
+</view>
+       
     </view>
   </view>  
 <view class =  'btnblock'>
@@ -53,7 +68,23 @@
       <input name="userName" placeholder="请输入日程名称" bindinput="scheduleNameInput"/>
     </view>
     <view class = 'ibtnblock'>
-      <input name="userName" placeholder="请输入日程地点" bindinput="placeInput"/>
+
+<view wx:if = "{{depart}}">
+<input  name="userName" placeholder="起点：{{depart}}" bindtap="depart"/>
+  </view>
+         <view wx:else>
+      <input name="userName" placeholder="请输入起点" bindtap="depart"/>
+      </view>
+    </view>
+    <view class = 'ibtnblock'>
+    <view wx:if = "{{arrive}}">
+    <input  name="userName" placeholder="终点：{{arrive}}" bindtap="arrive"/>
+  </view>
+         <view wx:else>
+      <input name="userName" placeholder="请输入终点" bindtap="arrive"/>
+    </view> </view>
+    <view class = 'ibtnblock'>
+      <input name="userName" placeholder="请输入重复周期（每周同一天）" bindinput="scheduleRepeatInput"/>
     </view>
   </modal>
 </view>

@@ -1,14 +1,13 @@
 <view class = 'outsideblock'>
-<view class = 'marginn'>
-  <view class = 'left'>
-      <view class="verticalline1"></view>
-      <view class="verticalline2"></view>
-      <view class="verticalline1"></view>
-      <view class="verticalline2"></view>
-      <view class="verticalline1"></view>
-  </view>
-  <view class = 'right'>
+<view class = 'marginn' style="height:{{height}}rpx;">
+
   <form class="form" bindsubmit="formSubmit">
+<view class="section00">
+<view class ='left'>
+<view class="verticalline1"></view>
+ <view class="verticalline4"></view>     
+    </view>
+     <view class = 'right'>
     <view class="section1">
       <view class = "sectionleft">
         <view class = 'emptyblock'></view>
@@ -21,9 +20,22 @@
          <input bindtap="depart"    placeholder-style="color:rgb(5, 5, 5,0.651);" placeholder="当前位置" /></view>
         </view>
       </view> 
+    <view wx:if="{{passnum<=2}}"class = 'iconright'>
+      <image class="massge-img" src="../../images/add1.png" bindtap = 'addpass'></image></view>
     </view>  
+    <view class="divLine"></view></view>
+    </view>
+    <view wx:for="{{[0, 1, 2, 3, 4, 5]}}" wx:for-item="i">
+  <view wx:if="{{i < passnum}}">
+  <view class="section0">
+  <view class ='left'>
+
+      <view class="verticalline2"></view>
+    </view>
+      <view class = 'right'>
 
     <view class="section">
+      <view class = "sectionleft">
       <view class = 'emptyblock'></view>
       <view class = 'upsection'>Pass</view>
       <view class = 'downsection'>
@@ -34,9 +46,22 @@
         <input bindtap="pass"    placeholder-style="color:rgb(5, 5, 5,0.651);" placeholder="点击输入..." />
         </view>
       </view>
-    </view>  
-    <view class="divLine"></view>
+     </view>
+    <view class = 'iconright1'>
+      <image class="massge-img" src="../../images/cross.png" bindtap = 'deletepass'></image></view>
+     </view>  
+   
+    <view class="divLine"></view></view>
+  </view></view></view>
+
+  <view class="section03">
+<view class ='left'>
+<view class="verticalline22"></view>
+      <view class="verticalline3"></view>
+    </view>
+     <view class = 'right'>
     <view class="section">
+      <view class = "sectionleft">
       <view class = 'emptyblock'></view>
       <view class = 'upsection'>To</view>
       <view class = 'downsection'>
@@ -47,22 +72,19 @@
         <input bindtap="arrive"    placeholder-style="color:rgb(5, 5, 5,0.651);" placeholder="点击输入..." />
             </view>
       </view>
-
+    </view>
     </view>  
     <view class="divLine"></view>
-
+</view>
+    </view> 
   </form>
 
-  </view>
-
-</view>
-
-
 
 
 </view>
 
-<view class = 'flexbbox'>
+</view>
+<view class = 'flexbbox' style="margin-top:{{totop}}rpx;">
   <view class = 'fill'></view>
   <view class = 'others'>
     <checkbox-group bindchange="checkboxChange">
@@ -71,8 +93,18 @@
     </label>
     </checkbox-group>
   </view>
+    
 </view>
-
+<view class="line" wx:if="{{settim}}">
+<view class="tui-picker-content">
+  <view class="tui-picker-name"></view>
+  <picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
+    <view class="tui-picker-detail">
+      <text class="t" style="color:#00a278">选择开始时间:</text> {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+    </view>
+  </picker>
+</view>
+</view>
 
 <view class = 'toolblock'>
 <view class = 'downblock'>
@@ -86,8 +118,10 @@
 </view>
 
 <view class='topTabSwiper'>
-    <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>按偏好显示</view>
-    <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>按时间长短显示</view>
+    <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>偏好</view>
+    <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>总时间</view>
+    <view class='tab  {{currentData == 2 ? "tabBorer" : ""}}'  data-current = "2" bindtap='checkCurrent'>步行距离</view>
+    <view class='tab  {{currentData == 3 ? "tabBorer" : ""}}'  data-current = "3" bindtap='checkCurrent'>费用</view>
 </view>
 
 <view wx:if="{{currentData==0}}">

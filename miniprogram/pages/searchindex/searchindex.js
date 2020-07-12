@@ -1,11 +1,23 @@
 //index.js
 const app = getApp()
-
+var dateTimePicker = require('../../utils/dateTimePicker.js');
 Page({
 
   data:{
+    date: '2020-07-12',
+    time: '12:00',
+    dateTimeArray: null,
+    dateTime: null,
+    dateTimeArray1: null,
+    dateTime1: null,
+    startYear: 2020,
+    endYear: 2050,
+    settim:false,
+    totop:65,
+    height:350,
     checkInfo: [
       {name: 'jam',value: '避开拥堵'},
+      {name: 'tim',value: '设置出发时间'}
     ],
     avoidjam : false,
     step :0,
@@ -29,6 +41,25 @@ Page({
   }  ,
     onLoad:function(options){
       var that = this
+      wx.setStorage({
+        data: that.data.checkInfo,
+        key: 'checkInfo',
+      })
+      // 获取完整的年月日 时分秒，以及默认显示的数组
+var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
+var obj1 = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
+// 精确到分的处理，将数组的秒去掉
+obj.dateTimeArray.pop();
+ obj.dateTime.pop();
+ obj1.dateTimeArray.pop();
+ obj1.dateTime.pop();
+ that.setData({
+  dateTime: obj.dateTime,
+  dateTimeArray: obj.dateTimeArray,
+  dateTimeArray1: obj1.dateTimeArray,
+  dateTime1: obj1.dateTime
+
+});
       wx.getStorage({
         key: 'preference',
       success:function(res){
@@ -246,18 +277,89 @@ wx.navigateTo({
   search:function()
   {    
   },
+  changeDateTime(e){
+    var that=this
+    this.setData({ dateTime: e.detail.value });
+    console.log(this.data)
+    console.log(1+1)
+    var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
+    console.log(startTime)
+    wx.setStorage({
+      data: that.data.dateTime,
+      key: 'dateTime',
+    })
+  },
+  changeDateTimeColumn(e){
+    var that=this
+    var arr = this.data.dateTime, dateArr = this.data.dateTimeArray;
+
+    arr[e.detail.column] = e.detail.value;
+    dateArr[2] = dateTimePicker.getMonthDay(dateArr[0][arr[0]], dateArr[1][arr[1]]);
+
+    this.setData({
+      dateTimeArray: dateArr,
+      
+    });
+    wx.setStorage({
+      data: this.data.dateTimeArray,
+      key: 'dateTimeArray',
+    })
+    console.log(this.data)
+    console.log(1+1000)
+  },
   addpass:function()
   {this.setData({passnum:this.data.passnum+1})
-  
+  this.setData({height:this.data.height+120})
+  this.setData({totop:this.data.totop+60})
   },
-deletepass:function(){this.setData({passnum:this.data.passnum-1})},
+deletepass:function(){this.setData({passnum:this.data.passnum-1})
+this.setData({height:this.data.height-120})
+this.setData({totop:this.data.totop-60})},
 checkboxChange: function(e) {
+  var that=this
+  console.log(e)
+  console.log(e.detail.value.length)
+  var jamm=0
+  var timm=0
+  for (var i =0;i< e.detail.value.length;++i){
   //console.log(this.data.avoidjam)
-  if(e.detail.value[0]=='jam')
+  if(e.detail.value[i]=='jam')
   {console.log("jamming") 
-    this.setData({avoidjam:true})}
-    else{console.log("notjamming") 
-      this.setData({avoidjam:false})}
+  jamm+=1
+    }
+    else if (e.detail.value[i]=='tim'){console.log("tim") 
+    timm+=1
+      }
+   
+    }
+    if (jamm==0){this.setData({avoidjam:false})
+    var cc=that.data.checkInfo
+    cc[0].checked=false
+    this.setData({checkInfo:cc})}
+    else{this.setData({avoidjam:true})
+    var cc=that.data.checkInfo
+    cc[0].checked=true
+    this.setData({checkInfo:cc})}
+    if (timm==0){this.setData({settim:false})
+    var cc=that.data.checkInfo
+    cc[1].checked=false
+    this.setData({checkInfo:cc})}
+    else{this.setData({settim:true})
+    var cc=that.data.checkInfo
+    cc[1].checked=true
+    this.setData({checkInfo:cc})}
+    wx.setStorage({
+      data: that.data.checkInfo,
+      key: 'checkInfo',
+    })
+    wx.setStorage({
+      data: that.data.settim,
+      key: 'settim',
+    })
+    wx.setStorage({
+      data: that.data.avoidjam,
+      key: 'avoidjam',
+    })
      // console.log(this.data.avoidjam)
 }
 
