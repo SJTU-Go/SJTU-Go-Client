@@ -21,7 +21,9 @@ App({
     this.globalData = {
       onTrip: false,
       curRoute:{
-        trace: []
+        trace: [],
+        pid : 0,
+        beginTime:Date.parse(new Date())/1000
       }
     }
   },

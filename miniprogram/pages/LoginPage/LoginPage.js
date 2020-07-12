@@ -21,11 +21,41 @@ Page({
       var curLng = result.longitude;
       var curLat = result.latitude;
       var curTime = Date.parse(new Date())/1000;
+      var beginTime = app.globalData.curRoute.beginTime;
       curSpeed = result.speed == -1 ? curSpeed : result.speed;
-      app.globalData.curRoute.trace.push([curLng, curLat, curSpeed, curTime-beginTime])
-      console.log(app.globalData.curRoute.trace)
-    })
-  },
+      switch (status) {
+        case 0:
+          if (true){
+            status = 1
+            var new_pid = app.globalData.curRoute.pid + 1;
+            app.globalData.curRoute.pid = new_pid
+            // 切换到后台记录模式，如果当前Route超时则停止记录
+            setTimeout(
+              function(){
+                if (getApp().globalData.curRoute.pid == new_pid){
+                  wx.offLocationChange((res) => {})
+                  wx.stopLocationUpdate({
+                    complete: (res) => {},
+                  })
+                  status = 2
+                }
+                console.log("finish")
+              },
+              1000*30
+            )
+            app.globalData.curRoute.beginTime = Date.parse(new Date())/1000
+          }
+          break;
+        case 1:
+          app.globalData.curRoute.trace.push([curLng, curLat, curSpeed, curTime-beginTime])
+          console.log(app.globalData.curRoute.trace)
+          break;
+        default:
+          // wx.offLocationChange((res) => {console.log("finish")})
+          /** TODO: arrange the storage of trace records in the local storage */
+          break;
+      }
+  })},
 
 
 
