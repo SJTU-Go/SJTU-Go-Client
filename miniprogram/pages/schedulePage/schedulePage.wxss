@@ -46,7 +46,7 @@
   width: 45%;
   }
 .ibtnblock{
-    height: 200rpx;
+    height: 150rpx;
     width: 45%;}
 .select_box{
   width:100%;
@@ -112,13 +112,18 @@
   color: blue;
   font-size: 20;
 }
+
 .massge{
   overflow: hidden;
-  width: 100%;
+  width: 95%;
   background-color: #ffffff;
   margin-top: 20rpx;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
   line-height: 1;
+  border-radius: 7px;
+  box-shadow:6rpx 6rpx 6rpx 6rpx rgba(241, 243, 242, 0.71) 
 }
 
 .massge-img{
@@ -139,4 +144,38 @@
 .massge-bd{
   display: flex;
   flex-direction: column;
+}
+.blockright
+{ 
+  display: flex;
+  
+  flex-direction: row;
+  text-align: right;
+  align-items: center;
+  width: 50%
+}
+.blocklleft
+{display: flex;
+  flex-direction: row;
+  text-align: left;
+  width: 50%;
+}
+.downblock
+{ margin-top: 40rpx;
+  display: flex;
+  height: 30%;
+  margin-bottom: 40rpx;
+  margin-left: auto;
+  margin-right: auto;
+width: 90%;
+}
+.btn2 {
+  width: 25%;
+  background-color: rgba(6, 202, 59, 0.53);
+  color: white;
+  border-radius: 15rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }

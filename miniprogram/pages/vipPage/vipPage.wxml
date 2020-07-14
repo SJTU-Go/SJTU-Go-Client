@@ -1,0 +1,20 @@
+<!--miniprogram/pages/vipPage.wxml-->
+<view class="page__hd">
+
+  <mp-cells title="请选中已购买月卡的单车">
+    <view class="weui-cells weui-cells_after-title">
+        <checkbox-group bindchange="checkboxChange">
+          <label class="weui-cell weui-check__label" wx:for="{{items}}" wx:key="{{item.value}}">
+            <view class="weui-cell__hd">
+              <checkbox value="{{item.value}}" checked="{{item.checked}}"/>
+            </view>
+            <view class="weui-cell__bd">{{item.name}}</view>
+          </label>
+        </checkbox-group>
+      </view>
+  </mp-cells>
+
+   
+
+</view>
+

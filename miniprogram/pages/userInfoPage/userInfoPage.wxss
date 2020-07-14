@@ -77,7 +77,17 @@
   font-size: 14px;
   color: rgb(5, 163, 111);
 }
-
+.center_phone1 {
+  margin-left: auto;
+  margin-right: auto;
+  color: rgb(5, 163, 111);
+}
+.center_phone2 {
+  font-size: 14px;
+  margin-left: auto;
+  margin-right: auto;
+  color: rgb(148, 150, 149);
+}
 .center_down {
   display: flex;
   flex-direction: row;

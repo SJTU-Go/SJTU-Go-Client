@@ -66,11 +66,13 @@ Page({
       wx.getStorage({
         key: 'preference',
         success(res){
+          console.log(res)
           prelist = res.data
           for(var j in prelist){pree = pree+prelist[j]+","}
           wx.getStorage({
             key: 'userID',
           success(res){var iddd = res.data
+            console.log(iddd)
 
   wx.request({
     url: 'https://api.ltzhou.com/user/preference/add',

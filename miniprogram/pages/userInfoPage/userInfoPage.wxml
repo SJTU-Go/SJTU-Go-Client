@@ -5,14 +5,16 @@
 			<view class="center">
 				<view class="center_top">
 					<view class="center_img" >
-						<!-- <image src="../../static/info_img.jpg"></image> -->
-						<open-data type="userAvatarUrl" class="user_head"></open-data>
+						<image wx:if="{{haveid < 1}}" src="../../images/user.jpg"></image> 
+						<open-data type="userAvatarUrl" wx:if="{{haveid >0}}" class="user_head"></open-data>
 					</view>
 					<view class="center_info" bindtap="toBaseInfo">
-						<view class="center_name"><open-data type="userNickName"></open-data></view>
+					<button class="center_phone1" wx:if="{{haveid < 1}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">点击授权登录</button>
+						<view class="center_name" wx:if="{{haveid >0}}"><open-data type="userNickName"></open-data></view>
 						<!-- <view class="center_phone">phone:{{phone}}</view> -->
-						<view class="center_phone">普通用户</view>
-					</view>
+						<view class="center_phone"wx:if="{{haveid >0}}">普通用户</view>
+						<view class="center_phone2"wx:if="{{haveid <1}}">未登录用户</view>
+				</view>	
 				</view>
 				<!-- <view class="center_down">
 					<view class="center_rank" bindtap="history">
@@ -33,9 +35,10 @@
 		</view>
 	</view>
 <view>
-<view class="page__hd">
+<view class="page__hd" wx:if="{{haveid >0}}">
   <mp-cells ext-class="my-cells" title="系统设置">
             <mp-cell value="个人偏好" footer="个人偏好" bindtap="preferenceNavigate"></mp-cell>
+						<mp-cell value="月卡设置" footer="月卡设置" bindtap="vip"></mp-cell>
   </mp-cells>
   <mp-cells ext-class="my-cells" title="个人信息">
             <mp-cell value="日程查看" footer="日程查看" bindtap="scheduleNavigate"></mp-cell>
