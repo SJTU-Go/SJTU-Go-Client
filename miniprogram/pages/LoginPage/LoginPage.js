@@ -9,11 +9,15 @@ Page({
   },
 
   testLoc:function(){
-    wx.startLocationUpdateBackground({
-      complete: (res) => {console.log(res)},
-    })
+    
     
     var app = getApp();
+
+    if (~ app._startLocationBackground()){
+      return;
+    }
+
+
     var curSpeed = 0;
     var beginTime = Date.parse(new Date())/1000
     var status = 0; // 0表示行程待开始

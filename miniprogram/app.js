@@ -29,20 +29,22 @@ App({
   },
 
   onLocateTrip: function(routeList) {
-    /* 参数 */
-    var waitTimes = 1.5;
+    /* 可调节的参数 */
+    var waitTimes = 1.5; // 最长允许行程时间与预估时间的倍数
     const _isNearPoint = function(alng,alat,blng,blat){
       return (abs(alng-blng)<0.0001 && abs(alat-blat)<0.0001)
-    }
+    } // 到达附近的判断标准
 
 
-
-    this.globalData.onTrip = true;
-    wx.startLocationUpdateBackground({
-      complete: (res) => {console.log(res)},
-    })
     
     var app = getApp();
+    if (this._startLocationBackground()){
+    } else {
+      return; // 授权失败case
+    } 
+
+    this.globalData.onTrip = true;
+
 
     wx.removeStorage({
       key: 'currentTrip',
@@ -122,5 +124,30 @@ App({
 
     };
 
+  },
+
+
+
+  _startLocationBackground: function(){
+    var success = true;
+    wx.startLocationUpdateBackground({
+      complete: (res) => {
+      },
+      success: (res) => {
+        console.log("已启动行程记录")
+      },
+      fail: (res) => {
+        wx.offLocationChange((res) => {})
+        wx.stopLocationUpdate({
+          complete: (res) => {},
+        })
+        wx.showModal({
+          title:"启动行程记录失败",
+          content:"请到个人设置页面检查位置信息权限设置",
+        })
+        success = false
+      },
+    })
+    return success;
   }
 })
