@@ -20,6 +20,7 @@ App({
 
     this.globalData = {
       onTrip: false,
+      curTripID: 0,
       curRoute:{
         trace: [],
         pid : 0,
@@ -28,7 +29,7 @@ App({
     }
   },
 
-  onLocateTrip: function(routeList) {
+  onLocateTrip: function(tripID, routeList) {
     /* 可调节的参数 */
     var waitTimes = 1.5; // 最长允许行程时间与预估时间的倍数
     const _isNearPoint = function(alng,alat,blng,blat){
@@ -38,27 +39,40 @@ App({
 
     
     var app = getApp();
-    if (this._startLocationBackground()){
-    } else {
-      return; // 授权失败case
-    } 
+    if (~ this._startLocationBackground()){
+      return;
+    }
 
+    // 初始化，开始新的记录
+    if (this.globalData.onTrip) {
+      wx.showModal({
+        title:"开始行程失败",
+        content:"已有行程在记录中，请检查或稍等",
+      })
+    }
     this.globalData.onTrip = true;
-
-
+    this.globalData.curTripID = tripID;
     wx.removeStorage({
       key: 'currentTrip',
     })
 
+
+    // 针对路段方案，开始记录
     for (const route of routeList)  {
       var routeType = route.type;
       var continueFlag = false;
-      var result = {};
+      var type;
       switch (routeType) {
         case "HELLOBIKE":
-          result.type = 0;
+        case "MOBIKE":
+          type = 0;
           break;
-      
+        case "CLOUDMOTOR":
+          type = 1;
+          break;
+        case "E100":
+          type = 2;
+          break;
         default:
           continueFlag = true
           break;
@@ -66,6 +80,10 @@ App({
       if (continueFlag) {
         continue
       }
+      app.globalData.curRoute.type = type;
+      app.globalData.curRoute.beginRouteTime = Date.parse(new Date())/1000;
+
+      // 获取当前段route的详细信息，起终点经纬度、预估时间
       var routePath = route.routePath.coordinates;
       var beginPoint = routePath[0];
       var endPoint = routePath[routePath.length - 1];
@@ -76,16 +94,14 @@ App({
       var expectTime = route.travelTime;
 
 
-
+      // 开始记录当前route
       var curSpeed = 0;
       var status = 0; // 0表示行程待开始
-
-
       wx.onLocationChange((result) => {
         var curLng = result.longitude;
         var curLat = result.latitude;
         var curTime = Date.parse(new Date())/1000;
-        var beginTime = app.globalData.curRoute.beginTime;
+        var beginTime = app.globalData.curRoute.beginRecordTime;
         curSpeed = result.speed == -1 ? curSpeed : result.speed;
 
         switch (status) {
@@ -94,17 +110,16 @@ App({
               status = 1
               new_pid = app.globalData.curRoute.pid + 1;
               app.globalData.curRoute.pid = new_pid
+              app.globalData.curRoute.type = 
               // 切换到后台记录模式，如果当前Route超时则停止记录
               setTimeout(
                 callback= function(){
                   if (getApp().globalData.curRoute.pid == new_pid){
-                    wx.offLocationChange((res) => {})
-                  }
-                  
-                },
+                    status = 2
+                  }},
                 delay= 1000*expectTime*waitTimes
               )
-              app.globalData.curRoute.beginTime = Date.parse(new Date())/1000
+              app.globalData.curRoute.beginRecordTime = Date.parse(new Date())/1000
             }
             break;
           case 1:
@@ -115,6 +130,17 @@ App({
             break;
           default:
             wx.offLocationChange((res) => {})
+            try {
+              var recordList = wx.getStorageSync('currentTrip')
+              if (recordList) {
+                recordList.push(app.globalData.curRoute)
+                wx.setStorageSync('currentTrip',  recordList)
+              } else {
+                wx.setStorageSync('currentTrip', [app.globalData.curRoute])
+              }
+            } catch(e){
+              wx.setStorageSync('currentTrip', [app.globalData.curRoute])
+            }
             /** TODO: arrange the storage of trace records in the local storage */
             break;
         }
@@ -124,10 +150,16 @@ App({
 
     };
 
+    wx.stopLocationUpdate({
+      complete: (res) => {},
+    })
+    this.globalData.onTrip = false;
+    // 此处把记录结果POST给服务器
   },
 
 
 
+  // 开始后台记录，若失败则弹出提示，返回false
   _startLocationBackground: function(){
     var success = true;
     wx.startLocationUpdateBackground({

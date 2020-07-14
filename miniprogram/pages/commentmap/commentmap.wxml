@@ -29,7 +29,7 @@
             <view class='routeInfo'>
               <view wx:if='{{itema.type=="共享单车"}}' width="300rpx">哈罗单车{{itema.depart}}前往 {{itema.arrive}}</view>
               <view wx:elif ='{{itema.type=="校园巴士"}}' width="300rpx">校园巴士{{itema.depart}}前往 {{itema.arrive}}</view>
-              <view wx:else  width="300rpx">步行{{itema.distance}}米前往 {{itema.arrive}}</view>
+              <view wx:else  width="300rpx">步行{{itema.distance}} 米前往 {{itema.arrive}}</view>
             </view> 
           </view> 
       </view> 
