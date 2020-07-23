@@ -22,12 +22,14 @@ page {
   line-height: 1;
 }
 .rightt
-{width: 100%;
-
-
+{
+  width: 100%;
+  margin-right: 2px;
 }
+
 .textclass
-{text-align: right;
+{
+  text-align: right;
   justify-content: right;
 }
 

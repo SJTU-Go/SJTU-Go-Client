@@ -13,9 +13,14 @@ Page({
     
     var app = getApp();
 
-    if (~ app._startLocationBackground()){
+
+    var try_locate = app._startLocationBackground()
+    if (try_locate == false){
+      console.log("quit")
       return;
     }
+
+    console.log("start")
 
 
     var curSpeed = 0;
@@ -45,7 +50,7 @@ Page({
                 }
                 console.log("finish")
               },
-              1000*30
+              1000*300
             )
             app.globalData.curRoute.beginTime = Date.parse(new Date())/1000
           }

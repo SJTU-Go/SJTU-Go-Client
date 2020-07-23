@@ -1,0 +1,37 @@
+/* components/routeTag/routeTag.wxss */
+
+.massge{
+  overflow: hidden;
+  width: 90%;
+  border-radius: 15rpx;
+  color: white;
+  background-color: rgba(42, 46, 47);
+  margin-top: 20rpx;
+  position: relative;
+  line-height: 1;
+}
+.rightt
+{
+  width: 100%;
+  margin-right: 2px;
+}
+
+.textclass
+{
+  text-align: right;
+  justify-content: right;
+}
+
+.massge-img{
+  width: 60rpx;
+  height: 60rpx;
+  margin-right: 20rpx;
+
+}
+
+.massge-hd{
+  padding:20rpx 0rpx 30rpx 20rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
