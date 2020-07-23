@@ -4,6 +4,13 @@ Component({
    * 组件的属性列表
    */
   properties: {
+    /** 传入参数 */
+    method: {
+      type: String
+    },
+
+
+    /** 以下是返回结果 */
     type: {
       type: String
     },
@@ -75,7 +82,19 @@ Component({
      * 初始化，传入数据
      */
     attached: function (){
-      
+      var pages = getCurrentPages();
+      var curPage = pages[pages.length];
+      wx.request({
+        url: 'https://api.ltzhou.com/navigate/'+this.method,
+        data: curPage.navigateRequest,
+        method:'POST',
+        header: {
+          'content-type': 'application/json'
+        },
+        success: function(res) {
+          this.setData(res.data)
+        }
+      })
     }
   }
 })
