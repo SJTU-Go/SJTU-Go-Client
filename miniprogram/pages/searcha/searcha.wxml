@@ -25,7 +25,7 @@
     </view>  
     <view class="divLine"></view></view>
     </view>
-    <view wx:for="{{[0, 1, 2, 3, 4, 5]}}" wx:for-item="i">
+    <view wx:for="{{[0, 1, 2, 3, 4, 5]}}" wx:for-item="i" wx:key="*this">
   <view wx:if="{{i < passnum}}">
   <view class="section0">
   <view class ='left'>
@@ -88,7 +88,7 @@
   <view class = 'fill'></view>
   <view class = 'others'>
     <checkbox-group bindchange="checkboxChange">
-    <label class="checkbox" wx:for-items="{{checkInfo}}">
+    <label class="checkbox" wx:for-items="{{checkInfo}}" wx:key="name">
       <checkbox value="{{item.name}}" checked="{{item.checked}}"/>{{item.value}}
     </label>
     </checkbox-group>
@@ -124,70 +124,14 @@
     <view class='tab  {{currentData == 3 ? "tabBorer" : ""}}'  data-current = "3" bindtap='checkCurrent'>费用</view>
 </view>
 
-<view wx:if="{{currentData==0}}">
+
+<!-- <view wx:if="{{currentData==1}}"> -->
   <view class="container">
-    <view class="massge" wx:for="{{preferencelist}}"  wx:for-item="list" wx:if="{{list.type}}">
-      <view class="massge-hd">
-        <view wx:if="{{list.type==method[0]}}"><image class="massge-img" src="../../images/foot.png"></image>
-        </view>
-        <view wx:elif="{{list.type==method[1]}}"><image class="massge-img" src="../../images/bus1.png"></image></view>
-        <view wx:elif="{{list.type==method[2]}}"><image class="massge-img" src="../../images/bike.png"></image></view>
-        <view wx:elif="{{list.type==method[3]}}"><image class="massge-img" src="../../images/car.png"></image></view>
-        <view wx:if="{{list.type==method[0]}}"  class='walkbutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[1]}}"  class='busbutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[2]}}"  class='bikebutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[3]}}"  class='carbutton'>{{list.type}}</view>
-        <view class = 'rightt'>
-          <view wx:if="{{list.cost}}" class='textclass'><text>{{list.travelTime/60|Int}} min · {{list.cost/60}}元</text></view>
-          <view wx:else class='textclass'><text>{{list.travelTime/60|Int}} min · 免费</text></view>
-        </view>
-      </view>
-      <view class='divLine'></view>
-      <view class="massge-bd font-color-666">
-       <view> 
-        <text>需要步行<text class="font-color-c24e4e font-size-15">{{list.distance}}米，预计花费{{list.travelTime/60|Int}} min。</text></text></view>
-
-      <view wx:if="{{list.type==method[1]}}">   <view class='textdiv'><text bindtap="searchPagebus">路径详情></text></view></view>
-      <view wx:if="{{list.type==method[0]}}">   <view class='textdiv'><text bindtap="searchPagewalk">路径详情></text></view></view>
-      <view wx:if="{{list.type==method[2]}}">   <view class='textdiv'><text bindtap="searchPagebike">路径详情></text></view></view>
-      <view wx:if="{{list.type==method[3]}}">   <view class='textdiv'><text bindtap="searchPageCar">路径详情></text></view></view>
-      </view>
-
-    </view>
+  <view wx:for="{{strategyLength}}" wx:for-index="idx" wx:key="type">
+    <routetag index="{{idx}}"></routetag>
   </view>
-</view>
-<view wx:if="{{currentData==1}}">
-  <view class="container">
-    <view class="massge" wx:for="{{value}}"  wx:for-item="list" wx:if="{{list.type}}">
-      <view class="massge-hd">
-        <view wx:if="{{list.type==method[0]}}"><image class="massge-img" src="../../images/foot.png"></image>
-        </view>
-        <view wx:elif="{{list.type==method[1]}}"><image class="massge-img" src="../../images/bus1.png"></image></view>
-        <view wx:elif="{{list.type==method[2]}}"><image class="massge-img" src="../../images/bike.png"></image></view>
-        <view wx:elif="{{list.type==method[3]}}"><image class="massge-img" src="../../images/car.png"></image></view>
-        <view wx:if="{{list.type==method[0]}}"  class='walkbutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[1]}}"  class='busbutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[2]}}"  class='bikebutton'>{{list.type}}</view>
-        <view wx:if="{{list.type==method[3]}}"  class='carbutton'>{{list.type}}</view>
-        <view class = 'rightt'>
-          <view wx:if="{{list.cost}}" class='textclass'><text>{{list.travelTime/60|Int}} min · {{list.cost/60}}元</text></view>
-          <view wx:else class='textclass'><text>{{list.travelTime/60|Int}} min · 免费</text></view>
-        </view>
-      </view>
-      <view class='divLine'></view>
-      <view class="massge-bd font-color-666">
-       <view> 
-        <text>需要步行<text class="font-color-c24e4e font-size-15">{{list.distance}}米，预计花费{{list.travelTime/60|Int}} min。</text></text></view>
-
-      <view wx:if="{{list.type==method[1]}}">   <view class='textdiv'><text bindtap="searchPagebus">路径详情></text></view></view>
-      <view wx:if="{{list.type==method[0]}}">   <view class='textdiv'><text bindtap="searchPagewalk">路径详情></text></view></view>
-      <view wx:if="{{list.type==method[2]}}">   <view class='textdiv'><text bindtap="searchPagebike">路径详情></text></view></view>
-        <view wx:if="{{list.type==method[3]}}">   <view class='textdiv'><text bindtap="searchPageCar">路径详情></text></view></view>    
-      </view>
-
-    </view>
   </view>
-</view>
+<!-- </view> -->
 
 <!--
     <view class="massge">

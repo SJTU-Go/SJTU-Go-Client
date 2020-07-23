@@ -32,6 +32,7 @@ Page({
     method:["步行","校园巴士","共享单车","旋风E100"],
     preference:["步行","校园巴士","共享单车","旋风E100"],
     preferencelist: new Array(),
+    choices:["walk","bus","car","bike"],
     routeplan:new Array(),
     arrive:'',
     pass:'',
@@ -40,7 +41,24 @@ Page({
     walk:new Array(),
     bike:new Array(),
     car : new Array(),
-    passnum:0
+    passnum:0,
+    navigateRequest: {
+      "arrivePlace": "DT137246",
+      "avoidTraffic": false,
+      "beginPlace": "DT137251",
+      "departTime": "2020/05/11 12:05:12",
+      "passPlaces": [
+        "学生服务中心"
+      ]
+    },
+    strategies: new Array(),
+    strategyLength:new Array(),
+
+
+
+    /**
+     * 配置文件、图片文件目录
+     */
   },
   onLoad:function(options){ 
     var that = this 
@@ -81,18 +99,18 @@ Page({
       }
     }) 
     console.log(options)
-    that.setData({
-      preferencelist: JSON.parse(options.RT)[0],
-      routeplan:JSON.parse(options.RT)[2],
-    }
-    )
+    // that.setData({
+    //   preferencelist: JSON.parse(options.RT)[0],
+    //   routeplan:JSON.parse(options.RT)[2],
+    // })
     wx.getStorage({
       key: 'preference',
-    success:function(res){
-      that.setData({preference:res.data})
+      success:function(res){
+        that.setData({preference:res.data})
+      }})
 
-    
-    } })
+      
+    /*
     for(var j=0;j<that.data.preferencelist.length;j++){
       var item = that.data.preferencelist[j];
       if(item.type=="校园巴士"){
@@ -147,10 +165,15 @@ success:function(res){
 
 
 })
+*/
 
-
-
+  // this._updateRequestBody(); 
+  /**TODO:空值错误处理 */
+  this.doSearch();
+  this.setData({currentData: 1});
   },
+
+  
   checkboxChange: function(e) {
     var that=this
     console.log(e)
@@ -233,54 +256,91 @@ success:function(res){
     wx.navigateTo({
       url: '../extendsearch/pass/pass',
     })
-        },
-        depart:function(e){
-          wx.navigateTo({
-            url: '../extendsearch/depart/depart',
-          })
-        },
-        arrive:function(e){
-          wx.navigateTo({
-            url: '../extendsearch/arrive/arrive',
-          })
-        },
-
-  searchPagebus: function()
-  {  wx.setStorage({
-    data: this.data.bus,
-    key: 'bus',
-  })
+  },
+  depart:function(e){
     wx.navigateTo({
-    url: '../search/search?RT='+JSON.stringify(this.data.routeplan) + '&travelTime=' + this.data.bus.travelTime})//+ '&travelTime=' + this.data.travelTime  
-    
+      url: '../extendsearch/depart/depart',
+    })
+  },
+  arrive:function(e){
+    wx.navigateTo({
+      url: '../extendsearch/arrive/arrive',
+    })
   },
 
-  searchPageCar: function()
-  {console.log(this.data)
-     wx.setStorage({
-    data: this.data.car,
-    key: 'car',
-  })
-    wx.navigateTo({
-      url: '../car/car?RT='+JSON.stringify(this.data.car.routeplan) + '&travelTime=' + this.data.car.travelTime})
-  },
-  searchPagewalk: function()
-  {console.log(this.data)
-     wx.setStorage({
-    data: this.data.walk,
-    key: 'walk',
-  })
-    wx.navigateTo({
-      url: '../walk/walk?RT='+JSON.stringify(this.data.walk.routeplan) + '&travelTime=' + this.data.walk.travelTime /*+ '&travel=' + this.data.walk.travel*/})
+  /** 在每次修改完后调用该私有函数更新要post的内容 */
+  _updateRequestBody:function(){
+    this.setData({
+      "navigateRequest":{
+        "arrivePlace": arrive,
+        "beginPlace": depart,
+        "departTime": "2020/05/11 12:05:12", /**TODO: 对接时间 */
+        "passPlaces": passlist,
+        "avoidTraffic": avoidTraffic,
+    }})
   },
 
-  searchPagebike: function()
-  {     wx.setStorage({
-    data: this.data.bike,
-    key: 'bike',
-  })
-    wx.navigateTo({
-      url: '../bike/bike?RT='+JSON.stringify(this.data.bike.routeplan) + '&travelTime=' + this.data.bike.travelTime}) 
+  /** 按当前requestBody，以用户preference顺序依次执行查询，将成功结果存入strategies列表 */
+
+  _recSearch:function(remainList,resultList){
+    var that = this;
+    // console.log(remainList)
+    // console.log(resultList)
+    if (remainList.length==0){
+      // console.log(remainList)
+      that.setData({
+        strategies:resultList,
+        strategyLength:Array.from(Array(resultList.length).keys()),
+      })
+      return
+    }
+    var method = remainList.pop()
+    wx.request({
+      url: 'https://api.ltzhou.com/navigate/'+method,
+      data: this.data.navigateRequest,
+      method: 'POST',
+      success: function(res){
+        resultList.push(res.data)
+      },
+      fail: function(errMsg){
+        console.log(errMsg)
+        console.log("获取"+method+"失败")
+      },
+      complete:function(){
+        return that._recSearch(remainList,resultList)
+      }
+    })
+  },
+
+  doSearch:function(){
+    var strategyList = [];
+    const app = getApp();
+    var choicecpy = Array.from(this.data.choices)
+    var tmpResult = new Array();
+    this._recSearch(choicecpy,tmpResult)
+
+  },
+
+  /** 对strategies，按照可选项过滤 */
+  _filterByPreference(){
+
+  },
+
+  /** 将strategies排序 */
+  _sortByPreference(){
+
+  },
+
+  _sortByTime(){
+
+  },
+
+  _sortByWalk(){
+
+  },
+
+  _sortByCost(){
+
   },
 
 
@@ -294,7 +354,12 @@ success:function(res){
       that.setData({
         currentData: e.target.dataset.current
       })
-    }},
+    }
+
+    this.doSearch();
+  },
+  
+
   onReady:function(){
     // 页面渲染完成
   },
@@ -306,11 +371,13 @@ success:function(res){
   },
   formSubmit: function (e) {
     var avoidTraffic=this.data.avoidjam
-    if (!this.data.depart|!this.data.arrive){        wx.showToast({ 
-      title: '输入错误', 
-      icon: 'loading', 
-      duration: 2000 
-      }) }
+    if (!this.data.depart|!this.data.arrive){
+      wx.showToast({ 
+        title: '输入错误', 
+        icon: 'loading', 
+        duration: 2000 
+      })
+    }
     else
     {
       var depart
@@ -323,153 +390,172 @@ success:function(res){
         pass=String( this.data.passid)
         if (pass=="DT404"){console.log("404"),pass=this.data.pass}
 
+    /** 
     var arrivename = this.data.arrive
     var departname = this.data.depart
     var passname = this.data.pass
-    var passlist=[];
-    console.log("传入数据")
-      console.log(depart)
-      console.log(arrive)
-      console.log(pass)
-    var that =this;
-    var tem;
-    var valuetem=new Array();
-    var pre = new Array();
-    var i;
-    var j = 0;
-    var preres = new Array();
-    if(pass){
-      passlist.push(pass)};
-    console.log({
+    var passlist=[]; */
+    /** TODO: 填充 */
+    // console.log("传入数据")
+    // console.log(depart)
+    // console.log(arrive)
+    // console.log(pass)
+    /**
+    var navigateRequest = {
       "arrivePlace": arrive,
       "beginPlace": depart,
       "departTime": "2020/05/11 12:05:12",
-      "passPlaces": passlist,})
+      "passPlaces": passlist,
+      "avoidTraffic": avoidTraffic,
+    } */
     
-      //busrequest
+    this._updateRequestBody();
+    this.doSearch();
+    
+    }
+    // var that =this;
+    // var tem;
+    // var valuetem=new Array();
+    // var pre = new Array();
+    // var i;
+    // var j = 0;
+    // var preres = new Array();
+    // if(pass){
+    //   passlist.push(pass)};
+    // console.log({
+    //   "arrivePlace": arrive,
+    //   "beginPlace": depart,
+    //   "departTime": "2020/05/11 12:05:12",
+    //   "passPlaces": passlist,})
+    
+    //   //busrequest
 
-    wx.request({
-      url: 'https://api.ltzhou.com/navigate/bus',
-      method:'POST',
-      header: {
-      'content-type': 'application/json'
-      },
-      data:{
-      "arrivePlace": arrive,
-      "beginPlace": depart,
-      "departTime": "2020/05/11 12:05:12",
-      "passPlaces": passlist,
-      "avoidTraffic":avoidTraffic,},
+    // wx.request({
+    //   url: 'https://api.ltzhou.com/navigate/bus',
+    //   method:'POST',
+    //   header: {
+    //   'content-type': 'application/json'
+    //   },
+    //   data:{
+    //   "arrivePlace": arrive,
+    //   "beginPlace": depart,
+    //   "departTime": "2020/05/11 12:05:12",
+    //   "passPlaces": passlist,
+    //   "avoidTraffic":avoidTraffic,},
 
-      success (res) {
-        tem = res.data
-        console.log(tem)
-        that.setData({bus:tem})
-        valuetem.push(tem)
-        //walkrequest
-        wx.request({
-          url: 'https://api.ltzhou.com/navigate/walk',
-          method:'POST',
-          header: {
-          'content-type': 'application/json'},
-        data:{
-          "arrivePlace": arrive,
-          "beginPlace": depart,
-          "passPlaces": passlist,
-          "avoidTraffic":avoidTraffic,
-          },
-          success (res) {
-            tem = res.data
-            console.log(tem)
-            valuetem.push(tem)
-    wx.request({
-      url: 'https://api.ltzhou.com/navigate/bike',
-      method:'POST',
-      header: {
-      'content-type': 'application/json'},
-    data:{
-      "arrivePlace": arrive,
-      "beginPlace": depart,
-      "passPlaces": passlist,
-      "avoidTraffic":avoidTraffic,
-      },
-      success (res) {
-        tem = res.data
-        console.log(tem)
-        valuetem.push(tem)
-        // 旋风100
-        wx.request({
-          url: 'https://api.ltzhou.com/navigate/car',
-          method:'POST',
-          header: {
-          'content-type': 'application/json'},
-        data:{
-          "arrivePlace": arrive,
-          "beginPlace": depart,
-          "passPlaces": passlist,
-          "avoidTraffic":avoidTraffic,
-          },
-          success (res) {
-            tem = res.data
-            console.log(tem)
-            valuetem.push(tem)
-        that.setData({value:valuetem})
-        console.log(that.data.value)
-        console.log("1")
-        for(j=0;j<that.data.preference.length;j++){
-          for (i=0;i<that.data.value.length;i++){
-            if(that.data.value[i].type==that.data.preference[j]){pre.push(i)}}}
-        for (i=0;i<pre.length;i++){preres.push(that.data.value[pre[i]])}
-        console.log(preres)
-        var ressss = new Array()
-        ressss.push(preres)
-        ressss.push(valuetem)
-        ressss.push(that.data.bus.routeplan)
-        ressss.push(departname)
-        ressss.push(passname)
-        ressss.push(arrivename)
+    //   success (res) {
+    //     tem = res.data
+    //     console.log(tem)
+    //     that.setData({bus:tem})
+    //     valuetem.push(tem)
+    //     //walkrequest
+    //     wx.request({
+    //       url: 'https://api.ltzhou.com/navigate/walk',
+    //       method:'POST',
+    //       header: {
+    //       'content-type': 'application/json'},
+    //     data:{
+    //       "arrivePlace": arrive,
+    //       "beginPlace": depart,
+    //       "passPlaces": passlist,
+    //       "avoidTraffic":avoidTraffic,
+    //       },
+    //       success (res) {
+    //         tem = res.data
+    //         console.log(tem)
+    //         valuetem.push(tem)
+    // wx.request({
+    //   url: 'https://api.ltzhou.com/navigate/bike',
+    //   method:'POST',
+    //   header: {
+    //   'content-type': 'application/json'},
+    // data:{
+    //   "arrivePlace": arrive,
+    //   "beginPlace": depart,
+    //   "passPlaces": passlist,
+    //   "avoidTraffic":avoidTraffic,
+    //   },
+    //   success (res) {
+    //     tem = res.data
+    //     console.log(tem)
+    //     valuetem.push(tem)
+    //     // 旋风100
+    //     wx.request({
+    //       url: 'https://api.ltzhou.com/navigate/car',
+    //       method:'POST',
+    //       header: {
+    //       'content-type': 'application/json'},
+    //     data:{
+    //       "arrivePlace": arrive,
+    //       "beginPlace": depart,
+    //       "passPlaces": passlist,
+    //       "avoidTraffic":avoidTraffic,
+    //       },
+    //       success (res) {
+    //         tem = res.data
+    //         console.log(tem)
+    //         valuetem.push(tem)
+    //     that.setData({value:valuetem})
+    //     console.log(that.data.value)
+    //     console.log("1")
+    //     for(j=0;j<that.data.preference.length;j++){
+    //       for (i=0;i<that.data.value.length;i++){
+    //         if(that.data.value[i].type==that.data.preference[j]){pre.push(i)}}}
+    //     for (i=0;i<pre.length;i++){preres.push(that.data.value[pre[i]])}
+    //     console.log(preres)
+    //     var ressss = new Array()
+    //     ressss.push(preres)
+    //     ressss.push(valuetem)
+    //     ressss.push(that.data.bus.routeplan)
+    //     ressss.push(departname)
+    //     ressss.push(passname)
+    //     ressss.push(arrivename)
 
 
-        that.setData({datares:ressss})
-        console.log("coming resuuuu")
-        console.log(that.data.datares)
+    //     that.setData({datares:ressss})
+    //     console.log("coming resuuuu")
+    //     console.log(that.data.datares)
 
-        wx.navigateTo({
-          url: '../searcha/searcha?RT='+JSON.stringify(that.data.datares),
-          //success:function(res){that.setData({step:0})}
+    //     wx.navigateTo({
+    //       url: '../searcha/searcha?RT='+JSON.stringify(that.data.datares),
+    //       //success:function(res){that.setData({step:0})}
         
-        },
+    //     },
 
-          )
+  //         )
 
-      }})
+  //     }})
       
       
-      }
-    })        
+  //     }
+  //   })        
 
 
        
 
-          }}
-            )             
-  }})}
+  //         }}
+  //           )             
+  // }})}
 
 },
-addpass:function()
-  {this.setData({passnum:this.data.passnum+1})
-  this.setData({height:this.data.height+120})
-  this.setData({totop:this.data.totop+60})
+  addpass:function(){
+    this.setData({passnum:this.data.passnum+1})
+    this.setData({height:this.data.height+120})
+    this.setData({totop:this.data.totop+60})
   },
-deletepass:function(){this.setData({passnum:this.data.passnum-1})
-this.setData({height:this.data.height-120})
-this.setData({totop:this.data.totop-60})},
-indexback:function()
-{    this.setData({step:1})
-wx.switchTab({
-  url: '../index/index',})
-}, 
 
+  deletepass:function(){
+    this.setData({passnum:this.data.passnum-1})
+    this.setData({height:this.data.height-120})
+    this.setData({totop:this.data.totop-60})
+  },
+  
+  indexback:function(){
+    this.setData({step:1})
+    wx.switchTab({
+      url: '../index/index',})
+  }, 
+  
   onUnload:function(){
     // 页面关闭
   }

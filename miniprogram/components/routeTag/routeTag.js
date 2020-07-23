@@ -5,8 +5,8 @@ Component({
    */
   properties: {
     /** 传入参数 */
-    method: {
-      type: String
+    index: {
+      type: Number
     },
 
 
@@ -82,19 +82,13 @@ Component({
      * 初始化，传入数据
      */
     attached: function (){
+      console.log(this.properties.index)
       var pages = getCurrentPages();
-      var curPage = pages[pages.length];
-      wx.request({
-        url: 'https://api.ltzhou.com/navigate/'+this.method,
-        data: curPage.navigateRequest,
-        method:'POST',
-        header: {
-          'content-type': 'application/json'
-        },
-        success: function(res) {
-          this.setData(res.data)
-        }
-      })
+      var curPage = pages[pages.length-1];
+      // console.log(curPage.data.navigateRequest)
+      var requestResult = curPage.data.strategies[this.properties.index]
+      console.log(requestResult)
+      this.setData(requestResult);
     }
   }
 })

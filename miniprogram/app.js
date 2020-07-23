@@ -182,5 +182,45 @@ App({
     })
     console.log(success)
     return success;
-  }
+  },
+
+  /** 
+    * 自定义post函数，返回Promise
+    * +-------------------
+    * author: 武当山道士<912900700@qq.com>
+    * +-------------------
+    * @param {String}      url 接口网址
+    * @param {arrayObject} data 要传的数组对象
+    * @param {String} method POST/GET
+    * +-------------------
+    * @return {Promise}    promise 返回promise供后续操作
+    */
+  request: function(url, data, method){
+    var promise = new Promise((resolve, reject) => {
+       //init
+       var postData = data;
+       /*
+       //自动添加签名字段到postData，makeSign(obj)是一个自定义的生成签名字符串的函数
+       postData.signature = that.makeSign(postData);
+       */
+       //网络请求
+       wx.request({
+          url: url,
+          data: postData,
+          method: method,
+          header: { 'content-type': 'application/json' },
+          success: function (res) {//服务器返回数据
+             if (res.data) {//res.data 为 后台返回数据, 这里假设不为空则合法
+                resolve( res.data );
+             } else {//返回错误提示信息
+                reject( res.data);
+             }
+          },
+          error: function (e) {
+             reject('网络出错');
+          }
+       })
+    });
+    return promise;
+  },
 })

@@ -3,7 +3,7 @@
   <view class="massge">
     <view class="massge-hd">
       <view wx:if="{{strategyTypeToIcon[type]}}">
-        <image class="massge-img" src="strategyTypeToIcon[type]"></image>
+        <image class="massge-img" src="{{strategyTypeToIcon[type]}}"></image>
       </view>
       <view wx:if="{{strategyTypeToCaption[type]}}"  class='{{strategyTypeToCaption[type]}}'>{{type}}</view>
       <view class = 'rightt'>
