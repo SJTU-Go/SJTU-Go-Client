@@ -9,6 +9,7 @@ var ee = 0.00669342162296594323;
 Page({
 
   data: {
+    passidx:0, // <-----! THIS IS NEW
     coordinateview:false,
     id:0,
     latitude: 31.021807,//31.029236,
@@ -113,34 +114,31 @@ wx.setStorage({
 let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
  
 let prevPage = pages[ pages.length - 2 ];  
- 
+var passLis = prevPage.data.pass;
+var passShowLis = prevPage.data.passShow;
 //prevPage 是获取上一个页面的js里面的pages的所有信息。 -2 是上一个页面，-3是上上个页面以此类推。
 if (this.data.inputVal.substring(0, 4)=='POIN'){
+  passShowLis[this.data.passidx] = this.data.inputVal;
+  passLis[this.data.passidx] = "DT404"
+} else {
+  console.log("findingid")
+  console.log(this.data.id)
+  passShowLis[this.data.passidx] = this.data.inputVal;
+  passLis[this.data.passidx] = 'DT'+this.data.id
+}
 prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
- 
-    pass:this.data.inputVal,
-    passid:"DT404"
-
-})}
-else{console.log("findingid")
-console.log(this.data.id)
-  prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
- 
-  pass:this.data.inputVal,
-  passid:'DT'+this.data.id,
-
-})}
+  pass:passLis,
+  passShow:passShowLis
+})
 
 
 wx.navigateBack({
- 
   delta: 1  // 返回上一级页面。
-
 })  
-
-
 },
-  // 清除搜索框值
+
+
+// 清除搜索框值
   clearInput: function () {
     this.setData({
       inputVal: "",

@@ -1,9 +1,9 @@
 {
   "pages": [
     
+    "pages/index/index",
     "pages/searcha/searcha",
     "pages/LoginPage/LoginPage",
-    "pages/index/index",
     "pages/extendsearch/arrive/arrive",
     "pages/comment/comment",
     "pages/trafficPage/trafficPage",
@@ -19,8 +19,6 @@
     "pages/schedulePage/schedulePage",
     "pages/HistoryPage/HistoryPage",
     "pages/userInfoPage/userInfoPage",
-    "pages/search/search",
-    "pages/searchindex/searchindex",
     "pages/vipPage/vipPage"
   ],
   "window": {

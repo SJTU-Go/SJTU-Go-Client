@@ -118,16 +118,16 @@ let prevPage = pages[ pages.length - 2 ];
 if (this.data.inputVal.substring(0, 4)=='POIN'){
 prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
  
-    depart:this.data.inputVal,
-    departid:"DT404"
+    departShow:this.data.inputVal,
+    depart:"DT404"
 
 })}
 else{console.log("findingid")
 console.log(this.data.id)
   prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
  
-  depart:this.data.inputVal,
-  departid:'DT'+this.data.id,
+  departShow:this.data.inputVal,
+  depart:'DT'+this.data.id,
 
 })}
 
