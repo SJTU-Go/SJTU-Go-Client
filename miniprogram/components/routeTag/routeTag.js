@@ -66,7 +66,9 @@ Component({
       "校园巴士":  "busbutton",
       "共享单车": "bikebutton",
       "旋风E100": "carbutton",
-    }
+    },
+
+    extendType:["共享单车","旋风E100"],
 
   },
 
@@ -74,6 +76,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    getDetail(){
+      wx.navigateTo({
+        url: '/pages/routeDetail/routeDetail?idx='+this.data.index,
+      })
+    }
 
   },
 

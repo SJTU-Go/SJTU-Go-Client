@@ -86,6 +86,13 @@ Page({
           that._sortByPreference() // 默认情况下标签亮在偏好排序
         })
     }
+    // 调试用：
+    this.doSearch(
+      function(){
+        that.setData({currentData: 1});
+        that._filterByPreference();
+        that._sortByTime() // 默认情况下标签亮在偏好排序
+      })
   },
 
   

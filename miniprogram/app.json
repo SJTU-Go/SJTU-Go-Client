@@ -1,8 +1,7 @@
 {
   "pages": [
-    
-    "pages/index/index",
     "pages/searcha/searcha",
+    "pages/index/index",
     "pages/LoginPage/LoginPage",
     "pages/extendsearch/arrive/arrive",
     "pages/comment/comment",
@@ -19,7 +18,8 @@
     "pages/schedulePage/schedulePage",
     "pages/HistoryPage/HistoryPage",
     "pages/userInfoPage/userInfoPage",
-    "pages/vipPage/vipPage"
+    "pages/vipPage/vipPage",
+    "pages/routeDetail/routeDetail"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
@@ -64,10 +64,12 @@
   "useExtendedLib": {
     "weui": true
   },
-  "permission":{
-    "scope.userLocation":{
+  "permission": {
+    "scope.userLocation": {
       "desc": "你的位置信息将会用于系统交通状况的更新"
     }
   },
-  "requiredBackgroundModes": ["location"]
+  "requiredBackgroundModes": [
+    "location"
+  ]
 }
