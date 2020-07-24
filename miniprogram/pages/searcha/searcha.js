@@ -169,8 +169,12 @@ success:function(res){
 
   // this._updateRequestBody(); 
   /**TODO:空值错误处理 */
-  this.doSearch();
-  this.setData({currentData: 1});
+  var that = this;
+  this.doSearch(
+    function(){
+      that.setData({currentData: 1});
+      that._sortByTime();
+    });
   },
 
   
@@ -281,17 +285,16 @@ success:function(res){
   },
 
   /** 按当前requestBody，以用户preference顺序依次执行查询，将成功结果存入strategies列表 */
-
-  _recSearch:function(remainList,resultList){
+  _recSearch:function(remainList,resultList,callback){
     var that = this;
     // console.log(remainList)
     // console.log(resultList)
     if (remainList.length==0){
       // console.log(remainList)
       that.setData({
-        strategies:resultList,
-        strategyLength:Array.from(Array(resultList.length).keys()),
+        strategies:resultList
       })
+      callback();
       return
     }
     var method = remainList.pop()
@@ -307,22 +310,22 @@ success:function(res){
         console.log("获取"+method+"失败")
       },
       complete:function(){
-        return that._recSearch(remainList,resultList)
+        return that._recSearch(remainList,resultList,callback)
       }
     })
   },
 
-  doSearch:function(){
+  doSearch:function(callback){
     var strategyList = [];
     const app = getApp();
     var choicecpy = Array.from(this.data.choices)
     var tmpResult = new Array();
-    this._recSearch(choicecpy,tmpResult)
-
+    this._recSearch(choicecpy,tmpResult,callback)
   },
 
   /** 对strategies，按照可选项过滤 */
   _filterByPreference(){
+    
 
   },
 
@@ -332,15 +335,72 @@ success:function(res){
   },
 
   _sortByTime(){
-
+    var curResult = this.data.strategies;
+    var newResult =
+        curResult.sort(function(obj1,obj2) {
+        var val1 = obj1.travelTime;
+        var val2 = obj2.travelTime;
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+    this.setData({
+      strategyLength:[]
+    })
+    this.setData({
+      strategies:newResult,
+      strategyLength:Array.from(Array(newResult.length).keys())
+    })
   },
 
   _sortByWalk(){
-
+    var curResult = this.data.strategies;
+    var newResult =
+        curResult.sort(function(obj1,obj2) {
+        var val1 = obj1.distance;
+        var val2 = obj2.distance;
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+    this.setData({
+      strategyLength:[]
+    })
+    this.setData({
+      strategies:newResult,
+      strategyLength:Array.from(Array(newResult.length).keys())
+    })
   },
 
   _sortByCost(){
-
+    var curResult = this.data.strategies;
+    var newResult =
+        curResult.sort(function(obj1,obj2) {
+        var val1 = obj1.cost;
+        var val2 = obj2.cost;
+        if (val1 < val2) {
+            return -1;
+        } else if (val1 > val2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    })
+    this.setData({
+      strategyLength:[]
+    })
+    this.setData({
+      strategies:newResult,
+      strategyLength:Array.from(Array(newResult.length).keys())
+    })
   },
 
 
@@ -413,131 +473,7 @@ success:function(res){
     this.doSearch();
     
     }
-    // var that =this;
-    // var tem;
-    // var valuetem=new Array();
-    // var pre = new Array();
-    // var i;
-    // var j = 0;
-    // var preres = new Array();
-    // if(pass){
-    //   passlist.push(pass)};
-    // console.log({
-    //   "arrivePlace": arrive,
-    //   "beginPlace": depart,
-    //   "departTime": "2020/05/11 12:05:12",
-    //   "passPlaces": passlist,})
-    
-    //   //busrequest
-
-    // wx.request({
-    //   url: 'https://api.ltzhou.com/navigate/bus',
-    //   method:'POST',
-    //   header: {
-    //   'content-type': 'application/json'
-    //   },
-    //   data:{
-    //   "arrivePlace": arrive,
-    //   "beginPlace": depart,
-    //   "departTime": "2020/05/11 12:05:12",
-    //   "passPlaces": passlist,
-    //   "avoidTraffic":avoidTraffic,},
-
-    //   success (res) {
-    //     tem = res.data
-    //     console.log(tem)
-    //     that.setData({bus:tem})
-    //     valuetem.push(tem)
-    //     //walkrequest
-    //     wx.request({
-    //       url: 'https://api.ltzhou.com/navigate/walk',
-    //       method:'POST',
-    //       header: {
-    //       'content-type': 'application/json'},
-    //     data:{
-    //       "arrivePlace": arrive,
-    //       "beginPlace": depart,
-    //       "passPlaces": passlist,
-    //       "avoidTraffic":avoidTraffic,
-    //       },
-    //       success (res) {
-    //         tem = res.data
-    //         console.log(tem)
-    //         valuetem.push(tem)
-    // wx.request({
-    //   url: 'https://api.ltzhou.com/navigate/bike',
-    //   method:'POST',
-    //   header: {
-    //   'content-type': 'application/json'},
-    // data:{
-    //   "arrivePlace": arrive,
-    //   "beginPlace": depart,
-    //   "passPlaces": passlist,
-    //   "avoidTraffic":avoidTraffic,
-    //   },
-    //   success (res) {
-    //     tem = res.data
-    //     console.log(tem)
-    //     valuetem.push(tem)
-    //     // 旋风100
-    //     wx.request({
-    //       url: 'https://api.ltzhou.com/navigate/car',
-    //       method:'POST',
-    //       header: {
-    //       'content-type': 'application/json'},
-    //     data:{
-    //       "arrivePlace": arrive,
-    //       "beginPlace": depart,
-    //       "passPlaces": passlist,
-    //       "avoidTraffic":avoidTraffic,
-    //       },
-    //       success (res) {
-    //         tem = res.data
-    //         console.log(tem)
-    //         valuetem.push(tem)
-    //     that.setData({value:valuetem})
-    //     console.log(that.data.value)
-    //     console.log("1")
-    //     for(j=0;j<that.data.preference.length;j++){
-    //       for (i=0;i<that.data.value.length;i++){
-    //         if(that.data.value[i].type==that.data.preference[j]){pre.push(i)}}}
-    //     for (i=0;i<pre.length;i++){preres.push(that.data.value[pre[i]])}
-    //     console.log(preres)
-    //     var ressss = new Array()
-    //     ressss.push(preres)
-    //     ressss.push(valuetem)
-    //     ressss.push(that.data.bus.routeplan)
-    //     ressss.push(departname)
-    //     ressss.push(passname)
-    //     ressss.push(arrivename)
-
-
-    //     that.setData({datares:ressss})
-    //     console.log("coming resuuuu")
-    //     console.log(that.data.datares)
-
-    //     wx.navigateTo({
-    //       url: '../searcha/searcha?RT='+JSON.stringify(that.data.datares),
-    //       //success:function(res){that.setData({step:0})}
-        
-    //     },
-
-  //         )
-
-  //     }})
-      
-      
-  //     }
-  //   })        
-
-
-       
-
-  //         }}
-  //           )             
-  // }})}
-
-},
+  },
   addpass:function(){
     this.setData({passnum:this.data.passnum+1})
     this.setData({height:this.data.height+120})

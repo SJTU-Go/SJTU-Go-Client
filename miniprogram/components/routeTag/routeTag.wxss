@@ -2,14 +2,17 @@
 
 .massge{
   overflow: hidden;
-  width: 90%;
   border-radius: 15rpx;
   color: white;
   background-color: rgba(42, 46, 47);
   margin-top: 20rpx;
   position: relative;
   line-height: 1;
+  margin-bottom: 20rpx;
+  padding-top: 10rpx;
+  padding-bottom: 20rpx;
 }
+
 .rightt
 {
   width: 100%;
@@ -20,6 +23,7 @@
 {
   text-align: right;
   justify-content: right;
+  padding-left: 20rpx;
 }
 
 .massge-img{
@@ -34,4 +38,68 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+
+.massge-bd,.massge-ft{
+  padding:0rpx 0rpx 30rpx 40rpx;
+}
+.massge-bd{
+  display: flex;
+  flex-direction: column;
+}
+
+.walkbutton{  
+  height: 30rpx;
+  width: 20%;
+  background-color: rgba(64, 151, 157, 0.53);
+  color: white;
+  border-radius: 3rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.busbutton{  
+  height: 30rpx;
+  width: 40%;
+  background-color: rgba(194, 69, 194, 0.53);
+  color: white;
+  border-radius: 3rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.bikebutton{  
+  height: 30rpx;
+  width: 40%;
+  background-color: rgb(1, 37, 153);
+  color: white;
+  border-radius: 3rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.carbutton{  
+  height: 30rpx;
+  width: 40%;
+  background-color: rgba(153, 148, 1, 0.679);
+  color: white;
+  border-radius: 3rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.fill  {
+  width:5%
+}
+
+.textdiv{
+  margin-top:30rpx;
+  color: rgb(255, 255, 255);
+  text-decoration-line: underline;
+  font-size: 33rpx;
 }

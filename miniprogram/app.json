@@ -1,6 +1,7 @@
 {
   "pages": [
     
+    "pages/searcha/searcha",
     "pages/LoginPage/LoginPage",
     "pages/index/index",
     "pages/extendsearch/arrive/arrive",
@@ -19,7 +20,6 @@
     "pages/HistoryPage/HistoryPage",
     "pages/userInfoPage/userInfoPage",
     "pages/search/search",
-    "pages/searcha/searcha",
     "pages/searchindex/searchindex",
     "pages/vipPage/vipPage"
   ],

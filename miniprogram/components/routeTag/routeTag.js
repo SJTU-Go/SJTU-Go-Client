@@ -82,12 +82,12 @@ Component({
      * 初始化，传入数据
      */
     attached: function (){
-      console.log(this.properties.index)
+      // console.log(this.properties.index)
       var pages = getCurrentPages();
       var curPage = pages[pages.length-1];
       // console.log(curPage.data.navigateRequest)
       var requestResult = curPage.data.strategies[this.properties.index]
-      console.log(requestResult)
+      // console.log(requestResult)
       this.setData(requestResult);
     }
   }
