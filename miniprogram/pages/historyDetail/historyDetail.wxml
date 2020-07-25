@@ -7,7 +7,7 @@
 <!--pages/bike/bike.wxml-->
 <scroll-view><map id="map" longitude="121.437600" latitude="31.025940" scale="16" polyline="{{polyline}}" style="width: 100%; height: 45vh;"></map></scroll-view>
 
-
+<!--
 <scroll-view scroll-y style="display: flex; height: 415px;">
 <form class="form" bindsubmit="formSubmit">
 <view class='routeplan' wx:for="{{routeplan}}" wx:for-item="itema" wx:key="strategy" wx:for-index="idx">
@@ -23,7 +23,6 @@
     </view>
     <view class ='rightpart'>
       <view hidden="{{itema.hiddena}}">
-        <!-- <view style='fontsize=20rpx; color=grey'>13:00({{itema.routeTime/60|int}}min)</view> -->
         <view class = 'flexblock'>
           <view class = 'block'>  
             <view class='routeInfo'>
@@ -43,8 +42,9 @@
   <view class = 'emptyblock'></view>
 </view>
 
-<button formType="submit">提交评论</button>
-</form>
+
 </scroll-view>
+-->
 
-
+<routeInfo isHistory="true">
+</routeInfo>

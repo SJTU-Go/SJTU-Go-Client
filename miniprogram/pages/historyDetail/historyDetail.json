@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "routeInfo":"/components/routeInfo/routeInfo"
+  }
+}

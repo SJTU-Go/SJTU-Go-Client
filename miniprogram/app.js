@@ -27,6 +27,8 @@ App({
         beginTime:Date.parse(new Date())/1000
       }
     }
+
+    this.getSystemInfo();
   },
 
   onLocateTrip: function(tripID, routeList) {
@@ -184,10 +186,39 @@ App({
     return success;
   },
 
+  _makeRouteList(routeplan){
+    var polyline = [];
+    var d = routeplan;
+    for(var j=0;j<d.length;j++){
+      var line = {};
+      var points = [];
+      var item = d[j];
+      for(var i of item.routePath.coordinates){
+        var cor = {};
+        cor['longitude']=i[0];
+        cor['latitude']=i[1];
+        points.push(cor);
+      }
+      if(item.type=="HELLOBIKE"){
+        line['color']='#0099FF';
+      }
+      if(item.type=="FIND"){
+        line['color']='#FFCC33';
+      }
+      else{line['color']='#00CC33'}
+      line['points']=points;
+      //line['color']='#808080';
+      line['width']=4;
+      //line['dottedLine']=true;
+      //console.log(line);
+      polyline.push(line);
+    }
+    return polyline;
+  },
+
+
   /** 
     * 自定义post函数，返回Promise
-    * +-------------------
-    * author: 武当山道士<912900700@qq.com>
     * +-------------------
     * @param {String}      url 接口网址
     * @param {arrayObject} data 要传的数组对象
@@ -222,5 +253,14 @@ App({
        })
     });
     return promise;
+  },
+
+  getSystemInfo: function () {
+    let t = this;
+    wx.getSystemInfo({
+      success: function (res) {
+        t.globalData.systemInfo = res;
+      }
+    });
   },
 })

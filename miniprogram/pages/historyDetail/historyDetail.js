@@ -8,9 +8,10 @@ Page({
     let pages = getCurrentPages();
     let prevPage = pages[pages.length - 2];
     var index =options.index
+    var app = getApp()
     this.setData({
-      routeplan: prevPage.data.orderList[index],
-      polyline: prevPage.data.routeList[index]
+      routeplan: prevPage.data.orderList[index].strategy.routeplan,
+      polyline: app._makeRouteList(prevPage.data.orderList[index].strategy.routeplan)
     })
   },
 

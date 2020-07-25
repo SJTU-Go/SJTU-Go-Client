@@ -21,7 +21,7 @@
        <!--  <text>出发点：<text class="font-color-c24e4e font-size-15">{{list.arrive}}</text><text style="margin-left:40rpx;">路线用时:</text> {{list.routetime}}</text>
         <text style="margin-top:22rpx;"><text>目的地：<text class="font-color-c24e4e font-size-15">{{list.depart}}</text></text><text style="margin-left:40rpx;">途径地点:</text> {{list.passPlaces}}</text> -->
         <view class='textdiv'>
-        <button class="mini-btn" type="primary" size="mini" bindtap="searchPage" data-index="{{idx}}">评价</button>
+        <button class="mini-btn" type="primary" size="mini" bindtap="makeFeedback" data-index="{{idx}}">评价</button>
         <button class="mini-btn" type="default" size="mini" bindtap="showRoute" data-index="{{idx}}">查看路线</button>
         </view>
        </view> 

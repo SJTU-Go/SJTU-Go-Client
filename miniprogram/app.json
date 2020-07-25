@@ -1,14 +1,14 @@
 {
   "pages": [
-    "pages/searcha/searcha",
     "pages/index/index",
+    "pages/searcha/searcha",
     "pages/LoginPage/LoginPage",
     "pages/extendsearch/arrive/arrive",
     "pages/comment/comment",
     "pages/trafficPage/trafficPage",
     "pages/addcomment/addcomment",
     "pages/walk/walk",
-    "pages/commentmap/commentmap",
+    "pages/historyDetail/historyDetail",
     "pages/feedback/feedback",
     "pages/bike/bike",
     "pages/car/car",

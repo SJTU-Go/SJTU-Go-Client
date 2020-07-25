@@ -36,44 +36,21 @@ Page({
       routeplan: curStrategy.routeplan,
       time: curStrategy.travelTime,
     })
-    var polyline = [];
-    var d = curStrategy.routeplan;
-    for(var j=0;j<d.length;j++){
-      var line = {};
-      var points = [];
-      var item = d[j];
-      for(var i of item.routePath.coordinates){
-        this.setData({lon:i[0],lat:i[1]})
-        var cor = {};
-        cor['longitude']=i[0];
-        cor['latitude']=i[1];
-        points.push(cor);
-      }
-      if(item.type=="HELLOBIKE"){
-        line['color']='#0099FF';
-      }
-      if(item.type=="FIND"){
-        line['color']='#FFCC33';
-      }
-      else{line['color']='#00CC33'}
-      line['points']=points;
-      //line['color']='#808080';
-      line['width']=4;
-      //line['dottedLine']=true;
-      //console.log(line);
-      polyline.push(line);
-    }
-    //console.log(polyline)
-    this.setData({
-      polyline:polyline
-    })
+    
     var that=this  
     that.setData({
       depart:curStrategy.depart,
       arrive:curStrategy.arrive,
       pass:curStrategy.pass,
     })
-
+    var app = getApp()
+    this.setData({
+      polyline:app._makeRouteList(curStrategy.routeplan)
+    })
+    this.setData({
+      lon:curStrategy.routeplan[0].routePath.coordinates[0][0],
+      lat:curStrategy.routeplan[0].routePath.coordinates[0][1]
+    })
     that.setData({
       isExtendType:this.data.extendType.includes(this.data.strategy.type)
     })
