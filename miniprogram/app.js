@@ -28,9 +28,9 @@ App({
       onTrip: false,
       curTripID: 0,
       curRoute:{
-        curType: -1,
+        type: -1,
         route: null,
-        trace: [],
+        punishlist: [],
         pid : 0,
         beginTime:Date.parse(new Date())/1000,
         status: 0,
@@ -78,8 +78,8 @@ App({
     this.globalData.onTrip = true;
     this.globalData.curTripID = tripID;
     this.globalData.curRoute = {
-      curType: this.globalData.recordTypes[routeList[0].type],
-      trace: [],
+      type: this.globalData.recordTypes[routeList[0].type],
+      punishlist: [],
       pid : 0,
       beginTime:Date.parse(new Date())/1000,
       status: 5,
@@ -138,14 +138,14 @@ App({
                 data.status = 3
               }
               console.log("quit")
-            }, 1000*20
+            }, 1000*5
             // }, 1000*expectTime*getApp().globalData.waitTimes
           )
           app.globalData.curRoute.beginRecordTime = Date.parse(new Date())/1000
         }
         break;
       case 1: // 记录中状态
-        app.globalData.curRoute.trace.push([curLng, curLat, curSpeed, curTime-beginTime])
+        app.globalData.curRoute.punishlist.push([curLng, curLat, curSpeed, curTime-beginTime])
         if (app._isNearPoint(curLng,curLat,endLng,endLat)){
           data.status = 3
         }
@@ -158,7 +158,7 @@ App({
         this.globalData.onTrip = false;
         wx.request({
           url: 'https://api.ltzhou.com/punishment/fail?tripID='+getApp().globalData.tripID,
-          method: 'PUT',
+          method: 'GET',
           success:(res)=>{
             console.log(res)
             wx.offLocationChange((res) => {})
@@ -185,7 +185,7 @@ App({
         data.route = data.remainRoutes.shift()
         if (data.route) {
           if (getApp().globalData.recordTypes[data.route.type]){
-            data.curType = getApp().globalData.recordTypes[data.route.type]
+            data.type = getApp().globalData.recordTypes[data.route.type]
             data.status = 0
           } else {
             data.status = 5
@@ -195,13 +195,11 @@ App({
         }
         break;
       case 4:
-        var curTrip = wx.getStorageSync({
-          key: 'currentTrip',
-        })
+        var curTrip = wx.getStorageSync('currentTrip')
         console.log(curTrip)
         this.globalData.onTrip = false;
         wx.request({
-          url: 'https://api.ltzhou.com/punishment/punish?tripID='+getApp().globalData.tripID,
+          url: 'https://api.ltzhou.com/punishment/punish?tripid='+getApp().globalData.curTripID.data,
           data: curTrip,
           method: "POST",
           success:(e)=>{

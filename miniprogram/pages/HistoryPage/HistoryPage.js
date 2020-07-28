@@ -45,13 +45,15 @@ Page({
   cancelTrip: function(e){
     var index=e.currentTarget.dataset.index
     var tripID = this.data.orderList[index].tripID
+    var that = this
     wx.request({
-      url: 'https://api.ltzhou.com/trip/cancel?tripID'+tripID,
-      method: 'PUT',
+      url: 'https://api.ltzhou.com/trip/cancel?tripID='+tripID,
+      method: 'GET',
       success (res) {
         console.log(res)
         var app = getApp()
         app.cancelTrip()
+        that.onUnload()
       }
     })
 

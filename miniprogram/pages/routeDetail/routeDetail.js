@@ -106,15 +106,11 @@ Page({
   },
 
   startTrip: function() {
-    var userID = '0';
     var app = getApp();
     var that = this;
-    wx.getStorageSync({
-      key: 'userID',
-      success (res) {
-        userID = res
-      }
-    })
+    wx.setStorageSync('userID', "292") // TODO: load userID on initial loading
+    var userID = wx.getStorageSync("userID")
+    
     wx.request({
       url: 'https://api.ltzhou.com/trip/start',
       method:"POST",
@@ -123,6 +119,7 @@ Page({
         "userID": userID,
       },
       success(res){
+        console.log(res)
         var tripID = res;
         app.onLocateTrip(tripID, that.data.routeplan)
         // 开始后台记录行程
@@ -140,6 +137,7 @@ Page({
         })
       }
     })
+
 
 
 
