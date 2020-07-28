@@ -10,8 +10,8 @@
       <view class="massge-hd"><image class="massge-img" src="../../images/calendar.png"></image><view>{{list.schedulename}}</view></view>
       <view class="massge-bd font-color-666">
         <text>日程时间：<text class="font-color-c24e4e font-size-15">{{list.timehour}}</text>:<text class="font-color-c24e4e font-size-15">{{list.timeminute}}</text></text>
-        <text style="margin-top:22rpx;"><text>日程地点：<text class="font-color-c24e4e font-size-15">{{list.place}}</text></text></text>
-        
+        <text style="margin-top:22rpx;"><text>起点：<text class="font-color-c24e4e font-size-15">{{list.departShow}}</text></text></text>
+        <text style="margin-top:22rpx;"><text>终点：<text class="font-color-c24e4e font-size-15">{{list.arriveShow}}</text></text></text>
         <view class = 'downblock'>
 <view class ='blocklleft'>
   <button class='btn2' data-index="{{idx}}" bindtap='searchPage'>
@@ -70,7 +70,7 @@
     <view class = 'ibtnblock'>
 
 <view wx:if = "{{depart}}">
-<input  name="userName" placeholder="起点：{{depart}}" bindtap="depart"/>
+<input  name="userName" placeholder="起点：{{departShow}}" bindtap="depart"/>
   </view>
          <view wx:else>
       <input name="userName" placeholder="请输入起点" bindtap="depart"/>
@@ -78,7 +78,7 @@
     </view>
     <view class = 'ibtnblock'>
     <view wx:if = "{{arrive}}">
-    <input  name="userName" placeholder="终点：{{arrive}}" bindtap="arrive"/>
+    <input  name="userName" placeholder="终点：{{arriveShow}}" bindtap="arrive"/>
   </view>
          <view wx:else>
       <input name="userName" placeholder="请输入终点" bindtap="arrive"/>

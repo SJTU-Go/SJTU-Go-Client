@@ -61,6 +61,13 @@ Component({
       "旋风E100": "/images/car.png",
     },
 
+    strategyTypeToDetail: {
+      "步行": "../walk/walk?RT=",
+      "校园巴士":  "../search/search?RT=",
+      "共享单车": "../bike/bike?RT=",
+      "旋风E100": "../car/car?RT=",
+    },
+
     strategyTypeToCaption: {
       "步行": "walkbutton",
       "校园巴士":  "busbutton",
@@ -76,12 +83,21 @@ Component({
    * 组件的方法列表
    */
   methods: {
+<<<<<<< HEAD
     getDetail(){
       wx.navigateTo({
         url: '/pages/routeDetail/routeDetail?idx='+this.data.index,
       })
     }
 
+=======
+    getDetail:function(){
+      console.log(this.data)
+      console.log()
+      wx.navigateTo({
+        url: this.data.strategyTypeToDetail[this.data.type]+JSON.stringify(this.data.routeplan) + '&travelTime=' + this.data.travelTime}) 
+    }
+>>>>>>> dsw1
   },
 
   lifetimes: {

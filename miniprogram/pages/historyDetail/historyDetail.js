@@ -14,6 +14,7 @@ Page({
       polyline: app._makeRouteList(prevPage.data.orderList[index].strategy.routeplan),
       strategy: prevPage.data.orderList[index].strategy
     })
+    console.log(this.data)
   },
 
   formSubmit:function(e){

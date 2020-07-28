@@ -528,8 +528,8 @@ Page({
     data:'',
     key: 'depart',
   })  
-    wx.navigateTo({
-    url: '../searchindex/searchindex',
+  wx.navigateTo({
+    url: '../searcha/searcha?arrive='+JSON.stringify("PK"+this.data.markers[this.data.currentdata].vertexid)+'&arriveShow='+JSON.stringify(this.data.markers[this.data.currentdata].name),
   })
   },
 

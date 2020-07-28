@@ -18,8 +18,10 @@ Page({
     timeBean:{},
     depart:'',
     departid:'',
+    departShow:'',
     arrive:'',
     arriveid:'',
+    arriveShow:'',
     mHidden: true,
     selectShow: false,//控制下拉列表的显示隐藏，false隐藏、true显示
     selectShow2: false,//控制下拉列表的显示隐藏，false隐藏、true显示
@@ -36,6 +38,52 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
+
+  onLoad: function (options) {
+    var that =this
+    /*wx.getStorage({
+      key: 'openid',
+      success:function(res){
+        that.setData({
+        
+          openid:res.data,
+        })
+      }
+    })*/
+    wx.getStorage({
+      key: 'storedschedule',
+      success: function(res){   
+        console.log(that.data)    
+        that.setData({        
+          currentschedule:res.data,
+        })
+        if(that.data. currentschedule.length==0){
+          that.setData({
+            status:false
+          });
+        }else{
+          that.setData({
+            status:true
+          })
+        }
+        var currentdayy =  that.data.currentday ;
+        console.log(currentdayy)
+        console.log(that.data.timeBean)
+        var empty = that.data.currentschedule.every(function(value, index, array){
+          return value.selectDay != currentdayy;
+        })
+        console.log(empty)
+        that.setData({empty:empty})
+        var showlist = that.data.currentschedule.filter(e=>e.selectDay == currentdayy)
+        that.setData({showlist: showlist})
+        console.log(that.data.showlist)
+      },
+      fail: function(res) {
+        console.log(res+'aaaaa')
+      }
+    })
+  },
+
   onShow: function (options) {
     var that =this
     /*wx.getStorage({
@@ -49,37 +97,46 @@ Page({
     })*/
     wx.getStorage({
       key: 'storedschedule',
-      success: function(res){
-       
-      that.setData({
-        
-        currentschedule:res.data,
-      })
-      if(that.data. currentschedule.length==0){
-      that.setData({
-      status:false
-      });
-      }else{
-      that.setData({
-      status:true
-      })
-      }
+      success: function(res){   
+        console.log(that.data)    
+        that.setData({        
+          currentschedule:res.data,
+        })
+        if(that.data. currentschedule.length==0){
+          that.setData({
+            status:false
+          });
+        }else{
+          that.setData({
+            status:true
+          })
+        }
+        var currentdayy =  that.data.currentday ;
+        console.log(currentdayy)
+        console.log(that.data.timeBean)
+        var empty = that.data.currentschedule.every(function(value, index, array){
+          return value.selectDay != currentdayy;
+        })
+        console.log(empty)
+        that.setData({empty:empty})
+        var showlist = that.data.currentschedule.filter(e=>e.selectDay == currentdayy)
+        that.setData({showlist: showlist})
+        console.log(that.data.showlist)
       },
       fail: function(res) {
-      console.log(res+'aaaaa')
+        console.log(res+'aaaaa')
       }
-      })
-      
-
+    })
   },
+
+
   searchPage:function(e)
   {var that=this
     console.log(e)
+    console.log(this.data)
     var index=e.currentTarget.dataset.index
      wx.setStorage({
-    data:{name:this.data.showlist[index].place,
-        
-    },
+    data:'',
     key: 'arrive',
   })  
   wx.setStorage({
@@ -91,7 +148,7 @@ Page({
     key: 'depart',
   })  
     wx.navigateTo({
-    url: '../searchindex/searchindex',
+    url: '../searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow),
   })
   },
   addschedule:function(){
@@ -195,6 +252,8 @@ data: {
     this.setData({mHidden:true})
     },
   changeModal:function(event){
+    var that= this
+    console.log(that.data)
     for (var ii=0;ii<this.data.repeat;++ii) {
     var selectWeek = ii;
     var timeBean = util.getWeekDayList(selectWeek)
@@ -204,7 +263,10 @@ data: {
         timehour:this.data.index+6,
         timeminute:this.data.selectData2[this.data.index2],
         schedulename:this.data.schedulename,
-        place:this.data.arrive};
+        depart:this.data.depart,
+        departShow:this.data.departShow,
+        arrive:this.data.arrive,
+        arriveShow:this.data.arriveShow};
     var ress = this.data.currentschedule;
     this.setData({mHidden:true});
     ress.push(result);
@@ -306,12 +368,13 @@ this.onShow()
     wx.getStorage({
       key: 'arrive',
     success:function(res){
+      console.log(res.data)
       if(res.data.id){
         if(res.data.id[0]=='P' && res.data.id[1]=='K'){that.setData({arrive:res.data.name,place:res.data.name,arriveid :res.data.id})}
         else{that.setData({arrive:res.data.name,place:res.data.name,arriveid :'DT'+res.data.id})}}
     
       else{that.setData({arrive:res.data.name,place:res.data.name,arriveid :res.data.name})}
-    
+      console.log(this.data)
     }
 
     
@@ -346,10 +409,11 @@ this.onShow()
   dayClick:function(e){
     var timeBean = this.data.timeBean
     timeBean.selectDay = e.detail;
+    console.log(e)
     this.setData({
       timeBean,
     })
-    console.log(this.data.timeBean)
+    console.log(this.data)
     this.setData({currentday:this.data.timeBean.weekDayList[parseInt(this.data.timeBean.selectDay)].day,})
     var currentdayy =  this.data.currentday ;
     var empty = this.data.currentschedule.every(function(value, index, array){

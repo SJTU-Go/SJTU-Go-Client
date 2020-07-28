@@ -109,7 +109,7 @@
 <view class='toolblock'>
 	<view class='downblock'>
 		<button class='btn2' bindtap='formSubmit'>
-			<view>重新搜索</view>
+			<view>搜索</view>
 		</button>
 		<button class='btn1' bindtap='indexback'>
 			<view>回到主页</view>
