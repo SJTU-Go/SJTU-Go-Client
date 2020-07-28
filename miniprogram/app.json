@@ -10,8 +10,6 @@
     "pages/walk/walk",
     "pages/historyDetail/historyDetail",
     "pages/feedback/feedback",
-    "pages/bike/bike",
-    "pages/car/car",
     "pages/extendsearch/depart/depart",
     "pages/extendsearch/pass/pass",
     "index/index",

@@ -11,7 +11,8 @@ Page({
     var app = getApp()
     this.setData({
       routeplan: prevPage.data.orderList[index].strategy.routeplan,
-      polyline: app._makeRouteList(prevPage.data.orderList[index].strategy.routeplan)
+      polyline: app._makeRouteList(prevPage.data.orderList[index].strategy.routeplan),
+      strategy: prevPage.data.orderList[index].strategy
     })
   },
 

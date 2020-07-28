@@ -3,4 +3,13 @@
 
 <scroll-view scroll-y style="display: flex; height: 415px;">
 	<routeinfo></routeinfo>
+	<view wx:if="{{isExtendType}}">
+    <view class='toolblock'>
+      <view class='downblock'>
+				<button class='btn2' bindtap='startTrip'>
+					<view>开始行程</view>
+				</button>
+			</view>
+		</view>
+	</view>
 </scroll-view>

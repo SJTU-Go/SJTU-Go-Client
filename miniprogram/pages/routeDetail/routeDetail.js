@@ -103,5 +103,46 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  startTrip: function() {
+    var userID = '0';
+    var app = getApp();
+    var that = this;
+    wx.getStorageSync({
+      key: 'userID',
+      success (res) {
+        userID = res
+      }
+    })
+    wx.request({
+      url: 'https://api.ltzhou.com/trip/start',
+      method:"POST",
+      data:{
+        "strategy": that.data.strategy,
+        "userID": userID,
+      },
+      success(res){
+        var tripID = res;
+        app.onLocateTrip(tripID, that.data.routeplan)
+        wx.showToast({
+          title: '行程已开始记录',
+          icon: 'none',
+          duration: 3000,
+          success: function () {
+            setTimeout(function () {
+              wx.navigateBack({
+                delta: 10,
+                complete: (res) => {},
+              })}, 2000);
+          }
+        })
+      }
+    })
+
+
+
+  },
+
+
 })
