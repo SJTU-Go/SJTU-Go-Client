@@ -77,20 +77,16 @@ App({
     }
     this.globalData.onTrip = true;
     this.globalData.curTripID = tripID;
-    var fstRoute = routeList.shift()
     this.globalData.curRoute = {
       curType: this.globalData.recordTypes[routeList[0].type],
-      route: fstRoute,
       trace: [],
       pid : 0,
       beginTime:Date.parse(new Date())/1000,
-      status: 0,
+      status: 5,
       remainRoutes:routeList,
       prevSpeed: 0,
     }
-    wx.removeStorage({
-      key: 'currentTrip',
-    })
+    wx.setStorageSync('currentTrip',  [])
 
       // 获取当前段route的详细信息，起终点经纬度、预估时间
     wx.onLocationChange(app.locationChange)
@@ -113,15 +109,20 @@ App({
     var curSpeed = result.speed == -1 ? data.prevSpeed : result.speed;
 
     var route = data.route;
-    var routePath = route.routePath.coordinates;
-    var beginPoint = routePath[0];
-    var endPoint = routePath[routePath.length - 1];
-    var beginLng = beginPoint[0];
-    var beginLat = beginPoint[1];
-    var endLng = endPoint[0];
-    var endLat = endPoint[1];
-    var expectTime = route.routeTime;
+    if (route) {
+      var routePath = route.routePath.coordinates;
+      var beginPoint = routePath[0];
+      var endPoint = routePath[routePath.length - 1];
+      var beginLng = beginPoint[0];
+      var beginLat = beginPoint[1];
+      var endLng = endPoint[0];
+      var endLat = endPoint[1];
+      var expectTime = route.routeTime;
+    }
 
+
+
+    console.log(app.globalData.curRoute)
 
     switch (data.status) {
       case 0: // 等待开始状态
@@ -137,7 +138,7 @@ App({
                 data.status = 3
               }
               console.log("quit")
-            }, 1000*10
+            }, 1000*20
             // }, 1000*expectTime*getApp().globalData.waitTimes
           )
           app.globalData.curRoute.beginRecordTime = Date.parse(new Date())/1000
@@ -168,7 +169,6 @@ App({
         })
         break;
       case 3: // 一段记录完状态
-        data.route = data.remainRoutes.shift()
         try {
           var recordList = wx.getStorageSync('currentTrip')
           if (recordList) {
@@ -180,14 +180,18 @@ App({
         } catch(e){
           data.status = 2
         }
+      // 此处没有break
+      case 5: // 判断形成是否跳过状态
+        data.route = data.remainRoutes.shift()
         if (data.route) {
-          if (data.route.type in getApp().globalData.recordTypes.keys()){
-            data.status = 4
+          if (getApp().globalData.recordTypes[data.route.type]){
+            data.curType = getApp().globalData.recordTypes[data.route.type]
+            data.status = 0
           } else {
-            data.status = 3
+            data.status = 5
           }
         } else {
-          data.status = 0
+          data.status = 4
         }
         break;
       case 4:
@@ -200,13 +204,11 @@ App({
           url: 'https://api.ltzhou.com/punishment/punish?tripID='+getApp().globalData.tripID,
           data: curTrip,
           method: "POST",
-          success:()=>{
+          success:(e)=>{
+            console.log(e)
             wx.offLocationChange((res) => {})
             wx.stopLocationUpdate({
               complete: (res) => {},
-            })
-            wx.removeStorage({
-              key: 'currentTrip',
             })
           }
         })
@@ -220,7 +222,7 @@ App({
         TODO: arrange the storage of trace records in the local storage */
           break;
     }
-    console.log(app.globalData.curRoute.trace)
+
   },
 
 
@@ -254,7 +256,6 @@ App({
     var polyline = [];
     var d = routeplan;
     for(var j=0;j<d.length;j++){
-      var line = {};
       var points = [];
       var item = d[j];
       for(var i of item.routePath.coordinates){
@@ -263,21 +264,61 @@ App({
         cor['latitude']=i[1];
         points.push(cor);
       }
-      if(item.type=="HELLOBIKE"){
-        line['color']='#0099FF';
-      }
-      if(item.type=="FIND"){
-        line['color']='#FFCC33';
-      }
-      else{line['color']='#00CC33'}
-      line['points']=points;
-      //line['color']='#808080';
-      line['width']=4;
-      //line['dottedLine']=true;
-      //console.log(line);
-      polyline.push(line);
+      switch (item.type) {
+        case "HELLOBIKE":
+          polyline.push({
+            points: points,
+            width: 4,
+            color: '#0099FF'
+          });
+          break;
+      
+        default:
+          break;
+      }     
     }
     return polyline;
+  },
+
+  _makeMapMarker(strategy){
+    var markers = [];
+    
+
+    /** begin */
+    var beginPoint = strategy.beginDetail 
+    markers.push({
+      iconPath: "/images/pin_begin.png",
+      id: 0,
+      latitude: beginPoint.location.coordinates[1],
+      longitude: beginPoint.location.coordinates[0],
+      width: 50,
+      height: 50
+    })
+
+    /** end */
+    var endPoint = strategy.endDetail 
+    markers.push({
+      iconPath: "/images/pin_end.png",
+      id: 99,
+      latitude: endPoint.location.coordinates[1],
+      longitude: endPoint.location.coordinates[0],
+      width: 50,
+      height: 50
+    })
+
+    var passcnt = 0
+    strategy.passDetail.forEach(point => {
+      passcnt += 1
+      markers.push({
+        iconPath: "/images/pin_pass.png",
+        id: passcnt,
+        latitude: point.location.coordinates[1],
+        longitude: point.location.coordinates[0],
+        width: 40,
+        height: 40
+      })
+    });
+    return markers;
   },
 
 
