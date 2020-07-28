@@ -67,7 +67,6 @@
 							</view>
 						</view>
 						<view wx:if="{{isHistory && (itema.type == 'FIND' || itema.type == 'PARK')}}">
-							<view style='fontsize=20rpx; color=grey'> 评论{{itema.arrive}}：</view>
 							<input placeholder="输入关于{{itema.type == 'FIND' ? itema.arriveName : itema.departName}}评论"/>
 						</view>
 					</view>

@@ -2,24 +2,38 @@
 const app = getApp()
 Page({
   data:{
-    orderList:[]
+    orderList:[],
+    statusMap:{
+      "STARTED": "进行中",
+      "ABORTED": "记录错误",
+      "CANCELLED": "已取消",
+      "FINISHED": "待评论",
+      "COMMENTED": "已完成"
+    }
   },
 
   onLoad:function(options){
     var that=this
     // 从localStorage初始化本页面的orderList
-    wx.getStorage({
-      key: 'historygained',
-      success:function(res){
-        that.setData({orderList:res.data})
-      }
-    })
+    var userID = wx.getStorageSync('userID')
+    wx.request({
+      url: 'https://api.ltzhou.com/user/history/get?userID='+userID,
+      // url: 'https://api.ltzhou.com/user/history/get?userID=292',
+      method:'POST',
+      success(res){
+        var data = res.data.reverse()
+        wx.setStorage({
+          key: 'historygained',
+          data: data,
+        })
+        that.setData({orderList:data})
+    }})
   },
 
   makeFeedback:function(e){
     var index=e.currentTarget.dataset.index
     wx.navigateTo({ url: '../feedback/feedback?RT='+index,})
-},
+  },
 
   indexback:function()
 {

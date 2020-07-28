@@ -14,6 +14,9 @@
       <view class="message-info">
         <view class="message-key">步行总距离</view> <view class="message-value">{{list.strategy.distance}} 米</view>
       </view>
+      <view class="message-info">
+        <view class="message-key">行程状态</view> <view class="message-value">{{statusMap[list.status]}}</view>
+      </view>
       <!-- <view class="message-info">
         <view class="message-key">途径地点</view> <view class="message-value">{{list.passPlaces}}</view>
       </view> -->
