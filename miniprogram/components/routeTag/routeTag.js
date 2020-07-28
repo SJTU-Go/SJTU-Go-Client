@@ -83,21 +83,11 @@ Component({
    * 组件的方法列表
    */
   methods: {
-<<<<<<< HEAD
     getDetail(){
       wx.navigateTo({
         url: '/pages/routeDetail/routeDetail?idx='+this.data.index,
       })
     }
-
-=======
-    getDetail:function(){
-      console.log(this.data)
-      console.log()
-      wx.navigateTo({
-        url: this.data.strategyTypeToDetail[this.data.type]+JSON.stringify(this.data.routeplan) + '&travelTime=' + this.data.travelTime}) 
-    }
->>>>>>> dsw1
   },
 
   lifetimes: {
