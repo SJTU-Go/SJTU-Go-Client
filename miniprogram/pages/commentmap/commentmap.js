@@ -12,6 +12,7 @@ Page({
       routeplan: prevPage.data.orderList[index],
       polyline: prevPage.data.routeList[index]
     })
+    console.log(this.data)
   },
 
   formSubmit:function(e){

@@ -6,8 +6,7 @@ Page({
    */
   data: {
     items: [
-      {value: 'h', name: '哈罗单车'},
-      {value: 'm', name: '摩拜单车'}
+      {value: 'h', name: '哈罗单车'}
     ]
   },
   checkboxChange(e) {

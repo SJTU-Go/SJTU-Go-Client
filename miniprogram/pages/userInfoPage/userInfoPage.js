@@ -112,6 +112,42 @@ Page({
           }})
   
           wx.request({
+            url: 'https://api.ltzhou.com/user/vip/get?userID='+res.data.userID,
+            method:'POST',
+            success(res){if(res.data){
+              var viplist=res.data.viplist.split(",")
+              for(var i = 0;i<viplist.length;i++){
+                if(viplist[i]==''||viplist[i]==null||typeof(viplist[i])==undefined){
+                  viplist.splice(i,1);
+                    i=i-1;
+                }
+            }
+              console.log(viplist)
+              
+              if(viplist){
+              var vip=new Array()
+              var v=new Object()
+
+              v.value="h"  
+              v.name="哈罗单车"
+              v.checked=true
+              vip.push(v)
+                wx.setStorage({
+              data: vip,
+              key: 'vip',
+            })}
+            
+          }
+          else{wx.setStorage({
+            data:[], 
+            key: 'vip',
+          })
+          
+        }
+          }})  
+
+
+          wx.request({
             // url: 'https://api.ltzhou.com/user/history/get?userID='+res.data.userID,
             url: 'https://api.ltzhou.com/user/history/get?userID=292',
             method:'POST',

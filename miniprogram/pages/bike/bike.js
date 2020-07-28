@@ -76,6 +76,7 @@ this.setData({input:text})
         }
       }
     })
+    console.log(options)
     var d = JSON.parse(options.RT)
    var T= Math.ceil(options.travelTime/60)
     this.setData({
@@ -219,6 +220,7 @@ this.setData({input:text})
        }, 2000);
        }
       })
+      
       wx.request({
         url: 'https://api.ltzhou.com/trip/start',
         method:"POST",

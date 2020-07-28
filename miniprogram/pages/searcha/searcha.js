@@ -6,10 +6,9 @@ Page({
     /** 本页面可获取的配置信息 */
     date: '2020-07-12',
     time: '12:00',
+    startT:'2020/05/11 12:05:12',
     dateTimeArray: null,
     dateTime: null,
-    dateTimeArray1: null,
-    dateTime1: null,
     startYear: 2020,
     endYear: 2050,
     settim:false,
@@ -59,8 +58,16 @@ Page({
 
 
   onLoad:function(options){ 
-    var that = this 
     console.log(options)
+    var that = this 
+    var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
+    obj.dateTimeArray.pop();
+    obj.dateTime.pop();
+    that.setData({
+      dateTime: obj.dateTime,
+      dateTimeArray: obj.dateTimeArray,
+    });
+    
     if (options.depart && options.departShow){
       this.setData({
         depart:options.depart,
@@ -69,8 +76,8 @@ Page({
     }
     if (options.arrive && options.arriveShow){
       this.setData({
-        depart:options.arrive,
-        departShow:options.departShow
+        arrive:options.arrive,
+        arriveShow:options.arriveShow
       })
     }
     wx.getStorage({
@@ -133,6 +140,7 @@ Page({
     console.log(1+1)
     var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
     console.log(startTime)
+    that.setData({startT:startTime+':00'})
     wx.setStorage({
       data: that.data.dateTime,
       key: 'dateTime',
@@ -182,9 +190,9 @@ Page({
         "navigateRequest":{
           "arrivePlace": this.data.arrive,
           "beginPlace": this.data.depart,
-          "departTime": "2020/05/11 12:05:12", /**TODO: 对接时间 */
+          "departTime": this.data.startT, /**TODO: 对接时间 */
           "passPlaces": this.data.pass,
-          "avoidTraffic": this.data.avoidTraffic,
+          "avoidTraffic": this.data.avoidjam,
       }})
       return true
     } else {
@@ -207,9 +215,7 @@ Page({
   onReady:function(){
     // 页面渲染完成
   },
-  onShow:function(){
-    // 页面显示
-  },
+  
   onHide:function(){
     // 页面隐藏
   },
@@ -297,9 +303,68 @@ Page({
   /** 对strategies，按照可选项过滤，该私有函数一般在doSearch之后调用，做到过滤出用户支持的选项，修改this.data.strategy，并且渲染显示 */
   _filterByPreference(){
     // TODO 过滤出用户支持的选项
-    this.setData({
-      strategyLength:Array.from(Array(this.data.strategies.length).keys())
-    })
+    var that = this
+    that.setData({currentData : 0})
+    var curResult = this.data.strategies;
+    var arr = this.data.strategies;
+    for(var j=0;j<arr.length;j++){
+      var item = arr[j];
+      if(item.type=="校园巴士"){
+        wx.setStorage({
+          data: item,
+          key: 'bus',
+        })       
+      }
+      if(item.type=="步行"){
+        wx.setStorage({
+          data: item,
+          key: 'walk',
+        })
+      }
+      if(item.type=="共享单车"){
+        wx.setStorage({
+          data: item,
+          key: 'bike',
+        })
+      }
+      if(item.type=="旋风E100"){
+        wx.setStorage({
+          data: item,
+          key: 'car',
+        })
+      }
+      }
+    var newResult = new Array()
+    var pre = that.data.preference
+    wx.getStorage({
+      key: 'vip',
+      success:function(res){
+        var flag = (res.data[0].checked)
+        for ( var j = 0;j < curResult.length; ++j){
+          if ( curResult[j].type == "共享单车"){
+            if(flag){
+              curResult[j].cost = 0              
+            }
+            break
+          }
+        }
+        for ( var i = 0; i < pre.length; ++i){
+          for ( var j = 0;j < curResult.length; ++j){
+            if ( curResult[j].type == pre[i] ){
+              newResult.push(curResult[j])
+              break
+            }
+          }
+        }
+        that.setData({
+          strategyLength:[]
+        })
+        that.setData({
+          strategies:newResult,
+          strategyLength:Array.from(Array(newResult.length).keys())
+        })
+      }
+    })    
   },
 
 
@@ -308,9 +373,32 @@ Page({
   /** 将strategies排序, 重新渲染显示 */
   _sortByPreference(){
   // TODO
+    var that = this
+    that.setData({currentData : 0})
+    var curResult = this.data.strategies;
+    var newResult = new Array()
+    var pre = that.data.preference
+    for ( var i = 0; i < pre.length; ++i){
+      for ( var j = 0;j < curResult.length; ++j){
+        if ( curResult[j].type == pre[i] ){
+          newResult.push(curResult[j])
+          break
+        }
+      }
+    }
+    that.setData({
+      strategyLength:[]
+    })
+    that.setData({
+      strategies:newResult,
+      strategyLength:Array.from(Array(newResult.length).keys())
+    })
+    console.log(that.data)
   },
 
   _sortByTime(){
+    var that = this
+    that.setData({currentData : 1})
     var curResult = this.data.strategies;
     var newResult =
         curResult.sort(function(obj1,obj2) {
@@ -334,6 +422,8 @@ Page({
   },
 
   _sortByWalk(){
+    var that = this
+    that.setData({currentData : 2})
     var curResult = this.data.strategies;
     var newResult =
         curResult.sort(function(obj1,obj2) {
@@ -357,6 +447,8 @@ Page({
   },
 
   _sortByCost(){
+    var that = this
+    that.setData({currentData : 3})
     var curResult = this.data.strategies;
     var newResult =
         curResult.sort(function(obj1,obj2) {
