@@ -48,6 +48,18 @@ App({
     return (Math.abs(alng-blng)<0.0001 && Math.abs(alat-blat)<0.0001)
   },
 
+
+  cancelTrip: function(){
+    wx.offLocationChange((res) => {})
+    wx.stopLocationUpdate({
+      complete: (res) => {},
+    })
+    wx.removeStorage({
+      key: 'currentTrip',
+    })
+    this.globalData.onTrip = false;
+  },
+
   onLocateTrip: function(tripID, routeList) {
   
     var app = getApp();
@@ -142,9 +154,10 @@ App({
           key: 'currentTrip',
         })
         console.log("break down")
+        this.globalData.onTrip = false;
         wx.request({
-          url: 'https://api.ltzhou.com/punishment/punish?tripID='+getApp().globalData.tripID,
-          method: 'GET',
+          url: 'https://api.ltzhou.com/punishment/fail?tripID='+getApp().globalData.tripID,
+          method: 'PUT',
           success:(res)=>{
             console.log(res)
             wx.offLocationChange((res) => {})
@@ -182,6 +195,7 @@ App({
           key: 'currentTrip',
         })
         console.log(curTrip)
+        this.globalData.onTrip = false;
         wx.request({
           url: 'https://api.ltzhou.com/punishment/punish?tripID='+getApp().globalData.tripID,
           data: curTrip,

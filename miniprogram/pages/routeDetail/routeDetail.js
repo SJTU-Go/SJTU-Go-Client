@@ -125,6 +125,7 @@ Page({
       success(res){
         var tripID = res;
         app.onLocateTrip(tripID, that.data.routeplan)
+        // 开始后台记录行程
         wx.showToast({
           title: '行程已开始记录',
           icon: 'none',

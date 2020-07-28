@@ -42,6 +42,21 @@ Page({
   url: '../index/index'}
   )},
 
+  cancelTrip: function(e){
+    var index=e.currentTarget.dataset.index
+    var tripID = this.data.orderList[index].tripID
+    wx.request({
+      url: 'https://api.ltzhou.com/trip/cancel?tripID'+tripID,
+      method: 'PUT',
+      success (res) {
+        console.log(res)
+        var app = getApp()
+        app.cancelTrip()
+      }
+    })
+
+  },
+
   onReady:function(){
     // 页面渲染完成
   },
