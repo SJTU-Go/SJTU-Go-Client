@@ -25,6 +25,7 @@ Page({
     departShow:null, // 显示的内容
     arrive:null,
     arriveShow:null,
+    currentData:0,
 
 
     passnum:0,
@@ -58,8 +59,13 @@ Page({
 
 
   onLoad:function(options){ 
+
     console.log(options)
     var that = this 
+    wx.setStorage({
+      data: false,
+      key: 'settime',
+    })
     var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
     obj.dateTimeArray.pop();
     obj.dateTime.pop();
@@ -85,21 +91,19 @@ Page({
       success:function(res){
         that.setData({preference:res.data})
     }})
+    console.log(this.data.strategyLength)
+    console.log(this.data.currentData==0)
     if (this._updateRequestBody()){
+      //console.log(this.data)
       this.doSearch(
         function(){
-          that.setData({currentData: 1});
+          that.setData({currentData: 0});
           that._filterByPreference();
           that._sortByPreference() // 默认情况下标签亮在偏好排序
         })
     }
     // 调试用：
-    this.doSearch(
-      function(){
-        that.setData({currentData: 1});
-        that._filterByPreference();
-        that._sortByTime() // 默认情况下标签亮在偏好排序
-      })
+   
   },
 
   
@@ -131,11 +135,19 @@ Page({
       this.setData({settim:false})
       var cc=that.data.checkInfo
       cc[1].checked=false
+      wx.setStorage({
+        data: false,
+        key: 'settime',
+      })
       this.setData({checkInfo:cc})
     } else {
       this.setData({settim:true})
       var cc=that.data.checkInfo
       cc[1].checked=true
+      wx.setStorage({
+        data: true,
+        key: 'settime',
+      })
       this.setData({checkInfo:cc})
     }
       // console.log(this.data.avoidjam)
@@ -148,6 +160,10 @@ Page({
     var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
     console.log(startTime)
     that.setData({startT:startTime+':00'})
+    wx.setStorage({
+      data: startTime+':00',
+      key: 'startT',
+    })
     wx.setStorage({
       data: that.data.dateTime,
       key: 'dateTime',
@@ -192,7 +208,9 @@ Page({
 
   /** 在每次修改完地址、或勾选框option后调用该私有函数更新要post的内容 */
   _updateRequestBody:function(){
+    
     if (this.data.arrive && this.data.depart){
+      console.log('yyyeeesss')
       this.setData({
         "navigateRequest":{
           "arrivePlace": this.data.arrive,
@@ -241,7 +259,7 @@ Page({
     {
       this._updateRequestBody();
       this.doSearch(function(){
-        that.setData({currentData: 1});
+        that.setData({currentData: 0});
         that._filterByPreference();
         that._sortByPreference() // TODO 此处应该有排序方式按实际调整
       });

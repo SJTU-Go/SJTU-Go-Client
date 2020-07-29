@@ -9,6 +9,7 @@ Page({
     strategy:null,
     lat:0,
     lon:0,
+    startT:"",
     routeplan:[],
     polyline:[],
     time:0,
@@ -23,6 +24,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.getStorage({
+      key: 'settime',
+      success(res){
+        console.log(res)
+        if (res.data){
+          wx.getStorage({
+            key: 'startT',
+            success(res){
+            that.setData({startT:res.data})
+            }
+          })
+          
+        }
+      }
+    })
     this.setData({
       idx:options.idx,
     })
@@ -110,14 +126,19 @@ Page({
     var that = this;
     wx.setStorageSync('userID', "292") // TODO: load userID on initial loading
     var userID = wx.getStorageSync("userID")
-    
+    var req = {
+      "strategy": that.data.strategy,
+      "userID": userID,
+    }
+
+    if (that.data.startT){
+      req.departTime = that.data.startT
+    }
+  
     wx.request({
       url: 'https://api.ltzhou.com/trip/start',
       method:"POST",
-      data:{
-        "strategy": that.data.strategy,
-        "userID": userID,
-      },
+      data:req,
       success(res){
         console.log(res)
         var tripID = res;

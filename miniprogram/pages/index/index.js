@@ -12,7 +12,7 @@ Page({
 
   data:{
     iconmarker:{},
-    currentData : 0,
+    currentdata : 0,
     step :0,
     bus:{},
     walk:{},

@@ -121,30 +121,34 @@ Page({
                   viplist.splice(i,1);
                     i=i-1;
                 }
-            }
-              console.log(viplist)
-              
-              if(viplist){
-              var vip=new Array()
-              var v=new Object()
-
-              v.value="h"  
-              v.name="哈罗单车"
-              v.checked=true
-              vip.push(v)
+              }
+              console.log(viplist)              
+              if(viplist.length>0){
+                var vip=new Array()
+                var v=new Object()
+                v.value="h"  
+                v.name="哈罗单车"
+                v.checked=true
+                vip.push(v)
                 wx.setStorage({
-              data: vip,
-              key: 'vip',
-            })}
-            
-          }
-          else{wx.setStorage({
-            data:[], 
-            key: 'vip',
-          })
-          
-        }
-          }})  
+                  data: vip,
+                  key: 'vip',
+                })
+              }
+              else{
+                var vip=new Array()
+                var v=new Object()
+                v.value="h"  
+                v.name="哈罗单车"
+                v.checked=false
+                vip.push(v)
+                wx.setStorage({
+                  data: vip, 
+                  key: 'vip',
+                })           
+              }
+            }}
+          })  
 
 
           wx.request({

@@ -127,7 +127,9 @@
 
 <!-- <view wx:if="{{currentData==1}}"> -->
 <view class="container">
-	<view wx:for="{{strategyLength}}" wx:for-index="idx" wx:key="type">
-		<routetag index="{{idx}}"></routetag>
+	<view wx:if="strategyLength">
+		<view wx:for="{{strategyLength}}" wx:for-index="idx" wx:key="type">
+			<routetag index="{{idx}}"></routetag>
+		</view>
 	</view>
 </view>
