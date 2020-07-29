@@ -134,10 +134,35 @@ Page({
   {var that=this
     console.log(e)
     console.log(this.data)
-    var index=e.currentTarget.dataset.index
+    var index = e.currentTarget.dataset.index
+    var hour = ''
+    if ( that.data.showlist[index].timehour < 10 ){
+      hour = '0' + String(that.data.showlist[index].timehour)
+    }
+    else {
+      hour = String(that.data.showlist[index].timehour)
+    }
+    var day = ''
+    if ( that.data.showlist[index].selectDay < 10 ){
+      day = '0' + String(that.data.showlist[index].selectDay)
+    }
+    else {
+      day = String(that.data.showlist[index].selectDay)
+    }
+    var month = that.data.showlist[index].yearMonth.substring(5)
+    var yearm = that.data.showlist[index].yearMonth.replace("-","/") 
+    if (Number(month)<10){
+      yearm = yearm.replace('/',"/0") 
+    } 
+    var starttime = yearm +'/'+ day +' '+ hour +':'+that.data.showlist[index].timeminute + ':00'
+    console.log(starttime)
      wx.setStorage({
     data:'',
     key: 'arrive',
+  })  
+  wx.setStorage({
+    data:starttime,
+    key: 'startT',
   })  
   wx.setStorage({
     data:'',
@@ -148,7 +173,7 @@ Page({
     key: 'depart',
   })  
     wx.navigateTo({
-    url: '../searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow),
+    url: '../searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow)+'&startTime='+starttime,
   })
   },
   addschedule:function(){

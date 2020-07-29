@@ -6,7 +6,9 @@ Page({
     /** 本页面可获取的配置信息 */
     date: '2020-07-12',
     time: '12:00',
+    fromSchedule: false,
     startT:'2020/05/11 12:05:12',
+    showtime:'',
     dateTimeArray: null,
     dateTime: null,
     startYear: 2020,
@@ -62,10 +64,7 @@ Page({
 
     console.log(options)
     var that = this 
-    wx.setStorage({
-      data: false,
-      key: 'settime',
-    })
+    
     var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
     obj.dateTimeArray.pop();
     obj.dateTime.pop();
@@ -73,13 +72,45 @@ Page({
       dateTime: obj.dateTime,
       dateTimeArray: obj.dateTimeArray,
     });
-    
+    var checkinf = that.data.checkInfo
+    if (options.startTime){
+      checkinf[1].checked = true
+      var st = options.startTime.replace('/',"-") 
+      st = st.replace('/',"-")
+      st = st.substr(0,16)
+      
+      this.setData({
+        startT:options.startTime,
+        checkInfo:checkinf,
+        fromSchedule:true,
+        showtime:st,
+        settim:1
+      })
+      console.log(this.data)
+      wx.setStorage({
+        data: options.startTime,
+        key: 'startT',
+      })
+      wx.setStorage({
+        data: true,
+        key: 'settime',
+      })
+      
+    }
+    else{
+      wx.setStorage({
+        data: false,
+        key: 'settime',
+      })
+    }
+
     if (options.depart && options.departShow){
       this.setData({
         depart:options.depart,
         departShow:options.departShow
       })
     }
+
     if (options.arrive && options.arriveShow){
       this.setData({
         arrive:options.arrive,
@@ -154,9 +185,9 @@ Page({
   },
   changeDateTime(e){
     var that=this
-    this.setData({ dateTime: e.detail.value });
-    console.log(this.data)
-    console.log(1+1)
+    this.setData({ dateTime: e.detail.value, fromSchedule:false });
+    //console.log(this.data)
+    //console.log(1+1)
     var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
     console.log(startTime)
     that.setData({startT:startTime+':00'})
@@ -185,7 +216,6 @@ Page({
       key: 'dateTimeArray',
     })
     console.log(this.data)
-    console.log(1+1000)
   },
 
 
