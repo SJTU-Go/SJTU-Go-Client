@@ -63,7 +63,13 @@ Page({
               'content-type': 'application/json' // 默认值
             },
             data:dataset,
-            success(res){console.log("returningcode");console.log(res.data)
+            success(res){
+              console.log("returningcode");
+              console.log(res.data)
+              wx.setStorage({
+                data:res.data.openid,
+                key: 'openid',
+              })
           wx.setStorage({
             data:res.data.userID,
             key: 'userID',

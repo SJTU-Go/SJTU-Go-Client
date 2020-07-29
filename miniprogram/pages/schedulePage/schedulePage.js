@@ -240,30 +240,30 @@ wx.setStorage({
   data:'',
   key: 'depart',
 })
-var op='oOABA5YiEomr3PO01DRjvqZUXnWY'
+var op="\'oOABA5YiEomr3PO01DRjvqZUXnWY\'"
+console.log(op)
 wx.request({
   url: 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='+ll,
   method:"POST",
   touser: op,
-template_id: 'r8jfie6yErUPKU1Kn0Ing0msxlcjMSJ9bHzPt1hPwDg',
-page: "pages/searchindex/searchindex",
-miniprogram_state:"developer",
-lang:"zh_CN",
-data: {
-"thing1": {
-  "value": "测试"
-},
-"time2": {
-  "value": "2015年01月05日 15:01"
-},
-"thing5": {
-  "value": "东上院"
-} ,
-"thing6": {
-  "value": "一个测试~~~"
-}
-},
-  
+  template_id: "r8jfie6yErUPKU1Kn0Ing0msxlcjMSJ9bHzPt1hPwDg",
+  page: "pages/searcha/searcha",
+  miniprogram_state:"developer",
+  lang:"zh_CN",
+  data: {
+    "thing1": {
+        "value": "测试"
+    },
+    "time2": {
+        "value": "2015年01月05日 15:01"
+    },
+    "thing5": {
+        "value": "东上院"
+    } ,
+    "thing6": {
+        "value": "一个测试~~~"
+    }
+  },  
   success(res){console.log(res)}
 })
 
