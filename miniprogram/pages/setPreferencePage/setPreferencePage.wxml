@@ -6,11 +6,11 @@
   <view wx:if="{{i < preference.length}}">
    <view class="massge-hd">
     
-        <view wx:if="{{preference[i]==method[0]}}"><image class="massge-img" src="../../images/feet1.png"></image>
-        </view>
+        <view wx:if="{{preference[i]==method[0]}}"><image class="massge-img" src="../../images/feet1.png"></image></view>
         <view wx:elif="{{preference[i]==method[1]}}"><image class="massge-img" src="../../images/bus2.png"></image></view>
         <view wx:elif="{{preference[i]==method[2]}}"><image class="massge-img" src="../../images/bicycle2.png"></image></view>
-         <view wx:elif="{{preference[i]==method[3]}}"><image class="massge-img" src="../../images/carpre.png"></image></view>
+        <view wx:elif="{{preference[i]==method[3]}}"><image class="massge-img" src="../../images/carpre.png"></image></view>
+        <view wx:elif="{{preference[i]==method[4]}}"><image class="massge-img" src="../../images/electromobile_1.png"></image></view>
       <view class = 'blockleft'>{{preference[i]}}</view>
       <view class="containerbutton">
         <button class='btn2' bindtap='addbanned' data-id="{{i}}"><view>设为禁止</view></button>
@@ -34,11 +34,11 @@
   <view wx:if="{{i < banned.length}}">
    <view class="massge-hd">
     
-        <view wx:if="{{banned[i]==method[0]}}"><image class="massge-img" src="../../images/feet1.png"></image>
-        </view>
+        <view wx:if="{{banned[i]==method[0]}}"><image class="massge-img" src="../../images/feet1.png"></image></view>
         <view wx:elif="{{banned[i]==method[1]}}"><image class="massge-img" src="../../images/bus2.png"></image></view>
         <view wx:elif="{{banned[i]==method[2]}}"><image class="massge-img" src="../../images/bicycle2.png"></image></view>
-         <view wx:elif="{{banned[i]==method[3]}}"><image class="massge-img" src="../../images/carpre.png"></image></view>
+        <view wx:elif="{{banned[i]==method[3]}}"><image class="massge-img" src="../../images/carpre.png"></image></view>
+        <view wx:elif="{{banned[i]==method[4]}}"><image class="massge-img" src="../../images/electromobile_1.png"></image></view>
       <view class = 'blockleft'>{{banned[i]}}</view>
       <view class="containerbutton">
         <button class='btn2' bindtap='removebanned' data-id="{{i}}"><view>设为允许</view></button>

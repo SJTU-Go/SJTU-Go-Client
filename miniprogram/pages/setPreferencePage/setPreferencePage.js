@@ -4,7 +4,7 @@ const app = getApp()
 Page({
   data:
   {preference:['步行','共享单车','校园巴士'],
-   method:['步行','校园巴士','共享单车',"旋风E100"],
+   method:['步行','校园巴士','共享单车',"旋风E100","筋斗云"],
    banned:[],
    passnum:0
   },
@@ -62,16 +62,17 @@ Page({
     success(res){banlist = res.data
       for(var i in banlist){bann = bann+banlist[i]+","
       console.log("banning")
+      //console.log(res)
       console.log(banlist[i])}
       wx.getStorage({
         key: 'preference',
         success(res){
-          console.log(res)
+          //console.log("1")
           prelist = res.data
           for(var j in prelist){pree = pree+prelist[j]+","}
           wx.getStorage({
             key: 'userID',
-          success(res){var iddd = res.data
+            success(res){var iddd = res.data
             console.log(iddd)
 
   wx.request({
