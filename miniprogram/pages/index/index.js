@@ -49,6 +49,8 @@ Page({
     var inputlat = lat
     var inputlon = lon
     var that = this
+
+    //cluster point
     wx.request({
       url: 'https://api.ltzhou.com/map/nearby/parking',
       data:{"lat":inputlat ,"lng":inputlon},
@@ -84,6 +86,8 @@ Page({
              key: "cluster",
            })
    }})
+
+      //hello bike
       wx.request({
         url: 'https://api.ltzhou.com/map/nearby/bikes',
         data:{"lat":inputlat ,"lng":inputlon},
@@ -114,7 +118,8 @@ Page({
 
         }
         })
-  
+
+        //E100
         wx.request({
           url: 'https://api.ltzhou.com/map/nearby/cars',
           data:{"lat":inputlon ,"lng":inputlon},
@@ -145,36 +150,71 @@ Page({
                  key: "carpoint",
                })
      }})
-          wx.request({
-            url: 'https://api.ltzhou.com/map/nearby/mobike',
-            data:{"lat":inputlat ,"lng":inputlon},
-            success(res){
-              var x
-              var markers=new Array();
-              var q = 0
-              for (x in res.data)
-              {
-                if (1)
-                {var marker ={iconPath: "../../images/mobike.png",
-                id: q,
-                latitude: 31.021807,//31.029236,
-                longitude: 121.429846,//121.452591,
-                width: 25,
-                height: 30,
-                name:'',}
-                  marker.latitude=res.data[x].lat
-                  marker.longitude=res.data[x].lng
-                  marker.name=res.data[x].bikeID
+
+    //jindouyun
+     wx.request({
+      url: 'https://api.ltzhou.com/map/nearby/jindouyun',
+      data:{"lat":inputlat ,"lng":inputlon},
+      success(res){
+        var x
+        var markers=new Array();
+        var q = 0
+        for (x in res.data)
+        {
+          if (1)
+          {var marker ={iconPath: "../../images/Ecar.png",
+          id: q,
+          latitude: 31.021807,//31.029236,
+          longitude: 121.429846,//121.452591,
+          width: 25,
+          height: 30,
+          name:'',}
+            marker.latitude=res.data[x].lat
+            marker.longitude=res.data[x].lng
+            marker.name=res.data[x].bikeID
          
-                  markers.push(marker) 
-      
-                 q =q +1}}
-                 if (c==1){that.setData({"markers":markers})}
-                 wx.setStorage({
-                   data: markers,
-                   key: "mopoint",
-                 })
-           }})  
+            markers.push(marker) 
+    
+           q =q +1}}
+           if (c==1){that.setData({"markers":markers})}
+           wx.setStorage({
+             data: markers,
+             key: "jindouyunpoint",
+           })
+ }})
+
+    // mobike
+    wx.request({
+      url: 'https://api.ltzhou.com/map/nearby/mobike',
+      data:{"lat":inputlat ,"lng":inputlon},
+      success(res){
+        var x
+        var markers=new Array();
+        var q = 0
+        for (x in res.data)
+        {
+          if (1)
+          {var marker ={iconPath: "../../images/mobike.png",
+          id: q,
+          latitude: 31.021807,//31.029236,
+          longitude: 121.429846,//121.452591,
+          width: 25,
+          height: 30,
+          name:'',}
+            marker.latitude=res.data[x].lat
+            marker.longitude=res.data[x].lng
+            marker.name=res.data[x].bikeID
+    
+            markers.push(marker) 
+
+            q =q +1}}
+            if (c==0){that.setData({"markers":that.data.markers.concat(markers)});
+          console.log(that.data.markers)}
+            wx.setStorage({
+              data: markers,
+              key: "mopoint",
+            })
+      }})  
   },
 
 
@@ -237,9 +277,7 @@ Page({
     }
     })
   
-  
-  
-  
+
     var that =this;
     wx.getStorage({
     key: 'preference',
@@ -293,6 +331,7 @@ Page({
    
       }
       })
+
       wx.request({
         url: 'https://api.ltzhou.com/map/nearby/bikes',
         data:{"lat":"31.021807" ,"lng":"121.429846"},
@@ -330,6 +369,45 @@ Page({
         }
         
         })
+
+        wx.request({
+          url: 'https://api.ltzhou.com/map/nearby/jindouyun',
+          data:{"lat":"31.021807" ,"lng":"121.429846"},
+          success(res){
+            console.log("nearby/jindouyun")
+            console.log(res.data)
+            var x
+            var markers=new Array();
+            var q = 0
+            for (x in res.data)
+            {
+              if (1)
+              {var marker ={iconPath: "../../images/Ecar.png",
+              id: q,
+              latitude: 31.021807,//31.029236,
+              longitude: 121.429846,//121.452591,
+              width: 25,
+              height: 30,
+              name:'',}
+                marker.latitude=res.data[x].lat
+                marker.longitude=res.data[x].lng
+                marker.name=res.data[x].bikeID
+              
+                markers.push(marker) 
+              
+               q =q +1}}
+              console.log(markers)
+               wx.setStorage({
+                 data: markers,
+                 key: "jindouyunpoint",
+               })
+         
+             //that.setData({markers:markers})
+             //that.setData({hasmarkers:true})
+           
+          }
+          
+          })
   
         wx.request({
           url: 'https://api.ltzhou.com/map/nearby/cars',
@@ -405,11 +483,13 @@ Page({
 
   
   },
+
     pass:function(e){
       this.setData({
         pass: e.detail.value,
       })
     },
+
     depart:function(e){
       this.setData({
         depart: e.detail.value,
@@ -421,9 +501,11 @@ Page({
         arrive: e.detail.value,
       })
     },
+
     indexback: function(e)
     {this.setData({step:0})
     },
+
     formSubmit: function (e) {
       var depart=String( this.data.depart)
       var arrive=String( this.data.arrive)
@@ -506,6 +588,8 @@ Page({
 
   
   },
+
+
   navigatePage:function()
   {  
     wx.navigateTo({
@@ -580,6 +664,7 @@ Page({
       })
     }.bind(this), 200)
   },
+
    checkCurrent:function(e){
           const that = this;
           if (that.data.currentData === e.target.dataset.current){
@@ -590,12 +675,18 @@ Page({
             currentData: e.target.dataset.current
           })
         }
-       if (e.target.dataset.current==0){wx.getStorage({
+       if (e.target.dataset.current==0){
+        wx.getStorage({
          key: 'bikepoint',
          success(res){that.setData({markers:res.data})}
-       })}
+       })
+       wx.getStorage({
+         key: 'mopoint',
+         success(res){that.setData({markers:that.data.markers.concat(res.data)})}
+       })
+      }
        if (e.target.dataset.current==1){wx.getStorage({
-        key: 'mopoint',
+        key: 'jindouyunpoint',
         success(res){that.setData({markers:res.data})}
       })}
        if (e.target.dataset.current==2){wx.getStorage({
