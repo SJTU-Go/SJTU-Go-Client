@@ -12,7 +12,8 @@ Page({
     this.setData({
       routeplan: prevPage.data.orderList[index].strategy.routeplan,
       polyline: app._makeRouteList(prevPage.data.orderList[index].strategy.routeplan),
-      strategy: prevPage.data.orderList[index].strategy
+      strategy: prevPage.data.orderList[index].strategy,
+      markers: app._makeMapMarker(prevPage.data.orderList[index].strategy)
     })
     console.log(this.data)
   },

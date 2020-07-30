@@ -61,7 +61,8 @@ Page({
     })
     var app = getApp()
     this.setData({
-      polyline:app._makeRouteList(curStrategy.routeplan)
+      polyline:app._makeRouteList(curStrategy.routeplan),
+      markers:app._makeMapMarker(curStrategy)
     })
     this.setData({
       lon:curStrategy.routeplan[0].routePath.coordinates[0][0],
