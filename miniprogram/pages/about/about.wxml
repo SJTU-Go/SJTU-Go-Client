@@ -1,0 +1,26 @@
+<!--miniprogram/pages/about/about.wxml-->
+<view class="page">
+	<view class="page__bd">
+		<view class="weui-article">
+			<view class="weui-article__h1">SJTU-Go 交大共享出行导航系统</view>
+			<view class="weui-article__h2">2020 Spring EI333 软件工人组 出品</view>
+      <view class="weui-article__h3">By 周李韬/董世文/方少恒/李宇帆/石涵钰/吴晓宇</view>
+			<view class="weui-article__p"> </view>
+			<view class="weui-article__section">
+				<view class="weui-article__h2">功能简介</view>
+        本系统是一个基于后台交通信息爬虫数据的小程序应用，旨在整合交大闵行校区内的各类共享交通工具信息，提供一键导航服务。
+				<!-- <view class="weui-article__p">
+                        <image class="weui-article__img" src="../images/pic_article.png" mode="aspectFit" style="height: 180px" />
+                        <image class="weui-article__img" src="../images/pic_article.png" mode="aspectFit" style="height: 180px" />
+                    </view> -->
+        <button class='navigatebutton' bindtap="navigatePage" style="margin-left: 0px;">查看功能详情</button>
+			</view>
+			<view class="weui-article__section">
+				<view class="weui-article__h2">How to Contribute</view>
+				<view class="weui-article__p">
+					Follow us on GitHub(SJTU-Go)，您可以通过在GitHub添加Issue或发送邮件至sjtugo@163.com的方式提交有关小程序本身的反馈，也可通过小程序内置的评论系统提交有关行程体验的反馈。
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

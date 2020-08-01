@@ -1,0 +1,34 @@
+<!--miniprogram/pages/about/detail.wxml-->
+<view class="page">
+	<view class="page__bd">
+		<view class="weui-article">
+			<view class="weui-article__h1">SJTU-Go 交大共享出行导航系统</view>
+			<view class="weui-article__h2">2020 Spring EI333 软件工人组 出品</view>
+			<view class="weui-article__h3">By 周李韬/董世文/方少恒/李宇帆/石涵钰/吴晓宇</view>
+			<view class="weui-article__section">
+				目前本系统具有以下功能：
+				<view class="weui-article__p">
+					· 在首页可以查看各类交通工具的实时分布，该数据由后台持续运行的爬虫脚本获取，更新频率在1分钟~4分钟不等。
+				</view>
+				<view class="weui-article__p">
+					· 点击开始导航，可输入目的地、起终点，获得导航方案。
+				</view>
+				<view class="weui-article__p">
+					· 对单车或筋斗云、E100导航方案，您可以点击方案详情中的“开始行程”按钮，系统还将记录您行程中的实际移动轨迹，您的轨迹将帮助我们提升校园交通数据的精度
+				</view>
+				<view class="weui-article__p">
+					· 交通标签页展示的是当前时段校园内可能会发生拥堵的路段，一般为以日或周为周期的规则，由系统管理员输入和维护（自动收集交通信息的功能正在开发中）。
+				</view>
+				<view class="weui-article__p">
+					· 评论标签页展示的是用户有关停车点发表的评论，您也可以在个人行程历史中对途径地点发表评论，建议您发布和出行相关的有用信息（更多评论功能正在完善中）。
+				</view>
+				<view class="weui-article__p">
+					· 您可以在个人设置页中定制个人的出行偏好，改变导航系统默认的排序结果。
+				</view>
+				<view class="weui-article__p">
+					· 可以在日程页面预设日程，系统将会在行程开始前30分钟向您发送有关行程详情的推送。
+				</view>
+			</view>
+		</view>
+	</view>
+</view>

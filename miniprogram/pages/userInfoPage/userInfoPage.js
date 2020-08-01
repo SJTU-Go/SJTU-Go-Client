@@ -13,6 +13,8 @@ Page({
   {wx.navigateTo({url: '../schedulePage/schedulePage', })},
   historyNavigate:function()
   {wx.navigateTo({url: '../HistoryPage/HistoryPage', })},
+  accessAbout:function()
+  {wx.navigateTo({url: '../about/about', })},
   accessLocationNavigate:function()
   {wx.openSetting({
     complete: (res) => {},

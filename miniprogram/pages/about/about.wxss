@@ -1,0 +1,12 @@
+/* miniprogram/pages/about/about.wxss */
+
+.page{background-color:var(--weui-BG-2)}image{margin:4px 0}
+
+.navigatebutton {
+  font-size: medium;
+  font-style: normal;
+  margin-left: 0px;
+  padding-left: 0px;
+  text-align: left;
+  text-decoration:underline;
+}
