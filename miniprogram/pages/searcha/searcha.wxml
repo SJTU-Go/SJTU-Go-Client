@@ -100,7 +100,9 @@
 		<view class="tui-picker-name"></view>
 		<picker mode="multiSelector" value="{{dateTime}}" bindchange="changeDateTime" bindcolumnchange="changeDateTimeColumn" range="{{dateTimeArray}}">
 			<view class="tui-picker-detail">
-				<text class="t" style="color:#00a278">选择开始时间:</text> {{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}
+				<text class="t" style="color:#00a278">选择开始时间:</text> 
+				<view wx:if="{{fromSchedule}}">{{showtime}}</view>
+				<view wx:else>{{dateTimeArray[0][dateTime[0]]}}-{{dateTimeArray[1][dateTime[1]]}}-{{dateTimeArray[2][dateTime[2]]}} {{dateTimeArray[3][dateTime[3]]}}:{{dateTimeArray[4][dateTime[4]]}}</view>
 			</view>
 		</picker>
 	</view>
