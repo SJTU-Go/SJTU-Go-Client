@@ -11,7 +11,6 @@
     "pages/feedback/feedback",
     "pages/extendsearch/depart/depart",
     "pages/extendsearch/pass/pass",
-    "index/index",
     "pages/schedulePage/schedulePage",
     "pages/HistoryPage/HistoryPage",
     "pages/userInfoPage/userInfoPage",

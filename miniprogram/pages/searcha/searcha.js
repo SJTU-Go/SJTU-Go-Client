@@ -58,8 +58,7 @@ Page({
   },
 
 
-  onLoad:function(options){ 
-
+  onLoad:function(options){
     console.log(options)
     var that = this 
     wx.setStorage({
@@ -95,20 +94,26 @@ Page({
     console.log(this.data.currentData==0)
     if (this._updateRequestBody()){
       //console.log(this.data)
+      wx.showLoading({
+        title: '查询中',
+      })
       this.doSearch(
         function(){
           that.setData({currentData: 0});
           that._filterByPreference();
           that._sortByPreference() // 默认情况下标签亮在偏好排序
+          wx.hideLoading({
+            complete: (res) => {},
+          })
         })
     }
     // 调试用：
-    this.doSearch(
-      function(){
-        that.setData({currentData: 1});
-        that._filterByPreference();
-        that._sortByTime() // 默认情况下标签亮在偏好排序
-      })
+    // this.doSearch(
+    //   function(){
+    //     that.setData({currentData: 1});
+    //     that._filterByPreference();
+    //     that._sortByTime() // 默认情况下标签亮在偏好排序
+    //   })
   },
 
   
@@ -215,7 +220,6 @@ Page({
   _updateRequestBody:function(){
     
     if (this.data.arrive && this.data.depart){
-      console.log('yyyeeesss')
       this.setData({
         "navigateRequest":{
           "arrivePlace": this.data.arrive,
@@ -239,6 +243,14 @@ Page({
     var choicecpy = Array.from(this.data.choices)
     var tmpResult = new Array();
     this._recSearch(choicecpy,tmpResult,callback)
+    wx.request({
+      url: 'https://api.ltzhou.com/navigate/startnavigation',
+      data: this.data.navigateRequest,
+      method: 'POST',
+      success (res) {
+        console.log (res.data)
+      }
+    })
   },
 
 
@@ -263,10 +275,16 @@ Page({
     else
     {
       this._updateRequestBody();
+      wx.showLoading({
+        title: '查询中',
+      })
       this.doSearch(function(){
         that.setData({currentData: 0});
         that._filterByPreference();
         that._sortByPreference() // TODO 此处应该有排序方式按实际调整
+        wx.hideLoading({
+          complete: (res) => {},
+        })
       });
     }
   },
@@ -336,34 +354,6 @@ Page({
     var that = this
     that.setData({currentData : 0})
     var curResult = this.data.strategies;
-    var arr = this.data.strategies;
-    for(var j=0;j<arr.length;j++){
-      var item = arr[j];
-      if(item.type=="校园巴士"){
-        wx.setStorage({
-          data: item,
-          key: 'bus',
-        })       
-      }
-      if(item.type=="步行"){
-        wx.setStorage({
-          data: item,
-          key: 'walk',
-        })
-      }
-      if(item.type=="共享单车"){
-        wx.setStorage({
-          data: item,
-          key: 'bike',
-        })
-      }
-      if(item.type=="旋风E100"){
-        wx.setStorage({
-          data: item,
-          key: 'car',
-        })
-      }
-      }
     var newResult = new Array()
     var pre = that.data.preference
     wx.getStorage({

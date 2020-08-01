@@ -676,14 +676,10 @@ Page({
           })
         }
        if (e.target.dataset.current==0){
-        wx.getStorage({
-         key: 'bikepoint',
-         success(res){that.setData({markers:res.data})}
-       })
-       wx.getStorage({
-         key: 'mopoint',
-         success(res){that.setData({markers:that.data.markers.concat(res.data)})}
-       })
+         var newmarkers = wx.getStorageSync('bikepoint')
+         var momarkers = wx.getStorageSync('mopoint')
+         newmarkers.concat(momarkers)
+         that.setData({markers:newmarkers})
       }
        if (e.target.dataset.current==1){wx.getStorage({
         key: 'jindouyunpoint',

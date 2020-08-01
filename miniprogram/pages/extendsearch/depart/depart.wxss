@@ -1,3 +1,42 @@
+.bottomblock1 {
+  margin-left: 20%;
+  margin-right: 20%;
+  position: fixed;
+  height: 42px;
+  bottom: 50px;
+  width: 60%;
+}
+
+.floatbutton {
+  width: 25%;
+  height: 42px;
+  color: rgb(255, 255, 255);
+  background-color: rgb(54, 147, 69);
+  border-radius: 15rpx;
+}
+
+.floatbutton2 {
+  position: fixed;
+  width: 25%;
+  height: 42px;
+  bottom: 50px;
+  right: 5%;
+  color: rgb(255, 255, 255);
+  background-color: rgb(54, 147, 69);
+  border-radius: 15rpx;
+}
+
+.floatbutton1 {
+  position: fixed;
+  width: 25%;
+  height: 42px;
+  bottom: 50px;
+  left: 5%;
+  color: rgb(255, 255, 255);
+  background-color: rgb(54, 147, 69);
+  border-radius: 15rpx;
+}
+
 .icon-clear
 {position: fixed;
 left: 79%;
@@ -15,10 +54,7 @@ top: 37rpx;}
   width: 60rpx;
 
 }
-.imgbox
-{
 
-}
 .serachicon
 {position: fixed;
 margin-right: 20rpx;
