@@ -39,17 +39,15 @@
   <mp-cells ext-class="my-cells" title="系统设置">
             <mp-cell value="个人偏好" bindtap="preferenceNavigate"></mp-cell>
 						<mp-cell value="月卡设置" bindtap="vip"></mp-cell>
+            <mp-cell value="权限管理" bindtap="accessLocationNavigate"></mp-cell>
   </mp-cells>
   <mp-cells ext-class="my-cells" title="个人信息">
-            <mp-cell value="日程查看" bindtap="scheduleNavigate"></mp-cell>
+						<!-- <mp-cell value="日程查看" bindtap="scheduleNavigate"></mp-cell> -->
+            <mp-cell value="日程查看" footer="开发中"></mp-cell>
             <mp-cell value="历史记录" bindtap="historyNavigate"></mp-cell>
   </mp-cells>
 
-	<mp-cells ext-class="my-cells" title="权限设置">
-            <mp-cell value="权限管理" bindtap="accessLocationNavigate"></mp-cell>
-  </mp-cells>
-
-	<mp-cells ext-class="my-cells">
+	<mp-cells ext-class="my-cells" title="关于我们">
 						<mp-cell value="关于SJTU-Go"  bindtap="accessAbout"></mp-cell>
 	</mp-cells>
 </view>
