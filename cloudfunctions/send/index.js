@@ -5,15 +5,18 @@ exports.main = async (event, context) => {
   cloud.init();
   const db = cloud.database();
   const _ = db.command;
-
+  
   try {
+    var oldTime = (new Date().getTime() + 30 * 60 * 1000)
+    var dd=new Date(oldTime)
+    var Day = new Date(dd.getFullYear(), dd.getMonth(), dd.getDate(), dd.getHours(), dd.getMinutes(), dd.getSeconds(), 0)
     // 从云开数据库中查询等待发送的消息列表
     const messages = await db
       .collection('messages')
       .where({
         done: false,
         // 开始时间前半小时之内
-        startTime: _.lte(new Date().getTime() -( 8*60-30) * 60 * 1000),
+        startTime: _.lte(Day),
       })
       .get();
 
@@ -39,7 +42,7 @@ exports.main = async (event, context) => {
           return e;
         }
       });
-
+    //return Day;
     return Promise.all(sendPromises);
   } catch (err) {
     console.log(err);
