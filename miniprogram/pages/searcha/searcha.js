@@ -7,7 +7,6 @@ Page({
     date: '2020-07-12',
     time: '12:00',
     fromSchedule: false,
-    startT:'2020/05/11 12:05:12',
     showtime:'',
     dateTimeArray: null,
     dateTime: null,
@@ -86,14 +85,6 @@ Page({
         settim:1
       })
       console.log(this.data)
-      wx.setStorage({
-        data: options.startTime,
-        key: 'startT',
-      })
-      wx.setStorage({
-        data: true,
-        key: 'settime',
-      })
       
     }
     else{
@@ -123,6 +114,7 @@ Page({
     }})
     console.log(this.data.strategyLength)
     console.log(this.data.currentData==0)
+    this.setData({"startT": this.dateformat(new Date())})
     if (this._updateRequestBody()){
       //console.log(this.data)
       wx.showLoading({
@@ -176,19 +168,11 @@ Page({
       this.setData({settim:false})
       var cc=that.data.checkInfo
       cc[1].checked=false
-      wx.setStorage({
-        data: false,
-        key: 'settime',
-      })
       this.setData({checkInfo:cc})
     } else {
       this.setData({settim:true})
       var cc=that.data.checkInfo
       cc[1].checked=true
-      wx.setStorage({
-        data: true,
-        key: 'settime',
-      })
       this.setData({checkInfo:cc})
     }
       // console.log(this.data.avoidjam)
@@ -201,14 +185,6 @@ Page({
     var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
     console.log(startTime)
     that.setData({startT:startTime+':00'})
-    wx.setStorage({
-      data: startTime+':00',
-      key: 'startT',
-    })
-    wx.setStorage({
-      data: that.data.dateTime,
-      key: 'dateTime',
-    })
   },
   changeDateTimeColumn(e){
     var that=this
@@ -273,6 +249,7 @@ Page({
     var choicecpy = Array.from(this.data.choices)
     var tmpResult = new Array();
     this._recSearch(choicecpy,tmpResult,callback)
+    console.log(this.data.navigateRequest)
     wx.request({
       url: 'https://api.ltzhou.com/navigate/startnavigation',
       data: this.data.navigateRequest,
@@ -520,6 +497,10 @@ Page({
       strategyLength:Array.from(Array(newResult.length).keys())
     })
   },
+
+  dateformat(t) {
+    return t.toLocaleDateString("en-GB").split("/").reverse().join("/")+' '+t.toLocaleTimeString("en-GB")
+  }
  
 
 

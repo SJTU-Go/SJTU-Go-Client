@@ -30,7 +30,7 @@
 							<image class="massge-img" src="/images/feet1.png"></image>
 						</view>
 						<view wx:if="{{itema.type == 'CLOUDMOTOR'}}" style='font-weight:bold;' width="300rpx">
-							<image class="massge-img" src="/images/carpre.png"></image>
+							<image class="massge-img" src="/images/electromobile_3.png"></image>
 						</view>
 					</view>
 					<view class="verticalline2"> </view>
@@ -61,7 +61,7 @@
 										在 {{itema.departName}} 附近停车，前往目的地 {{itema.arriveName}}，大约需要步行 {{itema.distance}} 米
 									</view>
 									<view wx:if="{{itema.type == 'CLOUDMOTOR'}}">
-										。。。
+										筋斗云前往目的地，距离 {{itema.driveDistance}} 米，花费 {{itema.cost/100}} 元。
 									</view>
 								</view>
 							</view>

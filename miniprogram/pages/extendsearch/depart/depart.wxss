@@ -7,6 +7,17 @@
   width: 60%;
 }
 
+.bottomblock {
+  margin-left: 5%;
+  margin-right: 5%;
+  position: fixed;
+  height: 42px;
+  bottom: 50px;
+  width: 90%;
+  display: flex;
+}
+
+
 .floatbutton {
   width: 25%;
   height: 42px;
@@ -16,26 +27,19 @@
 }
 
 .floatbutton2 {
-  position: fixed;
-  width: 25%;
-  height: 42px;
-  bottom: 50px;
-  right: 5%;
+  left: 2%;
   color: rgb(255, 255, 255);
   background-color: rgb(54, 147, 69);
   border-radius: 15rpx;
 }
 
 .floatbutton1 {
-  position: fixed;
-  width: 25%;
-  height: 42px;
-  bottom: 50px;
-  left: 5%;
+  right: 2%;
   color: rgb(255, 255, 255);
   background-color: rgb(54, 147, 69);
   border-radius: 15rpx;
 }
+
 
 .icon-clear
 {position: fixed;

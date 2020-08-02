@@ -17,7 +17,7 @@ Page({
     arrive:'',
     pass:'',
     storage:'',
-    extendType:["共享单车","旋风E100"],
+    extendType:["共享单车","旋风E100","筋斗云"],
   },
 
   /**
