@@ -384,6 +384,7 @@ Page({
     var that = this
     that.setData({currentData : 0})
     var curResult = this.data.strategies;
+<<<<<<< HEAD
     var arr = this.data.strategies;
     for(var j=0;j<arr.length;j++){
       var item = arr[j];
@@ -418,6 +419,8 @@ Page({
         })
       }
       }
+=======
+>>>>>>> 0.0.1
     var newResult = new Array()
     var pre = that.data.preference
     wx.getStorage({

@@ -48,6 +48,7 @@ Page({
     var inputlon = lon
     var that = this
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     //cluster point
     wx.request({
@@ -156,10 +157,15 @@ Page({
 
         //E100
 =======
+=======
+>>>>>>> 0.0.1
     // console.log(c)
     switch (c) {
       case "0"://hello bike
         var all_markers;
+<<<<<<< HEAD
+>>>>>>> 0.0.1
+=======
 >>>>>>> 0.0.1
         wx.request({
           url: 'https://api.ltzhou.com/map/nearby/bikes',
@@ -171,6 +177,7 @@ Page({
             var x
             var markers = new Array();
             var q = 0
+<<<<<<< HEAD
 <<<<<<< HEAD
             for (x in res.data)
             {
@@ -564,6 +571,75 @@ Page({
             })
           }
         })
+=======
+            console.log(res.data)
+            for (x in res.data) {
+              if (res.data[x].biketype == 0) {
+                var marker = {
+                  iconPath: "../../images/hebike.png",
+                  id: q,
+                  latitude: 31.021807, //31.029236,
+                  longitude: 121.429846, //121.452591,
+                  width: 25,
+                  height: 30,
+                  name: '',
+                }
+                marker.latitude = res.data[x].lat
+                marker.longitude = res.data[x].lng
+                marker.name = res.data[x].bikeID
+                markers.push(marker)
+                q = q + 1
+              } else {
+                markers.push({
+                  iconPath: "../../images/schoolbike.png",
+                  id: q,
+                  latitude: res.data[x].lat,
+                  longitude: res.data[x].lng,
+                  width: 25,
+                  height: 30,
+                  name: res.data[x].bikeID,
+                })
+                q = q + 1
+              }
+            }
+            all_markers = markers;
+            // mobike
+            wx.request({
+              url: 'https://api.ltzhou.com/map/nearby/mobike',
+              data: {
+                "lat": inputlat,
+                "lng": inputlon
+              },
+              success(res) {
+                var x
+                var markers = new Array();
+                var q = 0
+                for (x in res.data) {
+                  if (1) {
+                    var marker = {
+                      iconPath: "../../images/mobike.png",
+                      id: q,
+                      latitude: 31.021807, //31.029236,
+                      longitude: 121.429846, //121.452591,
+                      width: 25,
+                      height: 30,
+                      name: '',
+                    }
+                    marker.latitude = res.data[x].lat
+                    marker.longitude = res.data[x].lng
+                    marker.name = res.data[x].bikeID
+                    markers.push(marker)
+                    q = q + 1
+                  }
+                }
+                that.setData({
+                  "markers": all_markers.concat(markers)
+                });
+              }
+            })
+          }
+        })
+>>>>>>> 0.0.1
         break;
       case "1":    //jindouyun
         wx.request({
@@ -683,6 +759,9 @@ Page({
       default:
         break;
     }
+<<<<<<< HEAD
+>>>>>>> 0.0.1
+=======
 >>>>>>> 0.0.1
 
    
@@ -835,6 +914,7 @@ Page({
             name: '',
             bikeCount: ''
           }
+<<<<<<< HEAD
           that.setData({
             iconmarker: h
           })
@@ -991,6 +1071,33 @@ Page({
   gcj02towgs84(lng, lat) {
 
     var that = this;
+=======
+          that.setData({
+            iconmarker: h
+          })
+          that.setData({
+            latitude: res.latitude,
+            longitude: res.longitude,
+            circles: [{
+              latitude: res.latitude,
+              longitude: res.longitude,
+              color: '#FF0000DD',
+              fillColor: '#d1edff88',
+              radius: 0, //定位点半径
+              strokeWidth: 10000
+            }]
+          })
+        } //success end
+
+      })
+    }
+  },
+
+
+  gcj02towgs84(lng, lat) {
+
+    var that = this;
+>>>>>>> 0.0.1
 
     if (that.out_of_china(lng, lat)) {
 
@@ -1055,6 +1162,9 @@ Page({
     return (lng < 72.004 || lng > 137.8347) || ((lat < 0.8293 || lat > 55.8271) || false);
 
   }
+<<<<<<< HEAD
+>>>>>>> 0.0.1
+=======
 >>>>>>> 0.0.1
 
 
