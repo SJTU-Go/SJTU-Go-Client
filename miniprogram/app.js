@@ -270,7 +270,7 @@ App({
             color: '#0099FF'
           });
           break;
-      
+
         default:
           break;
       }     
