@@ -20,9 +20,9 @@
 									<input bindtap="depart" placeholder-style="color:rgb(5, 5, 5,0.651);" placeholder="点击输入..." /></view>
 							</view>
 						</view>
-						<view wx:if="{{passnum<=2}}" class='iconright'>
+						<!-- <view wx:if="{{passnum<=2}}" class='iconright'>
 							<image class="massge-img" src="../../images/add1.png" bindtap='addpass'></image>
-						</view>
+						</view> -->
 					</view>
 					<view class="divLine"></view>
 				</view>
