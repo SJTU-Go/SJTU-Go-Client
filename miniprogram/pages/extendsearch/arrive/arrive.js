@@ -9,7 +9,7 @@ var ee = 0.00669342162296594323;
 Page({
 
   data: {
-    coordinateview: false,
+    coordinateview: true,
     id: 0,
     latitude: 31.021807, //31.029236,
     longitude: 121.429846, //121.452591,
@@ -28,9 +28,8 @@ Page({
 
     btnWidth: 300, //删除按钮的宽度单位
     startX: "", //收支触摸开始滑动的位置
-    inputmessage: "输入目的地",
+    inputmessage: "输入出发点",
   },
-
   chooselocate: function () {
     var cor = this.data.coordinateview
     this.setData({
@@ -72,28 +71,22 @@ Page({
 
   returnresult: function (e) {
     var ress = {}
-    console.log(e)
+    // console.log(e)
     var res
     for (res in this.data.markers) {
       if (e.markerId == this.data.markers[res].id) {
         this.setData({
           inputVal: this.data.markers[res].name,
-          id: this.data.markers[res].id,
+          id: 'DT'+ this.data.markers[res].id,
           boxshow: false,
           hasmarkers: false,
         })
         ress.id = this.data.markers[res].id
         ress.name = this.data.markers[res].name
-        console.log(ress)
-        wx.setStorage({
-          key: 'arrive',
-          data: ress,
-        })
       }
     }
     this.searchout()
   },
-
   onLoad: function () {
     var that = this;
     //初始化界面
@@ -107,42 +100,33 @@ Page({
       inputShowed: false
     });
   },
-
   inputreturn: function (event) {
     this.setData({
       inputVal: event.currentTarget.dataset.name,
       boxshow: false,
-      id: event.currentTarget.dataset.id,
+      id: 'DT'+event.currentTarget.dataset.id,
     })
     this.searchout()
-    // wx.setStorage({
-    //   key: 'arrive',
-    //   data: event.currentTarget.dataset,
-    // })
   },
   searchout: function () {
-    if (this.data.inputVal.substring(0, 4) == 'POIN') {
-      console.log("corrdinating!!")
-    }
 
-    let pages = getCurrentPages(); 
+    let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
+
     let prevPage = pages[pages.length - 2];
-    if (this.data.inputVal.substring(0, 4) == 'POIN') {
-      prevPage.setData({
-        arriveShow: this.data.inputVal,
-        arrive: this.data.inputVal,
-      })
-    } else {
-      prevPage.setData({
-        arriveShow: this.data.inputVal,
-        arrive: 'DT' + this.data.id,
-      })
-    }
-    wx.navigateBack({
-      delta: 1
+    prevPage.setData({ // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
+      arriveShow: this.data.inputVal,
+      arrive: this.data.id,
     })
-  },
 
+
+    wx.navigateBack({
+
+      delta: 1 // 返回上一级页面。
+
+    })
+
+
+  },
   // 清除搜索框值
   clearInput: function () {
     this.setData({
@@ -150,22 +134,22 @@ Page({
       boxshow: false
     });
   },
-
   // 键盘抬起事件2
   inputTyping: function (e) {
     this.setData({
       boxshow: true
     })
-    console.log(e.detail.value)
+    // console.log(e.detail.value)
     var that = this;
     if (e.detail.value == '') {
       return;
     }
     that.setData({
       viewShowed: false,
-      inputVal: e.detail.value
+      inputVal: e.detail.value,
+      id: e.detail.value
     });
-    console.log(e.detail.value)
+    // console.log(e.detail.value)
     wx.request({
       url: 'https://api.ltzhou.com/map/search/destination',
       data: {
@@ -180,6 +164,7 @@ Page({
         var x
         var markers = new Array(0)
         for (x in res.data) {
+
           var marker = {
             iconPath: "/mark/19.PNG",
             latitude: 31.021807, //31.029236,
@@ -190,20 +175,22 @@ Page({
             height: 50,
             bikeCount: ''
           }
-          console.log("resing")
-          console.log(res.data[x])
+          // console.log("resing")
+          // console.log(res.data[x])
           marker.latitude = res.data[x].location.coordinates[1]
           marker.longitude = res.data[x].location.coordinates[0]
           marker.name = res.data[x].placeName
           marker.iconPath = "../../../images/logo.png"
           marker.id = res.data[x].placeID
-          console.log(marker)
+          // console.log(marker)
           markers.push(marker)
-          console.log("adding")
-          console.log(markers)
+          // console.log("adding")
+          // console.log(markers)
         }
 
-        console.log(res.data)
+
+
+        // console.log(res.data)
         that.setData({
           carList: res.data
         })
@@ -241,10 +228,12 @@ Page({
       success: function (res) {
         var x
         var markers = new Array(0)
-        console.log(res.data)
+
+        // console.log(res.data)
         that.setData({
           carList: res.data
         })
+
       }
     });
   },
@@ -254,8 +243,11 @@ Page({
   btn_name: function (res) {
     console.log(res.currentTarget.dataset.index, res.currentTarget.dataset.name);
     console.log(res.currentTarget.dataset.index, res.currentTarget.dataset.id);
+
     var that = this;
+
     that.hideInput();
+
     that.setData({
       viewShowed: true,
       carNum: res.currentTarget.dataset.name,
@@ -346,13 +338,76 @@ Page({
   },
   //点击解绑
 
+  //点击试驾
+  tryDriver: function (e) {
+    var that = this;
+    var index = e.currentTarget.dataset.index;
+    var list = that.data.carList;
+    if (list[index].state == 5)
+      return;
+
+    wx.showModal({
+      title: '提示',
+      content: '是否确认试驾',
+      success(res) {
+        if (res.confirm) {
+          //试驾
+          wx.request({
+            url: app.globalData.root + "car/driver.do",
+            data: {
+              "openid": app.globalData.openid,
+              "carNum": e.currentTarget.dataset.name
+            },
+            method: 'GET',
+            header: {
+              'Content-type': 'application/json'
+            },
+            success: function (res) {
+              if (res.data == 0) {
+                wx.showToast({
+                  title: '车辆维修尚未结束、不可试驾',
+                  icon: 'none',
+                })
+                return;
+              }
+              //切换图标
+              for (var ix in list) {
+                if (ix == index)
+                  list[ix].state = 5;
+              }
+              //更新列表的状态
+              that.setData({
+                carList: list
+              });
+            }
+          });
+        }
+      }
+    })
+  },
+  //事件处理函数
+  navmap: function (e) {
+    wx.navigateTo({
+      url: '../site/site?deviceId=' + e.currentTarget.dataset.id
+    })
+  },
+  //显示车辆状态
+  carState: function (e) {
+    wx.navigateTo({
+      url: '../state/state?carNum=' + e.currentTarget.dataset.car
+    })
+  },
 
   regionchange: function (e) {
     var con = this.data.coordinateview
-    if (con) {
+    if (con && e.type == 'end') {
       var llatitude
       var llongitude
-      console.log(e)
+      // wx.showToast({
+      //   title: '搜索中',
+      //   icon: 'loading',
+      //   duration: 500
+      // })
 
       var that = this;
 
@@ -364,14 +419,14 @@ Page({
 
         success: function (res) {
           that.SearchForPoint(res)
-          console.log('location')
-          console.log(that.data)
-          console.log(res, 11111)
+          // console.log('location')
+          // console.log(that.data)
+          // console.log(res, 11111)
 
           var coordinate = that.gcj02towgs84(res.longitude, res.latitude)
 
-          console.log(coordinate, 2222)
-          console.log(res.latitude)
+          // console.log(coordinate, 2222)
+          // console.log(res.latitude)
           llatitude = res.latitude
           llongitude = res.longitude
           var q = []
@@ -388,63 +443,114 @@ Page({
           that.setData({
             markers: q
           })
-          var inputVal = "POINT(" + llongitude.toFixed(4) + " " + llatitude.toFixed(4) + ")"
+          var pointID = "POINT(" + llongitude.toFixed(4) + " " + llatitude.toFixed(4) + ")"
           that.setData({
-            inputVal: inputVal
+            id: pointID,
+            inputVal: "地图上的点"
           })
+
           that.setData({
+
             latitude: res.latitude,
+
             longitude: res.longitude,
+
             circles: [{
+
               latitude: res.latitude,
+
               longitude: res.longitude,
+
               color: '#FF0000DD',
+
               fillColor: '#d1edff88',
+
               radius: 0, //定位点半径
+
               strokeWidth: 10000
+
             }]
+
           })
-        }
+
+        },
+        // complete (res) {
+        //   wx.hideToast({
+        //     complete: (res) => {},
+        //   })
+        // }
+
       })
     }
+
+
   },
 
   gcj02towgs84(lng, lat) {
+
     var that = this;
+
     if (that.out_of_china(lng, lat)) {
+
       return [lng, lat]
+
     } else {
+
       var dlat = that.transformlat(lng - 105.0, lat - 35.0);
+
       var dlng = that.transformlng(lng - 105.0, lat - 35.0);
+
       var radlat = lat / 180.0 * PI;
+
       var magic = Math.sin(radlat);
+
       magic = 1 - ee * magic * magic;
+
       var sqrtmagic = Math.sqrt(magic);
+
       dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
+
       dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
+
       var mglat = lat + dlat;
+
       var mglng = lng + dlng;
+
       return [lng * 2 - mglng, lat * 2 - mglat]
+
     }
 
   },
   transformlat(lng, lat) {
+
     var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+
     ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+
     ret += (20.0 * Math.sin(lat * PI) + 40.0 * Math.sin(lat / 3.0 * PI)) * 2.0 / 3.0;
+
     ret += (160.0 * Math.sin(lat / 12.0 * PI) + 320 * Math.sin(lat * PI / 30.0)) * 2.0 / 3.0;
+
     return ret
+
   },
 
   transformlng(lng, lat) {
+
     var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+
     ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+
     ret += (20.0 * Math.sin(lng * PI) + 40.0 * Math.sin(lng / 3.0 * PI)) * 2.0 / 3.0;
+
     ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
+
     return ret
 
   },
   out_of_china(lng, lat) {
+
     return (lng < 72.004 || lng > 137.8347) || ((lat < 0.8293 || lat > 55.8271) || false);
+
   }
 });

@@ -6,7 +6,9 @@ Page({
     /** 本页面可获取的配置信息 */
     date: '2020-07-12',
     time: '12:00',
+    fromSchedule: false,
     startT:'2020/05/11 12:05:12',
+    showtime:'',
     dateTimeArray: null,
     dateTime: null,
     startYear: 2020,
@@ -25,6 +27,7 @@ Page({
     departShow:null, // 显示的内容
     arrive:null,
     arriveShow:null,
+    currentData:0,
 
 
     passnum:0,
@@ -57,9 +60,10 @@ Page({
   },
 
 
-  onLoad:function(options){ 
+  onLoad:function(options){
     console.log(options)
     var that = this 
+    
     var obj = dateTimePicker.dateTimePicker(this.data.startYear, this.data.endYear);
     obj.dateTimeArray.pop();
     obj.dateTime.pop();
@@ -67,13 +71,45 @@ Page({
       dateTime: obj.dateTime,
       dateTimeArray: obj.dateTimeArray,
     });
-    
+    var checkinf = that.data.checkInfo
+    if (options.startTime){
+      checkinf[1].checked = true
+      var st = options.startTime.replace('/',"-") 
+      st = st.replace('/',"-")
+      st = st.substr(0,16)
+      
+      this.setData({
+        startT:options.startTime,
+        checkInfo:checkinf,
+        fromSchedule:true,
+        showtime:st,
+        settim:1
+      })
+      console.log(this.data)
+      wx.setStorage({
+        data: options.startTime,
+        key: 'startT',
+      })
+      wx.setStorage({
+        data: true,
+        key: 'settime',
+      })
+      
+    }
+    else{
+      wx.setStorage({
+        data: false,
+        key: 'settime',
+      })
+    }
+
     if (options.depart && options.departShow){
       this.setData({
         depart:options.depart,
         departShow:options.departShow
       })
     }
+
     if (options.arrive && options.arriveShow){
       this.setData({
         arrive:options.arrive,
@@ -85,21 +121,30 @@ Page({
       success:function(res){
         that.setData({preference:res.data})
     }})
+    console.log(this.data.strategyLength)
+    console.log(this.data.currentData==0)
     if (this._updateRequestBody()){
+      //console.log(this.data)
+      wx.showLoading({
+        title: '查询中',
+      })
       this.doSearch(
         function(){
-          that.setData({currentData: 1});
+          that.setData({currentData: 0});
           that._filterByPreference();
           that._sortByPreference() // 默认情况下标签亮在偏好排序
+          wx.hideLoading({
+            complete: (res) => {},
+          })
         })
     }
     // 调试用：
-    this.doSearch(
-      function(){
-        that.setData({currentData: 1});
-        that._filterByPreference();
-        that._sortByTime() // 默认情况下标签亮在偏好排序
-      })
+    // this.doSearch(
+    //   function(){
+    //     that.setData({currentData: 1});
+    //     that._filterByPreference();
+    //     that._sortByTime() // 默认情况下标签亮在偏好排序
+    //   })
   },
 
   
@@ -131,23 +176,35 @@ Page({
       this.setData({settim:false})
       var cc=that.data.checkInfo
       cc[1].checked=false
+      wx.setStorage({
+        data: false,
+        key: 'settime',
+      })
       this.setData({checkInfo:cc})
     } else {
       this.setData({settim:true})
       var cc=that.data.checkInfo
       cc[1].checked=true
+      wx.setStorage({
+        data: true,
+        key: 'settime',
+      })
       this.setData({checkInfo:cc})
     }
       // console.log(this.data.avoidjam)
   },
   changeDateTime(e){
     var that=this
-    this.setData({ dateTime: e.detail.value });
-    console.log(this.data)
-    console.log(1+1)
+    this.setData({ dateTime: e.detail.value, fromSchedule:false });
+    //console.log(this.data)
+    //console.log(1+1)
     var startTime=this.data.dateTimeArray[0][this.data.dateTime[0]]+'/'+that.data.dateTimeArray[1][that.data.dateTime[1]]+'/'+that.data.dateTimeArray[2][that.data.dateTime[2]]+' '+that.data.dateTimeArray[3][that.data.dateTime[3]]+':'+that.data.dateTimeArray[4][that.data.dateTime[4]]
     console.log(startTime)
     that.setData({startT:startTime+':00'})
+    wx.setStorage({
+      data: startTime+':00',
+      key: 'startT',
+    })
     wx.setStorage({
       data: that.data.dateTime,
       key: 'dateTime',
@@ -169,7 +226,6 @@ Page({
       key: 'dateTimeArray',
     })
     console.log(this.data)
-    console.log(1+1000)
   },
 
 
@@ -192,6 +248,7 @@ Page({
 
   /** 在每次修改完地址、或勾选框option后调用该私有函数更新要post的内容 */
   _updateRequestBody:function(){
+    
     if (this.data.arrive && this.data.depart){
       this.setData({
         "navigateRequest":{
@@ -216,6 +273,14 @@ Page({
     var choicecpy = Array.from(this.data.choices)
     var tmpResult = new Array();
     this._recSearch(choicecpy,tmpResult,callback)
+    wx.request({
+      url: 'https://api.ltzhou.com/navigate/startnavigation',
+      data: this.data.navigateRequest,
+      method: 'POST',
+      success (res) {
+        console.log (res.data)
+      }
+    })
   },
 
 
@@ -240,10 +305,16 @@ Page({
     else
     {
       this._updateRequestBody();
+      wx.showLoading({
+        title: '查询中',
+      })
       this.doSearch(function(){
-        that.setData({currentData: 1});
+        that.setData({currentData: 0});
         that._filterByPreference();
         that._sortByPreference() // TODO 此处应该有排序方式按实际调整
+        wx.hideLoading({
+          complete: (res) => {},
+        })
       });
     }
   },

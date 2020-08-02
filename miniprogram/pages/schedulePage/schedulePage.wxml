@@ -19,7 +19,11 @@
     </button></view>
 <view class ='blockright'>
 
-  <button wx:if="{{list.disnotice}}" class='btn2' data-index="{{idx}}" bindtap='notice' disabled="{{list.disnotice}}">
+  <button wx:if="{{list.outdate}}" class='btn2' data-index="{{idx}}" bindtap='notice' disabled="{{list.outdate}}">
+    <text>已逾期</text>
+    </button>
+
+  <button wx:elif="{{list.disnotice}}" class='btn2' data-index="{{idx}}" bindtap='notice' disabled="{{list.disnotice}}">
     <text>即将推送</text>
     </button>
  

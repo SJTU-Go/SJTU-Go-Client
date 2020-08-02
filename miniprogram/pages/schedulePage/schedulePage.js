@@ -1,6 +1,14 @@
 //index.js
 const app = getApp()
+const db = wx.cloud.database()
 var util = require("../../utils/util.js")
+const formatDate = dateTime => {
+  const date = new Date(dateTime);
+  return `${date.getFullYear()}-${date.getMonth() +
+    1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`;
+};
+
+
 Page({
  
   /**
@@ -9,6 +17,7 @@ Page({
    * timeBean 传递给组件的数据，数据的格式在一开始的工具类中明确
    */
   data: {
+    
     disnotice:0,
     openid:'',
     repeat:1,
@@ -41,15 +50,7 @@ Page({
 
   onLoad: function (options) {
     var that =this
-    /*wx.getStorage({
-      key: 'openid',
-      success:function(res){
-        that.setData({
-        
-          openid:res.data,
-        })
-      }
-    })*/
+
     wx.getStorage({
       key: 'storedschedule',
       success: function(res){   
@@ -68,7 +69,7 @@ Page({
         }
         var currentdayy =  that.data.currentday ;
         console.log(currentdayy)
-        console.log(that.data.timeBean)
+        console.log(that.data)
         var empty = that.data.currentschedule.every(function(value, index, array){
           return value.selectDay != currentdayy;
         })
@@ -86,15 +87,7 @@ Page({
 
   onShow: function (options) {
     var that =this
-    /*wx.getStorage({
-      key: 'openid',
-      success:function(res){
-        that.setData({
-        
-          openid:res.data,
-        })
-      }
-    })*/
+
     wx.getStorage({
       key: 'storedschedule',
       success: function(res){   
@@ -122,6 +115,19 @@ Page({
         var showlist = that.data.currentschedule.filter(e=>e.selectDay == currentdayy)
         that.setData({showlist: showlist})
         console.log(that.data.showlist)
+        var showw=that.data.showlist
+        for(var index=0;index<showw.length;++index){
+          var month = Number(showw[index].yearMonth.substring(5))
+          var year = Number(showw[index].yearMonth.substring(0,4))
+          var minutes = Number(showw[index].timeminute)
+          var d = new Date(year, month, showw[index].selectDay, showw[index].timehour, minutes, 0, 0);
+          if(d <= new Date().getTime()){
+            console.log("outdate")
+            showw[index].outdate=true
+          }
+          else(console.log("not outdate"))
+        }
+        that.setData({showlist:showw})
       },
       fail: function(res) {
         console.log(res+'aaaaa')
@@ -134,10 +140,35 @@ Page({
   {var that=this
     console.log(e)
     console.log(this.data)
-    var index=e.currentTarget.dataset.index
+    var index = e.currentTarget.dataset.index
+    var hour = ''
+    if ( that.data.showlist[index].timehour < 10 ){
+      hour = '0' + String(that.data.showlist[index].timehour)
+    }
+    else {
+      hour = String(that.data.showlist[index].timehour)
+    }
+    var day = ''
+    if ( that.data.showlist[index].selectDay < 10 ){
+      day = '0' + String(that.data.showlist[index].selectDay)
+    }
+    else {
+      day = String(that.data.showlist[index].selectDay)
+    }
+    var month = that.data.showlist[index].yearMonth.substring(5)
+    var yearm = that.data.showlist[index].yearMonth.replace("-","/") 
+    if (Number(month)<10){
+      yearm = yearm.replace('/',"/0") 
+    } 
+    var starttime = yearm +'/'+ day +' '+ hour +':'+that.data.showlist[index].timeminute + ':00'
+    console.log(starttime)
      wx.setStorage({
     data:'',
     key: 'arrive',
+  })  
+  wx.setStorage({
+    data:starttime,
+    key: 'startT',
   })  
   wx.setStorage({
     data:'',
@@ -148,21 +179,71 @@ Page({
     key: 'depart',
   })  
     wx.navigateTo({
-    url: '../searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow),
+    url: '../searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow)+'&startTime='+starttime,
   })
   },
   addschedule:function(){
   this.setData({mHidden:false})
   },
+
+
   notice:function(e){
     var that=this
     console.log(e)
     var index=e.currentTarget.dataset.index
+
+    var hour = ''
+    if ( that.data.showlist[index].timehour < 10 ){
+      hour = '0' + String(that.data.showlist[index].timehour)
+    }
+    else {
+      hour = String(that.data.showlist[index].timehour)
+    }
+    var day = ''
+    if ( that.data.showlist[index].selectDay < 10 ){
+      day = '0' + String(that.data.showlist[index].selectDay)
+    }
+    else {
+      day = String(that.data.showlist[index].selectDay)
+    }
+    var month = that.data.showlist[index].yearMonth.substring(5)
+    var yearm = that.data.showlist[index].yearMonth.replace("-","/") 
+    if (Number(month)<10){
+      yearm = yearm.replace('/',"/0") 
+    } 
+    var starttime = yearm +'/'+ day +' '+ hour +':'+that.data.showlist[index].timeminute + ':00'
+    var jumpurl = 'pages/searcha/searcha?arrive='+JSON.stringify(that.data.showlist[index].arrive)+'&arriveShow='+JSON.stringify(that.data.showlist[index].arriveShow)+'&depart='+JSON.stringify(that.data.showlist[index].depart)+'&departShow='+JSON.stringify(that.data.showlist[index].departShow)+'&startTime='+starttime
     var showw=that.data.showlist
     showw[index].disnotice=true
+    var name = showw[index].schedulename
+    var arrive = showw[index].arriveShow
+    var depart = showw[index].departShow
+    var month = Number(showw[index].yearMonth.substring(5))-1
+    var year = Number(showw[index].yearMonth.substring(0,4))
+    var minutes = Number(showw[index].timeminute)
+    var d = new Date(year, month, showw[index].selectDay, showw[index].timehour, minutes, 0, 0);
+    var time = showw[index].yearMonth+'-'+String(showw[index].selectDay)+' '+String(showw[index].timehour)+':'+showw[index].timeminute
+    var hour = String(showw[index].timehour)
+    if (showw[index].timehour < 10){
+      hour = '0'+hour
+    }
+    var daytime = showw[index].yearMonth.replace("-","年") +'月'+String(showw[index].selectDay)+'日 '+ hour +':'+showw[index].timeminute    
     that.setData({showlist:showw})
     console.log(that.data)
-    
+    console.log(month,year,minutes,time,daytime,d)
+    var subscribeList = [
+      {
+        
+        startTime: d,
+        title: name,
+        arrivePlace: arrive,
+        description: '起点：'+depart,
+      },
+    ].map(mes => ({
+      ...mes,
+      startTimeString: formatDate(mes.startTime),
+    }));
+    var item = subscribeList[0]
       var c=that.data.currentschedule
       var t=0
       for(var ii=0;ii<=c.length;++ii){
@@ -173,87 +254,92 @@ Page({
           wx.setStorage({
             data: c,
             key: 'storedschedule',
-          })
-          
+          })          
+          var ress = c;
+          var postitem = {}
+          var posti={}
+          posti.schedule=ress
+          postitem.schedule = posti
+          wx.getStorage({
+            key: 'userID',
+       success(res11){
+         postitem.userID = res11.data
+         console.log(postitem)
+         wx.request({      
+          url: 'https://api.ltzhou.com/user/updateScheduleInfo',   
+          method:"POST",  
+          data:postitem,   
+          success(res){console.log(res)}     
+        }) 
+        }
+        })
           break
         }
       }
      
       wx.requestSubscribeMessage({
         tmplIds: ['r8jfie6yErUPKU1Kn0Ing0msxlcjMSJ9bHzPt1hPwDg'],
-        success (res) {console.log(1) },
+        success (res) {console.log(1) 
+          wx.request({
+            url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxde82431f805562ef&secret=40fb5700a5742cdf2d744ef87df8da98',
+            method:'GET',
+            header: {
+              'content-type': 'application/json'
+            },
+          
+          success (res1){
+          
+          console.log(res1)
+          var a_token=res1.data.access_token
+
+          if (res.errMsg === 'requestSubscribeMessage:ok') {
+
+            db.collection('messages').add({
+
+              data: {
+                ...item,
+                data: {
+                  thing1: {value: item.title},
+                  time2: {value: daytime},
+                  thing5: {value: item.arrivePlace},
+                  thing6: {value: item.description},
+                },
+                templateId: "r8jfie6yErUPKU1Kn0Ing0msxlcjMSJ9bHzPt1hPwDg",
+                access_token: a_token,
+                page:jumpurl,
+                done:false
+              },
+              success: function(res) {
+
+                console.log(res)
+              }
+            })
+          }              
+          }          
+          })
+        },
         fail (res) {console.log(res) }
       })
-      
-      var u="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxde82431f805562ef&secret=APPSECRET"
-wx.request({
-  url: 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxde82431f805562ef&secret=40fb5700a5742cdf2d744ef87df8da98',
-method:'GET',
-header: {
-'content-type': 'application/json'
-},
-//data:{
-//id:that.data.cuFeedback.tripID
-//},
 
-success (res1){
-
-console.log(res1)
-var ll=res1.data.access_token
-var pp=that.data.showlist[index].place
-wx.setStorage({
-  data:{name:pp,
-      
-  },
-  key: 'arrive',
-})  
-wx.setStorage({
-  data:'',
-  key: 'pass',
-})  
-wx.setStorage({
-  data:'',
-  key: 'depart',
-})
-var op='oOABA5YiEomr3PO01DRjvqZUXnWY'
-wx.request({
-  url: 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token='+ll,
-  method:"POST",
-  touser: op,
-template_id: 'r8jfie6yErUPKU1Kn0Ing0msxlcjMSJ9bHzPt1hPwDg',
-page: "pages/searchindex/searchindex",
-miniprogram_state:"developer",
-lang:"zh_CN",
-data: {
-"thing1": {
-  "value": "测试"
-},
-"time2": {
-  "value": "2015年01月05日 15:01"
-},
-"thing5": {
-  "value": "东上院"
-} ,
-"thing6": {
-  "value": "一个测试~~~"
-}
-},
-  
-  success(res){console.log(res)}
-})
-
-
-}
-
-})
     
     },
+
+
   modalcancelled:function(){
     this.setData({mHidden:true})
     },
   changeModal:function(event){
     var that= this
     console.log(that.data)
+    if (!this.data.depart|!this.data.arrive|!this.data.arrive|!this.data.repeat|!this.data.schedulename){
+      wx.showToast({ 
+        title: '输入错误', 
+        icon: 'loading', 
+        duration: 2000 
+      })
+    }
+    else
+    {
     for (var ii=0;ii<this.data.repeat;++ii) {
     var selectWeek = ii;
     var timeBean = util.getWeekDayList(selectWeek)
@@ -274,7 +360,22 @@ data: {
     var posti={}
     posti.schedule=ress
     postitem.schedule = posti
-  
+    var showw=ress
+    for(var index=0;index<showw.length;++index){
+      var month = Number(showw[index].yearMonth.substring(5))
+      var year = Number(showw[index].yearMonth.substring(0,4))
+      var minutes = Number(showw[index].timeminute)
+      var d = new Date(year, month-1, showw[index].selectDay, showw[index].timehour, minutes, 0, 0);
+      var dd =new Date().getTime()
+      console.log(year, month-1, showw[index].selectDay, showw[index].timehour, minutes,d,formatDate(dd))
+
+      if(d <= dd){
+        console.log("outdate")
+        showw[index].outdate=true
+      }
+      else(console.log("not outdate"))
+    }
+    that.setData({showlist:showw})
     wx.setStorage({ key:'storedschedule',
     data:ress,
 
@@ -305,6 +406,8 @@ data: {
   })
   }
 this.onShow()
+
+}
     },
   /**
    * 点击了上一周，选择周数字减一，然后直接调用工具类中一个方法获取到数据
@@ -407,6 +510,7 @@ this.onShow()
    * 选中了某一日，改变selectDay为选中日
    */ 
   dayClick:function(e){
+    var that=this
     var timeBean = this.data.timeBean
     timeBean.selectDay = e.detail;
     console.log(e)
@@ -422,6 +526,22 @@ this.onShow()
     var showlist = this.data.currentschedule.filter(e=>e.selectDay == currentdayy)
     this.setData({showlist: showlist})
     console.log(this.data.showlist)
+    var showw=that.data.showlist
+        for(var index=0;index<showw.length;++index){
+          var month = Number(showw[index].yearMonth.substring(5))
+          var year = Number(showw[index].yearMonth.substring(0,4))
+          var minutes = Number(showw[index].timeminute)
+          var d = new Date(year, month-1, showw[index].selectDay, showw[index].timehour, minutes, 0, 0);
+          var dd =new Date().getTime()
+          console.log(year, month-1, showw[index].selectDay, showw[index].timehour, minutes,d,formatDate(dd))
+
+          if(d <= dd){
+            console.log("outdate")
+            showw[index].outdate=true
+          }
+          else(console.log("not outdate"))
+        }
+        that.setData({showlist:showw})
   },
  
   /**

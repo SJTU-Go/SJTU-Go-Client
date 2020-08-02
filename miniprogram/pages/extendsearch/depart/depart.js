@@ -9,14 +9,14 @@ var ee = 0.00669342162296594323;
 Page({
 
   data: {
-    coordinateview:false,
-    id:0,
-    latitude: 31.021807,//31.029236,
-    longitude: 121.429846,//121.452591,
-    hasmarkers:true,
-    markers:new Array(0),
-    boxshow:true,
-    datapass:'',
+    coordinateview: true,
+    id: 0,
+    latitude: 31.021807, //31.029236,
+    longitude: 121.429846, //121.452591,
+    hasmarkers: true,
+    markers: new Array(0),
+    boxshow: true,
+    datapass: '',
     // 搜索框状态
     inputShowed: true,
     //显示结果view的状态
@@ -28,52 +28,64 @@ Page({
 
     btnWidth: 300, //删除按钮的宽度单位
     startX: "", //收支触摸开始滑动的位置
-    inputmessage:"输入出发点",
+    inputmessage: "输入出发点",
   },
-  chooselocate:function()
-  {var cor = this.data.coordinateview
-    this.setData({coordinateview:true})
+  chooselocate: function () {
+    var cor = this.data.coordinateview
+    this.setData({
+      coordinateview: true
+    })
     var llatitude = this.data.latitude
     var llongitude = this.data.longitude
     var q = []
-    q.push({iconPath: "../../../images/crosses.png",
-    id:1,
-    latitude:     llatitude,
-    longitude:llongitude,
-    width: 40,
-    height: 40,
-    name:'',
-    bikeCount:''})   
-    this.setData({markers:q})
+    q.push({
+      iconPath: "../../../images/crosses.png",
+      id: 1,
+      latitude: llatitude,
+      longitude: llongitude,
+      width: 40,
+      height: 40,
+      name: '',
+      bikeCount: ''
+    })
+    this.setData({
+      markers: q
+    })
   },
 
-  chooseback:function()
-  { this.setData({coordinateview:false})
-    this.setData({markers:[]});
-    this.setData({inputVal:""})
+  chooseback: function () {
+    this.setData({
+      coordinateview: false
+    })
+    this.setData({
+      markers: []
+    });
+    this.setData({
+      inputVal: ""
+    })
   },
 
-    chooseclick:function()
-  {this.searchout()},
-  
-  returnresult:function(e){
-    var  ress ={}
-    console.log(e)
+  chooseclick: function () {
+    this.searchout()
+  },
+
+  returnresult: function (e) {
+    var ress = {}
+    // console.log(e)
     var res
-    for(res in this.data.markers){
-  if (e.markerId==this.data.markers[res].id){
-    this.setData({inputVal:this.data.markers[res].name,
-      id:this.data.markers[res].id,
-      boxshow:false,
-    hasmarkers:false,})
-      ress.id = this.data.markers[res].id
-      ress.name = this.data.markers[res].name
-      console.log(ress)
-      wx.setStorage({
-        key: 'depart',
-        data: ress,
-      })}}
-      this.searchout()
+    for (res in this.data.markers) {
+      if (e.markerId == this.data.markers[res].id) {
+        this.setData({
+          inputVal: this.data.markers[res].name,
+          id: 'DT'+ this.data.markers[res].id,
+          boxshow: false,
+          hasmarkers: false,
+        })
+        ress.id = this.data.markers[res].id
+        ress.name = this.data.markers[res].name
+      }
+    }
+    this.searchout()
   },
   onLoad: function () {
     var that = this;
@@ -88,83 +100,61 @@ Page({
       inputShowed: false
     });
   },
-  inputreturn:function(event)
-  { 
-    this.setData({inputVal:event.currentTarget.dataset.name,
-    boxshow:false,
-    id:event.currentTarget.dataset.id,
-  })
-  this.searchout()
-    wx.setStorage({
-    key: 'depart',
-    data: event.currentTarget.dataset,
-  })
+  inputreturn: function (event) {
+    this.setData({
+      inputVal: event.currentTarget.dataset.name,
+      boxshow: false,
+      id: 'DT'+event.currentTarget.dataset.id,
+    })
+    this.searchout()
   },
-  searchout:function()
-  { 
-  if (this.data.inputVal.substring(0, 4)=='POIN'){console.log("corrdinating!!")
-wx.setStorage({
-  data:{name:this.data.inputVal,id:"404"},
-  key: 'depart',
-})
-}
-//    wx.navigateTo({url: '../../searchindex/searchindex',})
+  searchout: function () {
 
-let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
- 
-let prevPage = pages[ pages.length - 2 ];  
- 
-//prevPage 是获取上一个页面的js里面的pages的所有信息。 -2 是上一个页面，-3是上上个页面以此类推。
-if (this.data.inputVal.substring(0, 4)=='POIN'){
-prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
- 
-    departShow:this.data.inputVal,
-    depart:"DT404"
+    let pages = getCurrentPages(); //获取当前页面js里面的pages里的所有信息。
 
-})}
-else{console.log("findingid")
-console.log(this.data.id)
-  prevPage.setData({  // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
- 
-  departShow:this.data.inputVal,
-  depart:'DT'+this.data.id,
-
-})}
+    let prevPage = pages[pages.length - 2];
+    prevPage.setData({ // 将我们想要传递的参数在这里直接setData。上个页面就会执行这里的操作。
+      departShow: this.data.inputVal,
+      depart: this.data.id,
+    })
 
 
-wx.navigateBack({
- 
-  delta: 1  // 返回上一级页面。
+    wx.navigateBack({
 
-})  
+      delta: 1 // 返回上一级页面。
+
+    })
 
 
-},
+  },
   // 清除搜索框值
   clearInput: function () {
     this.setData({
       inputVal: "",
-      boxshow:false
+      boxshow: false
     });
   },
   // 键盘抬起事件2
   inputTyping: function (e) {
     this.setData({
-      boxshow:true
+      boxshow: true
     })
-    console.log(e.detail.value)
+    // console.log(e.detail.value)
     var that = this;
-    if (e.detail.value == ''){
-        return;
+    if (e.detail.value == '') {
+      return;
     }
     that.setData({
       viewShowed: false,
-      inputVal: e.detail.value
+      inputVal: e.detail.value,
+      id: e.detail.value
     });
-    console.log(e.detail.value)
+    // console.log(e.detail.value)
     wx.request({
       url: 'https://api.ltzhou.com/map/search/destination',
-      data: { keyword:e.detail.value} ,
+      data: {
+        keyword: e.detail.value
+      },
       method: 'GET',
       header: {
         'Content-type': 'application/json'
@@ -172,43 +162,46 @@ wx.navigateBack({
 
       success: function (res) {
         var x
-        var markers=new Array(0)
-        for (x in res.data)
-        {
+        var markers = new Array(0)
+        for (x in res.data) {
 
-        var marker ={iconPath: "/mark/19.PNG",
-          latitude: 31.021807,//31.029236,
-          longitude: 121.429846,//121.452591,
-          id:0,
-          name:'',
-          width: 50,
-          height: 50,
-          bikeCount:''}
-          console.log("resing")
-          console.log(res.data[x])
-            marker.latitude=res.data[x].location.coordinates[1]
-            marker.longitude=res.data[x].location.coordinates[0] 
-            marker.name=res.data[x].placeName
-            marker.iconPath = "../../../images/logo.png"
-            marker.id = res.data[x].placeID
-            console.log(marker)
-            markers.push(marker) 
-            console.log("adding")
-            console.log(markers)
-           }   
+          var marker = {
+            iconPath: "/mark/19.PNG",
+            latitude: 31.021807, //31.029236,
+            longitude: 121.429846, //121.452591,
+            id: 0,
+            name: '',
+            width: 50,
+            height: 50,
+            bikeCount: ''
+          }
+          // console.log("resing")
+          // console.log(res.data[x])
+          marker.latitude = res.data[x].location.coordinates[1]
+          marker.longitude = res.data[x].location.coordinates[0]
+          marker.name = res.data[x].placeName
+          marker.iconPath = "../../../images/logo.png"
+          marker.id = res.data[x].placeID
+          // console.log(marker)
+          markers.push(marker)
+          // console.log("adding")
+          // console.log(markers)
+        }
 
- 
-            
-        console.log(res.data)
+
+
+        // console.log(res.data)
         that.setData({
           carList: res.data
         })
         that.setData({
-          markers:markers
+          markers: markers
         })
-        that.setData({hasmarkers:true})
-        console.log("markers")
-        console.log(that.data.markers)
+        that.setData({
+          hasmarkers: true
+        })
+        // console.log("markers")
+        // console.log(that.data.markers)
       }
     });
   },
@@ -216,7 +209,7 @@ wx.navigateBack({
     var llat = e.latitude
     var llon = e.longitude
     this.setData({
-      boxshow:true
+      boxshow: true
     })
     var that = this;
     that.setData({
@@ -224,16 +217,19 @@ wx.navigateBack({
     });
     wx.request({
       url: 'https://api.ltzhou.com/map/nearby/destination',
-      data: {lat:llat,lng:llon} ,
+      data: {
+        lat: llat,
+        lng: llon
+      },
       method: 'GET',
       header: {
         'Content-type': 'application/json'
       },
       success: function (res) {
         var x
-        var markers=new Array(0)
-  
-        console.log(res.data)
+        var markers = new Array(0)
+
+        // console.log(res.data)
         that.setData({
           carList: res.data
         })
@@ -245,7 +241,7 @@ wx.navigateBack({
 
   // 获取选中推荐列表中的值
   btn_name: function (res) {
-     console.log(res.currentTarget.dataset.index, res.currentTarget.dataset.name);
+    console.log(res.currentTarget.dataset.index, res.currentTarget.dataset.name);
     console.log(res.currentTarget.dataset.index, res.currentTarget.dataset.id);
 
     var that = this;
@@ -259,7 +255,7 @@ wx.navigateBack({
     });
   },
 
-// index-serch
+  // index-serch
   //滑动效果
   touchS: function (e) {
     if (e.touches.length == 1) { //触摸屏上只有一个触摸点
@@ -402,142 +398,159 @@ wx.navigateBack({
     })
   },
 
-  regionchange:function(e){
+  regionchange: function (e) {
     var con = this.data.coordinateview
-    if (con){
-    var llatitude
-    var llongitude
-    console.log(e)
+    if (con && e.type == 'end') {
+      var llatitude
+      var llongitude
+      // wx.showToast({
+      //   title: '搜索中',
+      //   icon: 'loading',
+      //   duration: 500
+      // })
 
-            var that = this;
-      
-            this.mapCtx = wx.createMapContext("map4select");
-      
-            this.mapCtx.getCenterLocation({
-      
-              type: 'gcj02',
-      
-              success: function(res) {
-        that.SearchForPoint(res)
-      console.log('location')
-      console.log(that.data)
-                console.log(res, 11111)
-      
-                var coordinate = that.gcj02towgs84(res.longitude, res.latitude)
-      
-                console.log(coordinate, 2222)
-      console.log(res.latitude)
-      llatitude = res.latitude
-      llongitude = res.longitude
-      var q = []
-      q.push({iconPath: "../../../images/crosses.png",
-      id:1,
-      latitude:     llatitude,
-      longitude:llongitude,
-      width: 40,
-      height: 40,
-      name:'',
-      bikeCount:''})   
-      that.setData({markers:q})
-      var  inputVal="POINT("+llongitude.toFixed(4)+" "+llatitude.toFixed(4)+")"
-      that.setData({inputVal:inputVal})
+      var that = this;
 
-                that.setData({
-      
-                  latitude: res.latitude,
-      
-                  longitude: res.longitude,
-      
-                  circles: [{
-      
-                    latitude: res.latitude,
-      
-                    longitude: res.longitude,
-      
-                    color: '#FF0000DD',
-      
-                    fillColor: '#d1edff88',
-      
-                    radius: 0, //定位点半径
-      
-                    strokeWidth: 10000
-      
-                  }]
-      
-                })
-   
-              }
-      
-            })}
+      this.mapCtx = wx.createMapContext("map4select");
+
+      this.mapCtx.getCenterLocation({
+
+        type: 'gcj02',
+
+        success: function (res) {
+          that.SearchForPoint(res)
+          // console.log('location')
+          // console.log(that.data)
+          // console.log(res, 11111)
+
+          var coordinate = that.gcj02towgs84(res.longitude, res.latitude)
+
+          // console.log(coordinate, 2222)
+          // console.log(res.latitude)
+          llatitude = res.latitude
+          llongitude = res.longitude
+          var q = []
+          q.push({
+            iconPath: "../../../images/crosses.png",
+            id: 1,
+            latitude: llatitude,
+            longitude: llongitude,
+            width: 40,
+            height: 40,
+            name: '',
+            bikeCount: ''
+          })
+          that.setData({
+            markers: q
+          })
+          var pointID = "POINT(" + llongitude.toFixed(4) + " " + llatitude.toFixed(4) + ")"
+          that.setData({
+            id: pointID,
+            inputVal: "地图上的点"
+          })
+
+          that.setData({
+
+            latitude: res.latitude,
+
+            longitude: res.longitude,
+
+            circles: [{
+
+              latitude: res.latitude,
+
+              longitude: res.longitude,
+
+              color: '#FF0000DD',
+
+              fillColor: '#d1edff88',
+
+              radius: 0, //定位点半径
+
+              strokeWidth: 10000
+
+            }]
+
+          })
+
+        },
+        // complete (res) {
+        //   wx.hideToast({
+        //     complete: (res) => {},
+        //   })
+        // }
+
+      })
+    }
 
 
-        },
+  },
 
-        gcj02towgs84(lng, lat) {
+  gcj02towgs84(lng, lat) {
 
-            var that  = this;
-        
-            if (that.out_of_china(lng, lat)) {
-        
-              return [lng, lat]
-        
-            } else {
-        
-              var dlat = that.transformlat(lng - 105.0, lat - 35.0);
-        
-              var dlng = that.transformlng(lng - 105.0, lat - 35.0);
-        
-              var radlat = lat / 180.0 * PI;
-        
-              var magic = Math.sin(radlat);
-        
-              magic = 1 - ee * magic * magic;
-        
-              var sqrtmagic = Math.sqrt(magic);
-        
-              dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
-        
-              dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
-        
-              var mglat = lat + dlat;
-        
-              var mglng = lng + dlng;
-        
-              return [lng * 2 - mglng, lat * 2 - mglat]
-        
-            }
-        
-          },
-          transformlat(lng, lat) {
-    
-              var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
-          
-              ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
-          
-              ret += (20.0 * Math.sin(lat * PI) + 40.0 * Math.sin(lat / 3.0 * PI)) * 2.0 / 3.0;
-          
-              ret += (160.0 * Math.sin(lat / 12.0 * PI) + 320 * Math.sin(lat * PI / 30.0)) * 2.0 / 3.0;
-          
-              return ret
-          
-            },
-          
-            transformlng(lng, lat) {
-          
-              var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
-          
-              ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
-          
-              ret += (20.0 * Math.sin(lng * PI) + 40.0 * Math.sin(lng / 3.0 * PI)) * 2.0 / 3.0;
-          
-              ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
-          
-              return ret
-          
-            },
-            out_of_china(lng, lat) {
-    
-                return (lng < 72.004 || lng > 137.8347) || ((lat < 0.8293 || lat > 55.8271) || false);
-            
-              }
+    var that = this;
+
+    if (that.out_of_china(lng, lat)) {
+
+      return [lng, lat]
+
+    } else {
+
+      var dlat = that.transformlat(lng - 105.0, lat - 35.0);
+
+      var dlng = that.transformlng(lng - 105.0, lat - 35.0);
+
+      var radlat = lat / 180.0 * PI;
+
+      var magic = Math.sin(radlat);
+
+      magic = 1 - ee * magic * magic;
+
+      var sqrtmagic = Math.sqrt(magic);
+
+      dlat = (dlat * 180.0) / ((a * (1 - ee)) / (magic * sqrtmagic) * PI);
+
+      dlng = (dlng * 180.0) / (a / sqrtmagic * Math.cos(radlat) * PI);
+
+      var mglat = lat + dlat;
+
+      var mglng = lng + dlng;
+
+      return [lng * 2 - mglng, lat * 2 - mglat]
+
+    }
+
+  },
+  transformlat(lng, lat) {
+
+    var ret = -100.0 + 2.0 * lng + 3.0 * lat + 0.2 * lat * lat + 0.1 * lng * lat + 0.2 * Math.sqrt(Math.abs(lng));
+
+    ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+
+    ret += (20.0 * Math.sin(lat * PI) + 40.0 * Math.sin(lat / 3.0 * PI)) * 2.0 / 3.0;
+
+    ret += (160.0 * Math.sin(lat / 12.0 * PI) + 320 * Math.sin(lat * PI / 30.0)) * 2.0 / 3.0;
+
+    return ret
+
+  },
+
+  transformlng(lng, lat) {
+
+    var ret = 300.0 + lng + 2.0 * lat + 0.1 * lng * lng + 0.1 * lng * lat + 0.1 * Math.sqrt(Math.abs(lng));
+
+    ret += (20.0 * Math.sin(6.0 * lng * PI) + 20.0 * Math.sin(2.0 * lng * PI)) * 2.0 / 3.0;
+
+    ret += (20.0 * Math.sin(lng * PI) + 40.0 * Math.sin(lng / 3.0 * PI)) * 2.0 / 3.0;
+
+    ret += (150.0 * Math.sin(lng / 12.0 * PI) + 300.0 * Math.sin(lng / 30.0 * PI)) * 2.0 / 3.0;
+
+    return ret
+
+  },
+  out_of_china(lng, lat) {
+
+    return (lng < 72.004 || lng > 137.8347) || ((lat < 0.8293 || lat > 55.8271) || false);
+
+  }
 });

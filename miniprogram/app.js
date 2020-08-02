@@ -266,11 +266,33 @@ App({
         case "HELLOBIKE":
           polyline.push({
             points: points,
-            width: 4,
+            width: 8,
             color: '#0099FF'
           });
           break;
-
+        case "E100":
+          polyline.push({
+            points: points,
+            width: 8,
+            color: '#408000'
+          });
+          break;
+        case "WALK": case "PARK": case "FIND":
+          polyline.push({
+            points: points,
+            width: 6,
+            dottedLine: true,
+            color: '#404040'
+          });
+          break;
+        case "BUS":
+          polyline.push({
+            points: points,
+            width: 8,
+            color: '#997300'
+          });
+          break;
+          
         default:
           break;
       }     
@@ -296,7 +318,7 @@ App({
     /** end */
     var endPoint = strategy.endDetail 
     markers.push({
-      iconPath: "/images/pin_end.png",
+      iconPath: "/images/pin_arrive.png",
       id: 99,
       latitude: endPoint.location.coordinates[1],
       longitude: endPoint.location.coordinates[0],

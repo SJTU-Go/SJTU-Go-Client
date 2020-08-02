@@ -5,6 +5,15 @@ page {
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.info {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 300;
+  color: grey;
+  margin-top: 1em
+}
+
 .trafficbox
 {height: 390rpx;
   width: 90%;
