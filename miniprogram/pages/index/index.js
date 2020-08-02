@@ -61,8 +61,13 @@ Page({
             var x
             var markers = new Array();
             var q = 0
-            console.log(res.data)
+            var now = new Date()
             for (x in res.data) {
+              var time = res.data[x].time.split(':')
+              var hours = parseInt(time[0])
+              var minutes = parseInt(time[1])
+              var seconds = parseInt(time[2])
+              var timediff = now.getSeconds() + now.getMinutes() * 60 + now.getHours()*3600 - 3600 * hours - 60 * minutes - seconds
               if (res.data[x].biketype == 0) {
                 var marker = {
                   iconPath: "../../images/hebike.png",
@@ -72,6 +77,8 @@ Page({
                   width: 25,
                   height: 30,
                   name: '',
+                  type: 'NORMAL_HELLO',
+                  time: timediff
                 }
                 marker.latitude = res.data[x].lat
                 marker.longitude = res.data[x].lng
@@ -87,6 +94,8 @@ Page({
                   width: 25,
                   height: 30,
                   name: res.data[x].bikeID,
+                  type: 'SCHOOL_HELLO',
+                  time: timediff
                 })
                 q = q + 1
               }
@@ -102,7 +111,6 @@ Page({
               success(res) {
                 var x
                 var markers = new Array();
-                var q = 0
                 for (x in res.data) {
                   if (1) {
                     var marker = {
@@ -113,6 +121,7 @@ Page({
                       width: 25,
                       height: 30,
                       name: '',
+                      type: 'MOBIKE'
                     }
                     marker.latitude = res.data[x].lat
                     marker.longitude = res.data[x].lng
@@ -137,10 +146,17 @@ Page({
             "lng": inputlon
           },
           success(res) {
+            // console.log(res.data)
             var x
             var markers = new Array();
             var q = 0
+            var now = new Date()
             for (x in res.data) {
+              var time = res.data[x].time.split(':')
+              var hours = parseInt(time[0])
+              var minutes = parseInt(time[1])
+              var seconds = parseInt(time[2])
+              var timediff = now.getSeconds() + now.getMinutes() * 60 + now.getHours()*3600 - 3600 * hours - 60 * minutes - seconds
               if (1) {
                 var marker = {
                   iconPath: "../../images/MotorMap.png",
@@ -150,12 +166,15 @@ Page({
                   width: 25,
                   height: 30,
                   name: '',
+                  type: 'JDY',
+                  power: res.data[x].power,
+                  mileage: res.data[x].mileage,
+                  time: timediff
                 }
                 marker.latitude = res.data[x].lat
                 marker.longitude = res.data[x].lng
                 marker.name = res.data[x].bikeID
                 markers.push(marker)
-    
                 q = q + 1
               }
             }
@@ -211,6 +230,7 @@ Page({
             "lng": inputlon
           },
           success(res) {
+            console.log(res.data)
             var x
             var markers = new Array();
             var q = 0
@@ -225,13 +245,15 @@ Page({
                     width: 50,
                     height: 50,
                     name: '',
-                    bikeCount: ''
+                    bikeCount: res.data[x].bikeCount,
+                    motorCount: res.data[x].motorCount,
+                    popularity: res.data[x].popularity,
                   }
                   marker.latitude = res.data[x].location.coordinates[1]
                   marker.longitude = res.data[x].location.coordinates[0]
                   marker.name = res.data[x].vertexName
-                  marker.bikeCount = res.data[x].bikeCount + res.data[x].motorCount //CHANG 1
-                  marker.iconPath = "/mark/" + res.data[x].bikeCount + ".png"
+                  var allCount = res.data[x].bikeCount + res.data[x].motorCount
+                  marker.iconPath = "/mark/" + allCount + ".png"
                   marker.vertexid = res.data[x].vertexID
                   markers.push(marker)
                   q = q + 1

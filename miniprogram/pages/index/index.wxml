@@ -2,14 +2,59 @@
 <view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showModalStatus}}">
 	<view wx:if="{{markers[currentdata].bikeCount}}">
 		<view class='title'>{{markers[currentdata].name}}</view>
-		<view class='line'>当前车辆数 ：{{markers[currentdata].bikeCount}}</view>
-		<view class='line'>拥堵时段：</view>
+		<view class='line'>附近哈罗单车数 ：{{markers[currentdata].bikeCount}}</view>
+		<view class='line'>附近筋斗云车辆数 ：{{markers[currentdata].motorCount}}</view>
+		<view class='line'>停车点热度 ：{{markers[currentdata].popularity}}</view>
+		<!-- <view class='line'>拥堵时段：</view>
 		<view class='line'>推荐指数：</view>
-		<view class='line'>备注信息：</view>
+		<view class='line'>备注信息：</view> -->
 		<!--<view class = 'viewmore'>查看更多评论</view>-->
 		<view class="bottomblock">
 			<button class="navigatebutton" bindtap="setnavigatePage">设为目的地</button>
 		</view>
+	</view>
+	<view wx:if="{{markers[currentdata].type == 'NORMAL_HELLO'}}">
+		<view class='title'>哈啰单车</view>
+		<view class='line'>前15分钟1.5元，超出每15分钟1元</view>
+		<view class='line'>骑行卡前2小时免费</view>
+		<view class='line'>{{markers[currentdata].time / 60 |0}} 分钟前更新</view>
+		<!-- <view class='line'>拥堵时段：</view>
+		<view class='line'>推荐指数：</view>
+		<view class='line'>备注信息：</view> -->
+		<!--<view class = 'viewmore'>查看更多评论</view>-->
+	</view>
+	<view wx:if="{{markers[currentdata].type == 'SCHOOL_HELLO'}}">
+		<view class='title'>校园哈啰单车</view>
+		<view class='line'>前15分钟1.5元，超出每15分钟1元</view>
+		<view class='line'>骑行卡前2小时免费</view>
+		<view class='line'>骑出校园将收取调度费</view>
+		<view class='line'></view>
+		<view class='line'>{{markers[currentdata].time / 60 | 0}} 分钟前更新</view>
+		<!-- <view class='line'>拥堵时段：</view>
+		<view class='line'>推荐指数：</view>
+		<view class='line'>备注信息：</view> -->
+		<!--<view class = 'viewmore'>查看更多评论</view>-->
+	</view>
+	<view wx:if="{{markers[currentdata].type == 'MOBIKE'}}">
+		<view class='title'>摩拜/美团单车</view>
+		<view class='line'>前15分钟1.5元，超出每15分钟1元</view>
+		<view class='line'></view>
+		<view class='line'>实时信息</view>
+		<!-- <view class='line'>拥堵时段：</view>
+		<view class='line'>推荐指数：</view>
+		<view class='line'>备注信息：</view> -->
+		<!--<view class = 'viewmore'>查看更多评论</view>-->
+	</view>
+	<view wx:if="{{markers[currentdata].type == 'JDY'}}">
+		<view class='title'>筋斗云</view>
+		<view class='line'>剩余电量：{{markers[currentdata].power}} %</view>
+		<view class='line'>剩余里程：{{markers[currentdata].mileage}} km</view>
+		<view class='line'></view>
+		<view class='line'>{{markers[currentdata].time / 60 | 0}} 分钟前更新</view>
+		<!-- <view class='line'>拥堵时段：</view>
+		<view class='line'>推荐指数：</view>
+		<view class='line'>备注信息：</view> -->
+		<!--<view class = 'viewmore'>查看更多评论</view>-->
 	</view>
 </view>
 <view class='bbottomblock'>
@@ -24,7 +69,7 @@
 			<image class="massge-img" src="../../images/car.png"></image>旋风E100
 		</view>
 		<view class='tab  {{currentmode == 3 ? "tabBorer" : ""}}' data-current="3" bindtap='checkCurrent'>
-			<image class="massge-img" src="../../images/cluster.png"></image>聚类点
+			<image class="massge-img" src="../../images/cluster.png"></image>停车点
 		</view>
 	</view>
 </view>
