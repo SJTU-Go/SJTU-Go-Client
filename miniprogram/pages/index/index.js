@@ -315,23 +315,8 @@ Page({
   },
 
   setnavigatePage: function () {
-    wx.setStorage({
-      data: {
-        name: this.data.markers[this.data.currentdata].name,
-        id: "PK" + this.data.markers[this.data.currentdata].vertexid,
-      },
-      key: 'arrive',
-    })
-    wx.setStorage({
-      data: '',
-      key: 'pass',
-    })
-    wx.setStorage({
-      data: '',
-      key: 'depart',
-    })
     wx.navigateTo({
-      url: '../searcha/searcha?arrive=' + JSON.stringify("PK" + this.data.markers[this.data.currentdata].vertexid) + '&arriveShow=' + JSON.stringify(this.data.markers[this.data.currentdata].name),
+      url: '../searcha/searcha?arrive=' + "PK" + this.data.markers[this.data.currentdata].vertexid + '&arriveShow=' + this.data.markers[this.data.currentdata].name,
     })
   },
 
