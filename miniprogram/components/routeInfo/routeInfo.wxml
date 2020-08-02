@@ -66,16 +66,16 @@
 								</view>
 							</view>
 						</view>
-						<view wx:if="{{isHistory && (itema.type == 'FIND' || itema.type == 'PARK')}}">
+						<!-- <view wx:if="{{isHistory && (itema.type == 'FIND' || itema.type == 'PARK')}}">
 							<input placeholder="输入关于{{itema.type == 'FIND' ? itema.arriveName : itema.departName}}评论"/>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
 			<view class='emptyblock'></view>
 		</view>
-		<view wx:if="{{isHistory}}">
+		<!-- <view wx:if="{{isHistory}}">
 			<button formType="submit">提交评论</button>
-		</view>
+		</view> -->
 	</form>
 </scroll-view>

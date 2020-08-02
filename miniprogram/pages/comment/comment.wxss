@@ -1,9 +1,18 @@
 page {
-  background: #f7f2db;
+  /* background: #f7f2db; */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
+
+.info {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 300;
+  color: grey;
+  margin-top: 1em
+}
+
 .massge{
   overflow: hidden;
   width: 100%;

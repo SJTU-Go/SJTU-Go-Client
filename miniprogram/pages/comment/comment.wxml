@@ -19,6 +19,7 @@
 </view>
 -->
 
+    <view wx:if="{{reslist.length == 0}}" class="info">暂无评论信息</view>
 
     <view wx:if='{{boxshow}}' wx:for="{{reslist}}" wx:for-item="item" class="massge" bindtap="viewcomment"  wx:for-index='i'   data-ind="{{i}}">
          <view class = 'toppart'>
