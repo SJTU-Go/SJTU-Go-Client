@@ -14,16 +14,16 @@
 </view>
 <view class='bbottomblock'>
 	<view class='topTabSwiper'>
-		<view class='tab  {{currentData == 0 ? "tabBorer" : ""}}' data-current="0" bindtap='checkCurrent'>
+		<view class='tab  {{currentmode == 0 ? "tabBorer" : ""}}' data-current="0" bindtap='checkCurrent'>
 			<image class="massge-img" src="../../images/bicycle1.png"></image>共享单车
 		</view>
-		<view class='tab  {{currentData == 1 ? "tabBorer" : ""}}' data-current="1" bindtap='checkCurrent'>
+		<view class='tab  {{currentmode == 1 ? "tabBorer" : ""}}' data-current="1" bindtap='checkCurrent'>
 			<image class="massge-img" src="../../images/electromobile_2.png"></image>筋斗云
 		</view>
-		<view class='tab  {{currentData == 2 ? "tabBorer" : ""}}' data-current="2" bindtap='checkCurrent'>
+		<view class='tab  {{currentmode == 2 ? "tabBorer" : ""}}' data-current="2" bindtap='checkCurrent'>
 			<image class="massge-img" src="../../images/car.png"></image>旋风E100
 		</view>
-		<view class='tab  {{currentData == 3 ? "tabBorer" : ""}}' data-current="3" bindtap='checkCurrent'>
+		<view class='tab  {{currentmode == 3 ? "tabBorer" : ""}}' data-current="3" bindtap='checkCurrent'>
 			<image class="massge-img" src="../../images/cluster.png"></image>聚类点
 		</view>
 	</view>
