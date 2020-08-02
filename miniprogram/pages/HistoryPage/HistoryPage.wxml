@@ -1,4 +1,5 @@
 <view class="container">
+    <view wx:if="{{orderList.length == 0}}" class="info">暂无行程历史信息</view>
     <view class="massge" wx:for="{{orderList}}" wx:for-index="idx" wx:for-item="list" wx:key="tripID" >
       <view class="massge-hd"><image class="massge-img" src="../../images/search.png"></image>
       <view class="search-head"> {{list.strategy.depart}} 到 {{list.strategy.arrive}}</view></view>

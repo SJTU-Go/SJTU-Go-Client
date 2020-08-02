@@ -180,8 +180,8 @@ Page({
 
 
                   wx.request({
-                    // url: 'https://api.ltzhou.com/user/history/get?userID='+res.data.userID,
-                    url: 'https://api.ltzhou.com/user/history/get?userID=292',
+                    url: 'https://api.ltzhou.com/user/history/get?userID='+res.data.userID,
+                    // url: 'https://api.ltzhou.com/user/history/get?userID=292',
                     method: 'POST',
                     success(res) {
                       wx.setStorage({

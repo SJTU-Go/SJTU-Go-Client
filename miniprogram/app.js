@@ -292,7 +292,13 @@ App({
             color: '#997300'
           });
           break;
-          
+        case "CLOUDMOTOR":
+          polyline.push({
+            points: points,
+            width: 8,
+            color: '#ec9613'
+          });
+          break;
         default:
           break;
       }     

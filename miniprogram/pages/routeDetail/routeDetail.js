@@ -125,7 +125,7 @@ Page({
   startTrip: function() {
     var app = getApp();
     var that = this;
-    wx.setStorageSync('userID', "292") // TODO: load userID on initial loading
+    // wx.setStorageSync('userID', "292") // TODO: load userID on initial loading
     var userID = wx.getStorageSync("userID")
     var req = {
       "strategy": that.data.strategy,

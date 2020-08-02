@@ -54,6 +54,10 @@ Page({
         var app = getApp()
         app.cancelTrip()
         that.onUnload()
+        wx.navigateBack({
+          delta:10,
+          complete: (res) => {},
+        })
       }
     })
 
