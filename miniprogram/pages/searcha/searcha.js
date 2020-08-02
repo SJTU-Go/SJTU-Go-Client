@@ -384,43 +384,6 @@ Page({
     var that = this
     that.setData({currentData : 0})
     var curResult = this.data.strategies;
-<<<<<<< HEAD
-    var arr = this.data.strategies;
-    for(var j=0;j<arr.length;j++){
-      var item = arr[j];
-      if(item.type=="校园巴士"){
-        wx.setStorage({
-          data: item,
-          key: 'bus',
-        })       
-      }
-      if(item.type=="步行"){
-        wx.setStorage({
-          data: item,
-          key: 'walk',
-        })
-      }
-      if(item.type=="共享单车"){
-        wx.setStorage({
-          data: item,
-          key: 'bike',
-        })
-      }
-      if(item.type=="旋风E100"){
-        wx.setStorage({
-          data: item,
-          key: 'car',
-        })
-      }
-      if(item.type=="筋斗云"){
-        wx.setStorage({
-          data: item,
-          key: 'jindouyun',
-        })
-      }
-      }
-=======
->>>>>>> 0.0.1
     var newResult = new Array()
     var pre = that.data.preference
     wx.getStorage({

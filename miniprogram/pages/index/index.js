@@ -47,126 +47,10 @@ Page({
     var inputlat = lat
     var inputlon = lon
     var that = this
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    //cluster point
-    wx.request({
-      url: 'https://api.ltzhou.com/map/nearby/parking',
-      data:{"lat":inputlat ,"lng":inputlon},
-      success(res){
-        var x
-        var markers=new Array();
-        var q = 0
-        for (x in res.data)
-        {
-          if (res.data[x].bikeCount)
-          {       if(res.data[x].bikeCount+ res.data[x].motorCount <21){
-             var marker ={iconPath: "/mark/19.PNG",
-          id: q,
-          latitude: 31.021807,//31.029236,
-          longitude: 121.429846,//121.452591,
-          width: 50,
-          height: 50,
-          name:'',
-          bikeCount:''}
-            marker.latitude=res.data[x].location.coordinates[1]
-            marker.longitude=res.data[x].location.coordinates[0] 
-            marker.name=res.data[x].vertexName 
-            marker.bikeCount=res.data[x].bikeCount + res.data[x].motorCount //CHANG 1
-            marker.iconPath = "/mark/"+res.data[x].bikeCount+".png"
-            marker.vertexid = res.data[x].vertexID
-            markers.push(marker) 
-  
-           q =q +1}}
-          }
-           if (c==3){that.setData({"markers":markers})}
-           wx.setStorage({
-             data: markers,
-             key: "cluster",
-           })
-   }})
-
-      //hello bike & mobike
-      wx.request({
-        url: 'https://api.ltzhou.com/map/nearby/bikes',
-        data:{"lat":inputlat ,"lng":inputlon},
-        success(res){
-          var x
-          var markers=new Array();
-          var q = 0
-          for (x in res.data)
-          {
-            if (1)
-            {var marker ={iconPath: "../../images/hebike.png",
-            id: q,
-            latitude: 31.021807,//31.029236,
-            longitude: 121.429846,//121.452591,
-            width: 25,
-            height: 30,
-            name:'',}
-              marker.latitude=res.data[x].lat
-              marker.longitude=res.data[x].lng
-              marker.name=res.data[x].bikeID
-              markers.push(marker) 
-             q =q +1}}
-             //if (c==0){that.setData({"markers":markers})}
-             var markers_hello = markers;
-             wx.setStorage({
-               data: markers,
-               key: "bikepoint",
-             })
-
-             wx.request({
-              url: 'https://api.ltzhou.com/map/nearby/mobike',
-              data:{"lat":inputlat ,"lng":inputlon},
-              success(res){
-                var x
-                var markers=new Array();
-                var q = 0
-                for (x in res.data)
-                {
-                  if (1)
-                  {var marker ={iconPath: "../../images/mobike.png",
-                  id: q,
-                  latitude: 31.021807,//31.029236,
-                  longitude: 121.429846,//121.452591,
-                  width: 25,
-                  height: 30,
-                  name:'',}
-                    marker.latitude=res.data[x].lat
-                    marker.longitude=res.data[x].lng
-                    marker.name=res.data[x].bikeID
-            
-                    markers.push(marker) 
-        
-                    q =q +1}}
-
-                    var markers_mobike = markers;
-                    markers_mobike = markers_mobike.concat(markers_hello);
-                    if (c==0){that.setData({"markers":markers_mobike})}
-
-                    wx.setStorage({
-                      data: markers,
-                      key: "mopoint",
-                    })
-              }})
-
-        }
-        })
-
-        //E100
-=======
-=======
->>>>>>> 0.0.1
     // console.log(c)
     switch (c) {
       case "0"://hello bike
         var all_markers;
-<<<<<<< HEAD
->>>>>>> 0.0.1
-=======
->>>>>>> 0.0.1
         wx.request({
           url: 'https://api.ltzhou.com/map/nearby/bikes',
           data: {
@@ -177,8 +61,6 @@ Page({
             var x
             var markers = new Array();
             var q = 0
-<<<<<<< HEAD
-<<<<<<< HEAD
             for (x in res.data)
             {
               if (1)
