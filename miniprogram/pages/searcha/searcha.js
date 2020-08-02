@@ -35,15 +35,15 @@ Page({
     passShow:new Array(),
 
     /** 从用户个人设置(localStorage)中获取的信息 */
-    preference:["步行","校园巴士","共享单车","旋风E100"], // 用户偏好，若为空则默认
-    choices:["walk","bus","car","bike"], // 所有可用API接口的二级地址
+    preference:["步行","校园巴士","共享单车","旋风E100","筋斗云"], // 用户偏好，若为空则默认
+    choices:["walk","bus","car","bike","jindouyun"], // 所有可用API接口的二级地址
 
 
     /** 查询请求与返回的结果信息，更新strategyLength数组可使页面刷新 */
     navigateRequest: {
-      "arrivePlace": "DT137246",
+      "arrivePlace": "POINT (121.435505 31.026303)",
       "avoidTraffic": false,
-      "beginPlace": "DT137251",
+      "beginPlace": "图书馆",
       "departTime": "2020/05/11 12:05:12",
       "passPlaces": [
         "学生服务中心"
@@ -344,8 +344,8 @@ Page({
   /** 按当前requestBody，以用户preference顺序依次执行查询，将成功结果存入strategies列表，不会重新渲染页面 */
   _recSearch:function(remainList,resultList,callback){
     var that = this;
-    // console.log(remainList)
-    // console.log(resultList)
+    //console.log(remainList)
+    //console.log(resultList)
     if (remainList.length==0){
       // console.log(remainList)
       that.setData({

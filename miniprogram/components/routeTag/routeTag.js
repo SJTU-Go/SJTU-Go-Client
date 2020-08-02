@@ -59,6 +59,7 @@ Component({
       "校园巴士":  "/images/bus1.png",
       "共享单车": "/images/bike.png",
       "旋风E100": "/images/car.png",
+      "筋斗云": "/images/electromobile_5.png",
     },
 
     strategyTypeToDetail: {
@@ -66,6 +67,7 @@ Component({
       "校园巴士":  "../search/search?RT=",
       "共享单车": "../bike/bike?RT=",
       "旋风E100": "../car/car?RT=",
+      "筋斗云": "../car/car?RT="
     },
 
     strategyTypeToCaption: {
@@ -73,6 +75,7 @@ Component({
       "校园巴士":  "busbutton",
       "共享单车": "bikebutton",
       "旋风E100": "carbutton",
+      "筋斗云": "jindouyunbutton"
     },
 
     extendType:["共享单车","旋风E100"],

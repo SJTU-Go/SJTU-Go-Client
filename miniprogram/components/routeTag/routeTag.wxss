@@ -93,6 +93,19 @@
   align-items: center;
   justify-content: center;
 }
+
+.jindouyunbutton{  
+  height: 30rpx;
+  width: 40%;
+  background-color: rgba(216, 225, 49, 0.858);
+  color: white;
+  border-radius: 3rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .fill  {
   width:5%
 }
