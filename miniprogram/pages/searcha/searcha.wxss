@@ -205,14 +205,15 @@ page {
 .verticalline1 {
   margin-top: 25rpx;
   width: 40rpx;
-  height: 5%;
+  height: 1em;
   border-right: 20rpx dotted rgba(0, 0, 0, 0.6);
+  margin-top: 1.5em;
 }
 
 .verticalline2 {
   margin-top: 14rpx;
   width: 47rpx;
-  height: 20%;
+  height: 3.5em;
   border-right: 6rpx dotted rgba(0, 0, 0, 0.3);
 }
 
@@ -469,26 +470,11 @@ page {
   height: 2rpx;
 }
 
-.verticalline1 {
-
-  width: 40rpx;
-  height: 20%;
-  border-right: 20rpx dotted rgba(0, 0, 0, 0.6);
-}
-
-.verticalline2 {
-  margin-top: 6rpx;
-  margin-bottom: 6rpx;
-  width: 47rpx;
-  height: 100%;
-  border-right: 6rpx dotted rgba(0, 0, 0, 0.3);
-}
-
 .verticalline22 {
   margin-top: 6rpx;
   margin-bottom: 6rpx;
   width: 47rpx;
-  height: 80%;
+  height: 1em;
   border-right: 6rpx dotted rgba(0, 0, 0, 0.3);
 }
 
@@ -496,7 +482,7 @@ page {
   margin-top: 20rpx;
   margin-bottom: 6rpx;
   width: 47rpx;
-  height: 85rpx;
+  height: 1em;
   border-right: 6rpx dotted rgba(0, 0, 0, 0.3);
 }
 
@@ -504,7 +490,7 @@ page {
   margin-top: 20rpx;
   margin-bottom: 25rpx;
   width: 40rpx;
-  height: 20%;
+  height: 1em;
   border-right: 20rpx dotted rgba(0, 0, 0, 0.6);
 }
 
